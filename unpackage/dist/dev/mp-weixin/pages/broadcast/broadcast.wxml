@@ -1,1 +1,1 @@
-<view bind:__l="__l"></view>
+<view bind:__l="__l"><view class="tab-box"><view class="active chose-tab">关注</view><view class="chose-tab">推荐</view><view class="chose-tab">热门</view><view class="chose-tab">最新</view><view class="img-add"><image src mode></image></view></view></view>

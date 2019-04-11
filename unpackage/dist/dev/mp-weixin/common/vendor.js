@@ -305,7 +305,7 @@ function getData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -6233,7 +6233,7 @@ var patch = function(oldVnode, vnode) {
         });
         var diffData = diff(data, mpData);
         if (Object.keys(diffData).length) {
-            if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+            if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
                 console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
                     ']差量更新',
                     JSON.stringify(diffData));
@@ -6711,17 +6711,17 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js":
-/*!***********************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js ***!
-  \***********************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js":
+/*!*********************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ "E:\\companyProject\\gitProject\\yike_ygb_front\\App.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ "F:\\git_project\\yike_ygb_front\\App.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 _vue.default.config.productionTip = false;
 
@@ -6735,112 +6735,112 @@ createApp(app).$mount();
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fbroadcast%2Fbroadcast\"}":
-/*!****************************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Fbroadcast%2Fbroadcast"} ***!
-  \****************************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fbroadcast%2Fbroadcast\"}":
+/*!**************************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Fbroadcast%2Fbroadcast"} ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _broadcast = _interopRequireDefault(__webpack_require__(/*! ./pages/broadcast/broadcast.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\broadcast\\broadcast.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _broadcast = _interopRequireDefault(__webpack_require__(/*! ./pages/broadcast/broadcast.vue */ "F:\\git_project\\yike_ygb_front\\pages\\broadcast\\broadcast.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_broadcast.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Findex%2Findex\"}":
-/*!********************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Findex%2Findex"} ***!
-  \********************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Findex%2Findex\"}":
+/*!******************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Findex%2Findex"} ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\index\\index.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/index/index.vue */ "F:\\git_project\\yike_ygb_front\\pages\\index\\index.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_index.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fnotice%2Fnotice\"}":
-/*!**********************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Fnotice%2Fnotice"} ***!
-  \**********************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fnotice%2Fnotice\"}":
+/*!********************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Fnotice%2Fnotice"} ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _notice = _interopRequireDefault(__webpack_require__(/*! ./pages/notice/notice.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\notice\\notice.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _notice = _interopRequireDefault(__webpack_require__(/*! ./pages/notice/notice.vue */ "F:\\git_project\\yike_ygb_front\\pages\\notice\\notice.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_notice.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fperson%2Fperson\"}":
-/*!**********************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Fperson%2Fperson"} ***!
-  \**********************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fperson%2Fperson\"}":
+/*!********************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Fperson%2Fperson"} ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _person = _interopRequireDefault(__webpack_require__(/*! ./pages/person/person.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\person\\person.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _person = _interopRequireDefault(__webpack_require__(/*! ./pages/person/person.vue */ "F:\\git_project\\yike_ygb_front\\pages\\person\\person.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_person.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fplayarea%2Fplayarea\"}":
-/*!**************************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Fplayarea%2Fplayarea"} ***!
-  \**************************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fplayarea%2Fplayarea\"}":
+/*!************************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Fplayarea%2Fplayarea"} ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _playarea = _interopRequireDefault(__webpack_require__(/*! ./pages/playarea/playarea.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\playarea\\playarea.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _playarea = _interopRequireDefault(__webpack_require__(/*! ./pages/playarea/playarea.vue */ "F:\\git_project\\yike_ygb_front\\pages\\playarea\\playarea.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_playarea.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fspecial%2Fspecial\"}":
-/*!************************************************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/main.js?{"page":"pages%2Fspecial%2Fspecial"} ***!
-  \************************************************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\main.js?{\"page\":\"pages%2Fspecial%2Fspecial\"}":
+/*!**********************************************************************************!*\
+  !*** F:/git_project/yike_ygb_front/main.js?{"page":"pages%2Fspecial%2Fspecial"} ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json");
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ "F:\\git_project\\yike_ygb_front\\pages.json");
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ "./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js"));
-var _special = _interopRequireDefault(__webpack_require__(/*! ./pages/special/special.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages\\special\\special.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _special = _interopRequireDefault(__webpack_require__(/*! ./pages/special/special.vue */ "F:\\git_project\\yike_ygb_front\\pages\\special\\special.vue"));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_special.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ "./node_modules/@dcloudio/uni-mp-weixin/dist/index.js")["createPage"]))
 
 /***/ }),
 
-/***/ "E:\\companyProject\\gitProject\\yike_ygb_front\\pages.json":
-/*!**************************************************************!*\
-  !*** E:/companyProject/gitProject/yike_ygb_front/pages.json ***!
-  \**************************************************************/
+/***/ "F:\\git_project\\yike_ygb_front\\pages.json":
+/*!************************************************!*\
+  !*** F:/git_project/yike_ygb_front/pages.json ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
