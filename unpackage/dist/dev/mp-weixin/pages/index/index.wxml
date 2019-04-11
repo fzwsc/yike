@@ -1,1 +1,1 @@
-<view class="content" bind:__l="__l"><view><text class="title">{{title}}</text></view></view>
+<view class="content" bind:__l="__l"><view hidden="{{hidden}}"><uni-load-more status="loading"></uni-load-more></view><imt-audio continue src="{{audio[now].src}}" duration="{{audio[now].duration}}" data-event-opts="{{[['^prev',[['e0']]],['^next',[['e1']]]]}}" bind:prev="__e" bind:next="__e"></imt-audio><navigator url="../broadcast/broadcast" open-type="switchTab" hover-class="none"><button type="default">跳转到新页面</button></navigator></view>

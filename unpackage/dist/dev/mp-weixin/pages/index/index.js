@@ -8,25 +8,70 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ "E:\\companyProject\\gitProject\\yike_ygb_front\\components\\uni-load-more\\uni-load-more.vue"));};var imtAudio = function imtAudio() {return __webpack_require__.e(/*! import() | components/imt-audio/imt-audio */ "components/imt-audio/imt-audio").then(__webpack_require__.bind(null, /*! components/imt-audio/imt-audio */ "E:\\companyProject\\gitProject\\yike_ygb_front\\components\\imt-audio\\imt-audio.vue"));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
   data: function data() {
     return {
-      title: 'Hello' };
+      title: 'Hello',
+      hidden: true,
+      audio: [{
+        src: 'http://mouyizhan.com/1.mp3',
+        duration: 212 },
+
+      {
+        src: 'http://mouyizhan.com/2.mp3',
+        duration: 189 },
+
+      {
+        src: 'http://mouyizhan.com/3.mp3',
+        duration: 214 },
+
+      {
+        src: 'http://mouyizhan.com/4.mp3',
+        duration: 205 },
+
+      {
+        src: 'http://mouyizhan.com/5.mp3',
+        duration: 228 }],
+
+
+      now: 0 };
 
   },
   onLoad: function onLoad() {
 
   },
-  methods: {} };exports.default = _default;
+  methods: {},
+
+
+  onReachBottom: function onReachBottom() {var _this = this;
+    this.hidden = false;
+    console.log("aaa");
+    setTimeout(function () {
+      _this.hidden = true;
+    }, 3000);
+  },
+  components: {
+    uniLoadMore: uniLoadMore,
+    imtAudio: imtAudio } };exports.default = _default;
 
 /***/ }),
 
@@ -56,6 +101,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.now = _vm.now === 0 ? _vm.audio.length - 1 : _vm.now - 1
+    }
+
+    _vm.e1 = function($event) {
+      _vm.now = _vm.now === _vm.audio.length - 1 ? 0 : _vm.now + 1
+    }
+  }
 }
 var staticRenderFns = []
 render._withStripped = true

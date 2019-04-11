@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "uni-app",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "imt-audio": "/components/imt-audio/imt-audio"
+  }
 }

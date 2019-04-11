@@ -1,6 +1,11 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/broadcast/broadcast",
+    "pages/special/special",
+    "pages/notice/notice",
+    "pages/person/person",
+    "pages/playarea/playarea"
   ],
   "subPackages": [],
   "window": {
@@ -8,6 +13,34 @@
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/broadcast/broadcast",
+        "text": "云广播"
+      },
+      {
+        "pagePath": "pages/special/special",
+        "text": "专题"
+      },
+      {
+        "pagePath": "pages/playarea/playarea",
+        "text": "播放区"
+      },
+      {
+        "pagePath": "pages/notice/notice",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/person/person",
+        "text": "我的"
+      }
+    ]
   },
   "usingComponents": {}
 }
