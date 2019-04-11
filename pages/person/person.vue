@@ -18,12 +18,40 @@
 				<view class="follow-list">
 					<view class="follow-item">
 						<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-						<text class="user-name">我的名字</text>
+						<view class="user-name">我的名字</view>
 					</view>
 				</view>
-				<text class="more">更多</text>
+				<view class="more">更多</view>
 			</view>
 		</view>
+	    <view class="type-list">
+	    	<view class="type-item">
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="text">我的积分</view>
+				<view class="arrow"></view>
+			</view>
+			<view class="type-item">
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="text">我的点赞</view>
+				<view class="arrow"></view>
+			</view>
+			<view class="type-item">
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="text">我的评论</view>
+				<view class="arrow"></view>
+			</view>
+			<view class="type-item">
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="text">最近收听</view>
+				<view class="arrow"></view>
+			</view>
+			<view class="type-item">
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="text">设置</view>
+				<view class="arrow"></view>
+			</view>
+	    </view>
+
 	</view>
 </template>
 
@@ -31,9 +59,8 @@
 	export default {
 		data() {
 			return {
-				
-			};
 		}
+	   }
 	}
 </script>
 
@@ -74,15 +101,59 @@
 	background: #F74C44;
 }
 .person .follow-con {
-	margin-top: 17upx;
+	padding-top: 17upx;
 	padding: 18upx 61upx 9upx 40upx;
 	background: #fff;
 }
 .person .follow-con .follow-area {
 	display: flex;
+	align-items: center;
 }
-
+.person .follow-con .follow-list {
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+.person .follow-con .follow-item {
+	margin-right: 30upx;
+}
+.person .follow-con .follow-item .pic {
+	display: block;
+	width: 70upx;
+	height: 70upx;
+}
+.person .follow-con .follow-item .user-name {
+	margin-top: 7upx;
+	font-size: 17upx;
+}
 .person .follow-con .follow-area .more {
 	width: 54upx;
+	font-size: 21upx;
+}
+.person .type-list {
+	margin-top: 20upx;
+	background: #fff;
+}
+.person .type-list .type-item {
+	display: flex;
+	align-items: center;
+	padding: 22upx 30upx;
+	border-bottom: 1px solid #EEEEEE;
+}
+.person .type-list .type-item .pic {
+	display: block;
+	width: 46upx;
+	height: 46upx;
+}
+.person .type-list .type-item .text{
+	flex: 1;
+	margin-left: 21upx;
+}
+.person .type-list .type-item .arrow {
+	  width: 20upx;
+	  height: 20upx;
+	  border-top: 1px solid #C9C9C9;
+	  border-right: 1px solid #C9C9C9;
+	  transform: rotate(45deg);
 }
 </style>
