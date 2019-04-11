@@ -1638,4 +1638,7 @@ radio-group label, checkbox-group label{
 }
 
 /*每个页面公共css */
+page {
+	background: #F2F2F2;
+}
 

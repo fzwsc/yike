@@ -15,4 +15,7 @@
 <style>
 	 @import './common/uni.css';
 	/*每个页面公共css */
+	page {
+		background: #F2F2F2;
+	}
 </style>

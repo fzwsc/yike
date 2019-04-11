@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "登录"
 			}
 		}
         ,{
@@ -38,20 +38,19 @@
         }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTitleText": "云广播",
+		"navigationBarBackgroundColor": "#F74C44",
 		"backgroundColor": "#F8F8F8"
 	},
 	 "tabBar": {
-        "color": "#7A7E83",
-        "selectedColor": "#3cc51f",
+        "color": "#999999",
+        "selectedColor": "#F74C44",
         "borderStyle": "black",
         "backgroundColor": "#ffffff",
         "list": [{
             "pagePath": "pages/broadcast/broadcast",
 //             "iconPath": "static/image/icon_component.png",
-//             "selectedIconPath": "static/image/icon_component_HL.png",
+             // "selectedIconPath": "static/image/guangbo.png",
             "text": "云广播"
         }, {
             "pagePath": "pages/special/special",
