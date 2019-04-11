@@ -9,14 +9,13 @@
   ],
   "subPackages": [],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarTitleText": "云广播",
+    "navigationBarBackgroundColor": "#F74C44",
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
-    "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+    "color": "#999999",
+    "selectedColor": "#F74C44",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
