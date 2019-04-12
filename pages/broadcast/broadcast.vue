@@ -142,7 +142,7 @@ export default {
 
 <style>
 .active {
-	color: #fc4e51;
+	color: #fc4e51!important;
 }
 .active::after {
 	content: '';
@@ -167,6 +167,7 @@ export default {
 	background: #ffffff;
 }
 .chose-tab {
+	color: #666666;
 	position: relative;
 	flex: 2;
 	line-height: 66upx;
@@ -236,16 +237,20 @@ export default {
 }
 .ques-cont {
 	margin: 6px 0;
+	color: #333333;
 }
 .bo-cont {
 	display: flex;
 	border-bottom: 1upx #eeeeee solid;
 	padding: 6upx 0;
 }
+.bo-cont view{
+	font-size: 20upx;
+	color: #666666;
+}
 .bo-cont view image {
 	width: 28upx;
 	height: 28upx;
-	vertical-align: initial;
 	margin-right: 10upx;
 }
 .bo-cont view:nth-child(1) {
