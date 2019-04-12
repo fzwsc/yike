@@ -31,6 +31,8 @@
 	margin-bottom: 18upx;
 }
 .name-img {
+	background: #F74C44;
+	padding: 12upx 53upx;
 	display: flex;
 	justify-content: space-between;
 }
@@ -58,10 +60,11 @@
 }
 .name-img .follow {
 	margin-top: 25upx;
+	
 }
 .name-img .follow text {
 	padding: 12upx 23upx;
-	border: 1upx solid #f74c44;
+	border:2px solid rgba(247,76,68,1);
 	border-radius: 10upx;
 	color: #f74c44;
 }
