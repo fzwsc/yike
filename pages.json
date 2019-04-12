@@ -12,7 +12,7 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		}
+		},{
             "path" : "pages/special/special",
             "style" : {
 				"navigationBarTitleText": "专题"
@@ -116,31 +116,30 @@
         "backgroundColor": "#ffffff",
         "list": [{
             "pagePath": "pages/broadcast/broadcast",
-//             "iconPath": "static/image/icon_component.png",
-             // "selectedIconPath": "static/image/guangbo.png",
+            "iconPath": "static/yunguangbo.png",
+             "selectedIconPath": "static/yunguangbo_selected.png",
             "text": "云广播"
         }, {
             "pagePath": "pages/special/special",
-//             "iconPath": "static/image/icon_API.png",
-//             "selectedIconPath": "static/image/icon_API_HL.png",
+             "iconPath": "static/zhuanti.png",
+             "selectedIconPath": "static/zhuanti_selected.png",
             "text": "专题"
         },
 		{
 		    "pagePath": "pages/playarea/playarea",
-		//    "iconPath": "static/image/icon_API.png",
-		//     "selectedIconPath": "static/image/icon_API_HL.png",
-		      "text": "播放区"
+		    "iconPath": "static/bofang.png",
+		    "text": ""
 	    },
 		{
 		     "pagePath": "pages/notice/notice",
-		//    "iconPath": "static/image/icon_API.png",
-		//    "selectedIconPath": "static/image/icon_API_HL.png",
+		    "iconPath": "static/xiaoxi.png",
+		    "selectedIconPath": "static/xiaoxi_selected.png",
 		       "text": "消息"
 		  },
 		  	{
 		       "pagePath": "pages/person/person",
-		  //    "iconPath": "static/image/icon_API.png",
-		  //    "selectedIconPath": "static/image/icon_API_HL.png",
+		      "iconPath": "static/wode.png",
+		      "selectedIconPath": "static/wode_selected.png",
 		         "text": "我的"
 		    }
 		]
