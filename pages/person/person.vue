@@ -1,15 +1,19 @@
 <template>
 	<view class="person">
-		<view class="my-info">
-			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-			<view class="info-desc">
-				<view class="nickname">林小雅的专属</view>
-				<view class="scholl-name">
-				  南昌大学
+		<view class="set-space">
+			<view class="my-info">
+				<navigator url="../personinfo/personinfo" class="pic-con" hover-class="none">
+					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				</navigator>
+				<navigator url="../personinfo/personinfo" class="info-desc" hover-class="none">
+					<view class="nickname">林小雅的专属</view>
+					<view class="scholl-name">
+					  南昌大学
+					</view>
+				</navigator>
+				<view class="btn-fans">
+					粉丝(99+)
 				</view>
-			</view>
-			<view class="btn-fans">
-				粉丝(99+)
 			</view>
 		</view>
 		<view class="follow-con">
@@ -21,35 +25,35 @@
 						<view class="user-name">我的名字</view>
 					</view>
 				</view>
-				<view class="more">更多</view>
+				<navigator url="../myconcern/myconcern" class="more" hover-class="none">更多</navigator>
 			</view>
 		</view>
 	    <view class="type-list">
-	    	<view class="type-item">
+	    	<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">我的积分</view>
 				<view class="arrow"></view>
-			</view>
-			<view class="type-item">
+			</navigator>
+			<navigator url="../mypraise/mypraise" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">我的点赞</view>
 				<view class="arrow"></view>
-			</view>
-			<view class="type-item">
+			</navigator>
+			<navigator url="../mycomments/mycomments" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">我的评论</view>
 				<view class="arrow"></view>
-			</view>
-			<view class="type-item">
+			</navigator>
+			<navigator url="../listen/listen" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">最近收听</view>
 				<view class="arrow"></view>
-			</view>
-			<view class="type-item">
+			</navigator>
+			<navigator url="../setting/setting" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">设置</view>
 				<view class="arrow"></view>
-			</view>
+			</navigator>
 	    </view>
 
 	</view>
@@ -66,28 +70,37 @@
 
 <style>
  .person {}
+ .person .set-space {
+	 padding: 0 30upx 0 40upx;
+	  background: #fff;
+ }
  .person .my-info {
 	 display: flex;
 	 align-items: center;
-	 padding: 40upx 30upx 42upx 40upx;
+	 padding: 40upx 0 42upx 0;
 	 border-bottom: 1px solid #EEEEEE;
-	 background: #fff;
+	
+ }
+ .person .my-info .pic-con {
+	 display: block;
+	 width: 118upx;
+	 height: 118upx;
+	 margin-right: 31upx;
  }
 .person .my-info .pic {
 	display: block;
-	width: 118upx;
-	height: 118upx;
-	margin-right: 31upx;
+	 width: 100%;
+	height: 100%;
 }
 .person .my-info .info-desc {
 	flex: 1;
 }
 .person .my-info .info-desc .nickname{
 	margin-bottom: 18upx;
-	font-size: 30upx;
+	font-size: 32upx;
 }
 .person .my-info .info-desc .scholl-name {
-	font-size: 23upx;
+	font-size: 24upx;
 }
 .person .my-info .btn-fans {
 	display: flex;
@@ -124,20 +137,21 @@
 }
 .person .follow-con .follow-item .user-name {
 	margin-top: 7upx;
-	font-size: 17upx;
+	font-size: 18upx;
 }
 .person .follow-con .follow-area .more {
 	width: 54upx;
-	font-size: 21upx;
+	font-size: 22upx;
 }
 .person .type-list {
 	margin-top: 20upx;
 	background: #fff;
+	padding: 0 30upx;
 }
 .person .type-list .type-item {
 	display: flex;
 	align-items: center;
-	padding: 22upx 30upx;
+	padding: 22upx 0;
 	border-bottom: 1px solid #EEEEEE;
 }
 .person .type-list .type-item .pic {
@@ -147,6 +161,7 @@
 }
 .person .type-list .type-item .text{
 	flex: 1;
+	font-size: 30upx;
 	margin-left: 21upx;
 }
 .person .type-list .type-item .arrow {
