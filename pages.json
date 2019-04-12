@@ -1,94 +1,111 @@
 {
-	"pages": [ //pagesÊı×éÖĞµÚÒ»Ïî±íÊ¾Ó¦ÓÃÆô¶¯Ò³£¬²Î¿¼£ºhttps://uniapp.dcloud.io/collocation/pages
+	"pages": [ //pagesæ•°ç»„ä¸­ç¬¬ä¸€é¡¹è¡¨ç¤ºåº”ç”¨å¯åŠ¨é¡µï¼Œå‚è€ƒï¼šhttps://uniapp.dcloud.io/collocation/pages
+		
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "µÇÂ¼"
+		    "path" : "pages/broadcast/broadcast",
+		    "style" : {
+				"navigationBarTitleText": "äº‘å¹¿æ’­"
 			}
 		}
-        ,{
-            "path" : "pages/broadcast/broadcast",
-            "style" : {
-				"navigationBarTitleText": "ÔÆ¹ã²¥"
+		,{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "ç™»å½•"
 			}
-        }
-        ,{
+		}
             "path" : "pages/special/special",
             "style" : {
-				"navigationBarTitleText": "×¨Ìâ"
+				"navigationBarTitleText": "ä¸“é¢˜"
 			}
         }
 		,{
 		    "path" : "pages/playarea/playarea",
 		    "style" : {
-				"navigationBarTitleText": "²¥·ÅÇø"
+				"navigationBarTitleText": "æ’­æ”¾åŒº"
 			}
 		}
         ,{
             "path" : "pages/notice/notice",
             "style" : {
-				"navigationBarTitleText": "ÏûÏ¢"
+				"navigationBarTitleText": "æ¶ˆæ¯"
 			}
         }
         ,{
             "path" : "pages/person/person",
             "style" : {
-				"navigationBarTitleText": "ÎÒµÄ"
+				"navigationBarTitleText": "æˆ‘çš„"
 			}
-        }
-		 ,{
+        },{
 		    "path" : "pages/personinfo/personinfo",
 		    "style" : {
-				"navigationBarTitleText": "¸öÈËÖĞĞÄ"
+				"navigationBarTitleText": "ä¸ªäººä¸­å¿ƒ"
 			}
 		}
 		,{
 		    "path" : "pages/myconcern/myconcern",
 		    "style" : {
-				"navigationBarTitleText": "ÎÒµÄ¹Ø×¢"
+				"navigationBarTitleText": "æˆ‘çš„å…³æ³¨"
 			}
 		}
 		 ,{
 		    "path" : "pages/mypoints/mypoints",
 		    "style" : {
-				"navigationBarTitleText": "ÎÒµÄ»ı·Ö"
+				"navigationBarTitleText": "æˆ‘çš„ç§¯åˆ†"
 			}
 		}
 		 ,{
 		    "path" : "pages/mypraise/mypraise",
 		    "style" : {
-				"navigationBarTitleText": "ÎÒµÄµãÔŞ"
+				"navigationBarTitleText": "æˆ‘çš„ç‚¹èµ"
 			}
 		}
 		 ,{
 		    "path" : "pages/mycomments/mycomments",
 		    "style" : {
-				"navigationBarTitleText": "ÎÒµÄÆÀÂÛ"
+				"navigationBarTitleText": "æˆ‘çš„è¯„è®º"
 			}
 		}
 		 ,{
 		    "path" : "pages/listen/listen",
 		    "style" : {
-				"navigationBarTitleText": "×î½üÊÕÌı"
+				"navigationBarTitleText": "æœ€è¿‘æ”¶å¬"
 			}
 		}
 		 ,{
 		    "path" : "pages/setting/setting",
 		    "style" : {
-				"navigationBarTitleText": "ÉèÖÃ"
+				"navigationBarTitleText": "è®¾ç½®"
 			}
 		}
+          ,{
+            "path" : "pages/playaudio/playaudio",
+            "style" : {"navigationBarTitleText": "æ’­æ”¾åŒº"}
+        }
         ,{
             "path" : "pages/persondetail/persondetail",
-            "style" : {"navigationBarTitleText": "¸öÈËÏêÇé"}
+            "style" : {"navigationBarTitleText": "ä¸ªäººè¯¦æƒ…"}
+        } ,{
+            "path" : "pages/soundRecording/soundRecording",
+            "style" : {
+				"navigationBarTitleText": "å½•éŸ³"
+			}
         }
         ,{
-            "path" : "pages/playaudio/playaudio",
-            "style" : {"navigationBarTitleText": "²¥·ÅÇø"}
+            "path" : "pages/soundSavue/soundSavue",
+            "style" : {
+				"navigationBarTitleText":"å½•éŸ³ä¿å­˜"
+			}
         }
+        ,{
+            "path" : "pages/proview/proview",
+            "style" : {
+				"navigationBarTitleText":"é¢„è§ˆ"
+			}
+        }
+
     ],
 	"globalStyle": {
-		"navigationBarTitleText": "ÔÆ¹ã²¥",
+		"navigationBarTitleText": "äº‘å¹¿æ’­",
 		"navigationBarBackgroundColor": "#F74C44",
 		"backgroundColor": "#F8F8F8"
 	},
@@ -101,30 +118,30 @@
             "pagePath": "pages/broadcast/broadcast",
 //             "iconPath": "static/image/icon_component.png",
              // "selectedIconPath": "static/image/guangbo.png",
-            "text": "ÔÆ¹ã²¥"
+            "text": "äº‘å¹¿æ’­"
         }, {
             "pagePath": "pages/special/special",
 //             "iconPath": "static/image/icon_API.png",
 //             "selectedIconPath": "static/image/icon_API_HL.png",
-            "text": "×¨Ìâ"
+            "text": "ä¸“é¢˜"
         },
 		{
 		    "pagePath": "pages/playarea/playarea",
 		//    "iconPath": "static/image/icon_API.png",
 		//     "selectedIconPath": "static/image/icon_API_HL.png",
-		      "text": "²¥·ÅÇø"
+		      "text": "æ’­æ”¾åŒº"
 	    },
 		{
 		     "pagePath": "pages/notice/notice",
 		//    "iconPath": "static/image/icon_API.png",
 		//    "selectedIconPath": "static/image/icon_API_HL.png",
-		       "text": "ÏûÏ¢"
+		       "text": "æ¶ˆæ¯"
 		  },
 		  	{
 		       "pagePath": "pages/person/person",
 		  //    "iconPath": "static/image/icon_API.png",
 		  //    "selectedIconPath": "static/image/icon_API_HL.png",
-		         "text": "ÎÒµÄ"
+		         "text": "æˆ‘çš„"
 		    }
 		]
     }
