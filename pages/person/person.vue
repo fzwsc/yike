@@ -20,10 +20,10 @@
 			<view class="text">我的关注</view>
 			<view class="follow-area">
 				<view class="follow-list">
-					<view class="follow-item">
+					<navigator url="../persondetail/persondetail" class="follow-item" hover-class="none">
 						<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 						<view class="user-name">我的名字</view>
-					</view>
+					</navigator>
 				</view>
 				<navigator url="../myconcern/myconcern" class="more" hover-class="none">更多</navigator>
 			</view>
