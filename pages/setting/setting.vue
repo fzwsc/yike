@@ -25,9 +25,6 @@
 		},
 		onUnload() {
 			uni.setStorageSync("flag",true)
-// 			uni.switchTab({
-// 				url: '../broadcast/broadcast'
-// 			})
 		}
 	}
 </script>

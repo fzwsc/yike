@@ -19,7 +19,7 @@
 		</view>
 		<view class="user-list">
 			<view class="user-item">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class=""></image>
+				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="user-info">
 					<view class="user-text">
 						<view class="user-name">林小雅</view>
@@ -28,7 +28,7 @@
 						</view>
 					</view>
 					<view class="user-text">
-						<view class="user-name">林小雅教授发布了一条新动态</view>
+						<view class="dynamic">林小雅老师发布了一条新动态</view>
 						<view class="radius">
 							1
 						</view>
@@ -50,7 +50,8 @@
 </script>
 
 <style>
-   .notice .type-list {
+   .notice .type-list,
+   .notice .user-list{
    	background: #fff;
    	padding: 0 30upx;
    }
@@ -77,4 +78,47 @@
    	  border-right: 1px solid #C9C9C9;
    	  transform: rotate(45deg);
    }
+    .notice .user-list .user-item {
+		display: flex;
+		align-items: center;
+		padding: 20upx 0;
+	}
+   .notice .user-list .user-item .pic{
+	   display: block;
+	   width: 70upx;
+	   height: 70upx;
+	   margin-right: 20upx;
+   }
+    .notice .user-list .user-item .user-info {
+		flex: 1;
+	}
+    .notice .user-list .user-item .user-text {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+   .notice .user-list .user-item .user-name {
+	   font-size: 30upx;
+   }
+   .notice .user-list .user-item .time {
+	   color: #999999;
+	   font-size: 20upx;
+   }
+    .notice .user-list .user-item .dynamic {
+		 color: #999999;
+		font-size: 20upx;
+	}
+	.notice .user-list .user-item .radius {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 24upx;
+		height: 24upx;
+		border-radius: 50%;
+		overflow: hidden;
+		color: #fff;
+		font-size: 20upx;
+		background: #FC4E51;
+	}
+   
 </style>
