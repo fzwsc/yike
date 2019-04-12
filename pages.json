@@ -82,6 +82,10 @@
             "path" : "pages/persondetail/persondetail",
             "style" : {"navigationBarTitleText": "个人详情"}
         }
+        ,{
+            "path" : "pages/playaudio/playaudio",
+            "style" : {"navigationBarTitleText": "播放区"}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",

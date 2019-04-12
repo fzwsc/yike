@@ -22,6 +22,12 @@
 			return {
 				
 			};
+		},
+		onUnload() {
+			uni.setStorageSync("flag",true)
+// 			uni.switchTab({
+// 				url: '../broadcast/broadcast'
+// 			})
 		}
 	}
 </script>
@@ -39,6 +45,7 @@
   .setting .setting-list .setting-item {
 	  display: flex;
 	  justify-content: space-between;
+	  align-items: center;
 	  padding: 31upx;
 	  background: #fff;
   }

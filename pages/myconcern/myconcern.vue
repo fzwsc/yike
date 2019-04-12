@@ -6,7 +6,7 @@
 			</view>
 			<view class="set-space">
 				<view class="concern-item">
-					<view class="concern-l">
+					<navigator url="../persondetail/persondetail" class="concern-l" hover-class="none">
 						<view class="info-area">
 							<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 							<view class="user-name">林小雅</view>
@@ -14,7 +14,7 @@
 						<view class="faculty">
 							院系： 马格思主义院系
 						</view>
-					</view>
+					</navigator>
 					<view class="concern-r">
 						<view class="already-concern">已关注</view>
 						<view class="course">教授课程：毛概</view>
@@ -29,7 +29,7 @@
 			</view>
 			<view class="set-space">
 				<view class="concern-item">
-					<view class="concern-l">
+					<navigator url="../persondetail/persondetail" class="concern-l" hover-class="none">
 							<view class="info-area">
 								<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 								<view class="user-name">林小雅</view>
@@ -37,7 +37,7 @@
 							<view class="faculty">
 								院系： 马格思主义院系
 							</view>
-						</view>
+						</navigator>
 						<view class="concern-r">
 							<view class="already-concern red">+关注</view>
 							<view class="course">教授课程：毛概</view>
