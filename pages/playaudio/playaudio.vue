@@ -148,7 +148,7 @@ export default {
 				{
 					name: 'CHN',
 					value:
-						'答案111'
+						'答案D'
 				}
 			]
 		};
