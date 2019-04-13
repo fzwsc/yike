@@ -143,7 +143,7 @@ export default {
 				},
 				{
 					name: 'USA',
-					value: '答案'
+					value: '答案c'
 				},
 				{
 					name: 'CHN',
