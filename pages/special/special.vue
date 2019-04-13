@@ -6,18 +6,20 @@
 		<!-- 内容 -->
 		<view class="cont-box">
 			<view class="user-info">
-				<view class="name-img">
-					<view class="user-box">
-						<image src="../../static/bofang.png" mode=""></image>
-						<view class="text-info">
-							<text>萧逸风</text>
-							<text>04-02 12:00</text>
+				<view @click="detiles()">
+					<view class="name-img" @click.stop>
+						<view class="user-box">
+							<image src="../../static/bofang.png" mode=""></image>
+							<view class="text-info">
+								<text>萧逸风</text>
+								<text>04-02 12:00</text>
+							</view>
 						</view>
+						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
+						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
 					</view>
-					<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-					<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
+					<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
 				</view>
-				<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
 				<view class="bo-cont">
 					<view>
 						<image src="../../static/bf.png" mode=""></image>
@@ -110,6 +112,11 @@ export default {
 		};
 	},
 	methods: {
+		detiles(){
+			uni.navigateTo({
+				url:'../playaudio/playaudio?id=000000',
+			})
+		},
 		choseTab(index) {
 			this.activeIndex = index;
 		},
