@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="play-audio">
 		<!-- 头部播放区 -->
 		<view class="head-box">
 			<view class="name-img">
@@ -10,14 +10,21 @@
 						<text>04-02 12:00</text>
 					</view>
 				</view>
+				<view class="concern-btn">
+					+关注
+				</view>
+			</view>
+			<view class="audio-title">
+			   这是录音标题
 			</view>
 			<view class="audio">
 				<imt-audio
-					continue
 					:src="audio[now].src"
 					:duration="audio[now].duration"
 					@prev="now = now === 0 ? audio.length - 1 : now - 1"
 					@next="now = now === audio.length - 1 ? 0 : now + 1"
+					@getaudio="getAudioContext"
+					@end='finish'
 				></imt-audio>
 			</view>
 		</view>
@@ -30,7 +37,9 @@
 					<radio-group class="radio-group-rad" @change="radioChange">
 						<label class="" v-for="(item, index) in radioItems" :key="index">
 							<view class="box-grop">
-								<view class="ridio-by"><radio :id="item.name" :value="item.name" :checked="item.checked"></radio></view>
+								<view class="ridio-by">
+									<radio :id="item.name" :value="item.name" :checked="item.checked"></radio>
+									</view>
 								<view class="cont-box">
 									<text>{{ item.value }}</text>
 								</view>
@@ -40,6 +49,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- <view class="fixed-answer"></view> -->
 		<!-- 评论区 -->
 		<view class="comment-box">
 			<text class="comment-line">评论区</text>
@@ -89,10 +99,10 @@
 					<image src="../../static/tiwen.png" mode=""></image>
 					提问
 				</view>
-				<view class="box-ico">
+				<navigator url="../comment-detail/comment-detail" class="box-ico" hover-class="none">
 					<image src="../../static/pinglun.png" mode="" />
 					22
-				</view>
+				</navigator>
 				<view class="box-ico box-ico2">
 					<image src="../../static/zan.png" mode="" />
 					33
@@ -107,39 +117,43 @@ import imtAudio from 'components/imt-audio/imt-audio';
 export default {
 	data() {
 		return {
+			audioContext: null,
+			isFinish: false,
 			audio: [
+				
 				{
 					src: 'http://mouyizhan.com/1.mp3',
 					duration: 212
-				},
-				{
-					src: 'http://mouyizhan.com/2.mp3',
-					duration: 189
-				},
-				{
-					src: 'http://mouyizhan.com/3.mp3',
-					duration: 214
-				},
-				{
-					src: 'http://mouyizhan.com/4.mp3',
-					duration: 205
-				},
-				{
-					src: 'http://mouyizhan.com/5.mp3',
-					duration: 228
 				}
+// 				{
+// 					src: 'http://mouyizhan.com/3.mp3',
+// 					duration: 214
+// 				},
+// 				{
+// 					src: 'http://mouyizhan.com/4.mp3',
+// 					duration: 205
+// 				},
+// 				{
+// 					src: 'http://mouyizhan.com/5.mp3',
+// 		
+// 					duration: 228
+// 				}，
+// 				{
+// 					src: 'http://mouyizhan.com/2.mp3',
+// 					duration: 189
+// 				}
 			],
 			now: 0,
 			radioItems: [
 				{
 					name: 'USA',
-					value: '答案A'
+					value: '答案A',
+					
 				},
 				{
 					name: 'CHN',
 					value:
 						'答案B',
-					checked: 'true'
 				},
 				{
 					name: 'USA',
@@ -150,7 +164,7 @@ export default {
 					value:
 						'答案D'
 				}
-			]
+			],
 		};
 	},
 	onLoad:function(option){
@@ -172,6 +186,13 @@ export default {
 			
 		},
 		radioChange(e) {
+			if (!this.isFinish) {
+				uni.showToast({
+					title:'请听完再答题',
+					icon: 'none'
+				})
+				return;
+			}
 			var checked = e.target.value;
 			var changed = {};
 			for (var i = 0; i < this.radioItems.length; i++) {
@@ -181,7 +202,21 @@ export default {
 					changed['radioItems[' + i + '].checked'] = false;
 				}
 			}
+		},
+		// 获取音频实例
+		getAudioContext(audio) {
+			this.audioContext = audio;
+		},
+		// 获取音频已播完整首
+		finish(end) {
+			this.isFinish = true;
 		}
+	},
+	
+	onUnload() {
+		// console.log("audio",this.audioContext);
+		this.audioContext.destroy();
+		uni.setStorageSync('flag',true)
 	},
 	components: {
 		imtAudio
@@ -208,6 +243,9 @@ page {
 	margin-bottom: 18upx;
 }
 .name-img {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	background: #f74c44;
 	padding: 12upx 53upx;
 	display: flex;
@@ -231,10 +269,11 @@ page {
 	padding-top: 15upx;
 }
 .text-info text:nth-child(1) {
-	font-size: 26upx;
+	font-size: 30upx;
 }
 .text-info text:nth-child(2) {
-	font-size: 15upx;
+	margin-top: 12upx;
+	font-size: 20upx;
 }
 .name-img .follow {
 	margin-top: 25upx;
@@ -252,7 +291,23 @@ page {
 	border: 1upx solid #ffffff;
 	border-radius: 10upx;
 }
-.audio {
+.play-audio .concern-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 110upx;
+	height: 50upx;
+	border: 1px solid #FFFFFF;
+	border-radius: 10upx;
+	font-size: 24upx;
+}
+.play-audio .audio-title {
+	padding-left: 53upx;
+	color: #fff;
+	background: #F74C44;
+	font-size: 28upx;
+}
+.play-audio .audio {
 	background: #f74c44;
 }
 .ti-cont {
@@ -373,5 +428,13 @@ page {
 	height: 38upx;
 	width: 38upx;
 	vertical-align: middle;
+}
+.fixed-answer {
+	position: fixed;
+	top: 246upx;
+	left: 0;
+	bottom: 0;
+	width: 100vw;
+	background: rgba(0,0,0,.1);
 }
 </style>

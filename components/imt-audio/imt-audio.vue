@@ -1,21 +1,23 @@
 <template>
 	<view class="imt-audio">
 		<view class="audio-wrapper">
-			<view class="audio-number">{{currentTime}}</view>
-			<slider class="audio-slider" :activeColor="color" block-size="16" :value="current" :max="duration" @changing="changing"
+			<slider class="audio-slider" :activeColor="color" block-size="16" backgroundColor="rgba(255,255,255,0.3)" :value="current" :max="duration" @changing="changing"
 			 @change="change"></slider>
-			<view class="audio-number">{{durationTime}}</view>
+			 <view class="audio-num-line">
+				 <view class="audio-number">{{currentTime}}</view>
+				 <view class="audio-number">{{durationTime}}</view>
+			 </view>
 		</view>
 		<view class="audio-control-wrapper" :style="{color:color}">
-			<view class="audio-control audio-control-prev" v-if="control" :style="{borderColor:color}" @click="prev">&#xe61b;</view>
-			<view class="audio-control audio-control-switch" :class="{audioLoading:loading}" :style="{borderColor:color}" @click="operation">{{loading?'&#xe606;':(paused?'&#xe619;':'&#xe611;')}}</view>
-			<view class="audio-control audio-control-next" v-if="control" :style="{borderColor:color}" @click="next">&#xe61b;</view>
+			<!-- <view class="audio-control audio-control-prev" v-if="control" :style="{borderColor:color}" @click="prev">&#xe61b;</view> -->
+			<view class="audio-control audio-control-switch" :class="{audioLoading:loading}" :style="{borderColor:'rgba(255,255,255,0.3)'}" @click="operation">{{loading?'&#xe606;':(paused?'&#xe619;':'&#xe611;')}}</view>
+			<!-- <view class="audio-control audio-control-next" v-if="control" :style="{borderColor:color}" @click="next">&#xe61b;</view> -->
 		</view>
 	</view>
 </template>
 
 <script>
-	const audio = uni.createInnerAudioContext(); //创建音频
+	// const audio = uni.createInnerAudioContext(); //创建音频
 	export default {
 		data() {
 			return {
@@ -25,7 +27,8 @@
 				loading: false, //是否处于读取状态
 				paused: true, //是否处于暂停状态
 				seek: false,//是否处于拖动状态
-				flag: true
+				flag: true,
+				audio: null
 			}
 		},
 		props: {
@@ -39,7 +42,7 @@
 			continue:Boolean,//播放完成后是否继续播放下一首，需定义@next事件
 			color: {
 				type:String,
-				default:'#169af3'
+				default:'#fff'
 			} //主色调
 		},
 		methods: {
@@ -51,6 +54,12 @@
 			next() {
 				this.$emit('next')
 			},
+			getaudio(audio) {
+				this.$emit('getaudio',audio)
+			},
+			audioEnd(end) {
+				this.$emit('end',end)
+			},
 			//格式化时长
 			format(num) {
 				return '0'.repeat(2 - String(Math.floor(num / 60)).length) + Math.floor(num / 60) + ':' + '0'.repeat(2 - String(
@@ -58,70 +67,75 @@
 			},
 			//播放/暂停操作
 			operation() {
-				if (audio.paused) {
-					audio.play()
+				if (this.audio.paused) {
+					this.audio.play()
 					this.loading = true
 				} else {
-					audio.pause()
+					this.audio.pause()
 				}
 			},
 			//完成拖动事件
 			change(e) {
-				if (this.flag) audio.seek(e.detail.value)
+				if (this.flag) this.audio.seek(e.detail.value)
 			},
 			// 正在拖动事件
 			changing(e) {
-				console.log(this.current,e.detail.value);
-				if(this.current < e.detail.value) {
-					this.flag = false;
-					return;
-				}
+				
+// 				if(this.current < e.detail.value) {
+// 					this.flag = false;
+// 					return;
+// 				}
 				this.flag = true;
 				this.seek = true
 				this.current= e.detail.value
 			}
 		},
 		created() {
-			audio.src = this.src
+			this.audio = uni.createInnerAudioContext();
+			this.audio.src = this.src
 			this.current = 0
 			this.durationTime = this.format(this.duration)
-			audio.obeyMuteSwitch = false
-			audio.autoplay = this.autoplay
+			this.audio.obeyMuteSwitch = false
+			this.audio.autoplay = this.autoplay
+			this.getaudio(this.audio)
 			//音频进度更新事件
-			audio.onTimeUpdate(() => {
+			this.audio.onTimeUpdate(() => {
 				if (!this.seek) {
-					this.current = audio.currentTime
+					this.current = this.audio.currentTime
 				}
 			})
 			//音频播放事件
-			audio.onPlay(() => {
+			this.audio.onPlay(() => {
 				this.paused = false
 				this.loading = false
 			})
 			//音频暂停事件
-			audio.onPause(() => {
+			this.audio.onPause(() => {
 				this.paused = true
 			})
 			//音频结束事件
-			audio.onEnded(() => {
+			this.audio.onEnded(() => {
+				console.log("endendend---",this.continue);
+			
 				if (this.continue) {
 					this.next()
 				} else {
+				    this.audioEnd(true)
 					this.paused = true
 					this.current = 0
 				}
 			})
 			//音频完成更改进度事件
-			audio.onSeeked(() => {
+			this.audio.onSeeked(() => {
 				this.seek = false
 			})
 		},
 		watch: {
 			//监听音频地址更改
 			src(e) {
-				audio.src = e
+				this.audio.src = e
 				this.current = 0
-				audio.play()
+				this.audio.play()
 				this.loading = true
 			},
 			//监听总时长改变
@@ -143,32 +157,38 @@
 	}
 
 	.imt-audio {
-		padding: 30upx;
-		background: #fff;
+		display: flex;
+		align-items: center;
+		padding: 0 53upx 20upx;
+		/* background: #fff; */
 		border-radius: 20upx;
 	}
 
 	.audio-wrapper {
-		display: flex;
-		align-items: center;
+		flex: 1;
+		margin-right: 38upx;
 	}
-
+    .audio-wrapper .audio-num-line {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		color: #fff;
+		margin-top: 13upx;
+	}
 	.audio-number {
 		font-size: 24upx;
 		line-height: 1;
-		color: #333;
+		color: #fff;
 	}
 
 	.audio-slider {
 		flex: 1;
-		margin: 0 30upx;
+		/* margin: 0 30upx; */
+		margin:0 0 0 8upx;
 	}
 
 	.audio-control-wrapper {
-		margin-top: 20upx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		/* margin-top: 20upx; */
 		font-family: "iconfont" !important;
 	}
 
@@ -186,7 +206,7 @@
 
 	.audio-control-switch {
 		font-size: 60upx;
-		margin: 0 80upx;
+		/* margin: 0 40upx; */
 	}
 
 	.audioLoading {

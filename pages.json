@@ -114,11 +114,19 @@
         }
         ,{
             "path" : "pages/noticepraise/noticepraise",
-            "style" : {}
+            "style" : {"navigationBarTitleText":"赞"}
         }
         ,{
             "path" : "pages/noticecomment/noticecomment",
-            "style" : {}
+            "style" : {"navigationBarTitleText":"评论"}
+        }
+        ,{
+            "path" : "pages/comment-detail/comment-detail",
+            "style" : {"navigationBarTitleText": "详情"}
+        }
+        ,{
+            "path" : "pages/comment-rely/comment-rely",
+            "style" : {"navigationBarTitleText": "回复"}
         }
     ],
 	"globalStyle": {
