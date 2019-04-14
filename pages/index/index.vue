@@ -22,6 +22,7 @@
 			return {
 				title: 'Hello',
 				hidden: true,
+				
 				audio: [{
 						src: 'http://mouyizhan.com/1.mp3',
 						duration: 212
@@ -50,7 +51,7 @@
 
 		},
 		methods: {
-
+         
 		},
 		onReachBottom() {
 			this.hidden = false;
@@ -79,5 +80,17 @@
 	.title {
 		font-size: 36upx;
 		color: #8f8f94;
+	}
+	input {
+		height: 120upx;
+		background: #fff;
+	}
+	.fixed-bottom {
+		position: fixed;
+	    left: 0;
+		bottom: 0;
+		width: 100vw;
+		background: rgba(0,0,0,.2);
+		z-index: 100;
 	}
 </style>

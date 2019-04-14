@@ -100,6 +100,8 @@
 		 width: 62upx;
 		 height: 62upx;
 		 margin-right: 21upx;
+		  border-radius: 50%;
+		 overflow: hidden;
 	 }
 	 .my-concern .concern-list .faculty {
 		 font-size: 22upx;

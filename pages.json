@@ -1,18 +1,19 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		
+	
 		{
 		    "path" : "pages/broadcast/broadcast",
 		    "style" : {
 				"navigationBarTitleText": "云广播"
 			}
-		}
-		,{
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		},{
+		}
+		,{
             "path" : "pages/special/special",
             "style" : {
 				"navigationBarTitleText": "专题"
@@ -103,6 +104,22 @@
 			}
         }
 
+        ,{
+            "path" : "pages/myfans/myfans",
+            "style" : {"navigationBarTitleText":"我的粉丝"}
+        }
+        ,{
+            "path" : "pages/noticedetail/noticedetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/noticepraise/noticepraise",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/noticecomment/noticecomment",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",
@@ -128,7 +145,7 @@
 		{
 		    "pagePath": "pages/playarea/playarea",
 		    "iconPath": "static/bofang.png",
-		    "text": ""
+		    "text": "播放"
 	    },
 		{
 		     "pagePath": "pages/notice/notice",

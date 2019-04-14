@@ -57,6 +57,8 @@
 	  width: 100upx;
 	  height: 100upx;
 	  margin-right: 20upx;
+	   border-radius: 50%;
+	  overflow: hidden;
   }
   .my-points .points-header .score {
 	  font-size: 24upx;

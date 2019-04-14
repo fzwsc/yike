@@ -11,9 +11,9 @@
 					  南昌大学
 					</view>
 				</navigator>
-				<view class="btn-fans">
+				<navigator url="../myfans/myfans" class="btn-fans" hover-class="none">
 					粉丝(99+)
-				</view>
+				</navigator>
 			</view>
 		</view>
 		<view class="follow-con">

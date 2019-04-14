@@ -82,5 +82,7 @@
 	   display: block;
 	   width: 62upx;
 	   height: 62upx;
+	   border-radius: 50%;
+	   overflow: hidden;
    }
 </style>

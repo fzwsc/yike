@@ -1,24 +1,24 @@
 <template>
 	<view class="notice">
 		 <view class="type-list">
-			<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
+			<view class="type-item" >
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">提问</view>
 				<view class="arrow"></view>
-			</navigator>
-			<navigator url="../mypraise/mypraise" class="type-item" hover-class="none">
+			</view>
+			<navigator url="../noticecomment/noticecomment" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">评论</view>
 				<view class="arrow"></view>
 			</navigator>
-			<navigator url="../mycomments/mycomments" class="type-item" hover-class="none">
+			<navigator url="../noticepraise/noticepraise" class="type-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="text">赞</view>
 				<view class="arrow"></view>
 			</navigator>
 		</view>
 		<view class="user-list">
-			<view class="user-item">
+			<navigator url="../noticedetail/noticedetail" class="user-item" hover-class="none">
 				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 				<view class="user-info">
 					<view class="user-text">
@@ -34,7 +34,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</navigator>
 		</view>
 	</view>
 </template>
