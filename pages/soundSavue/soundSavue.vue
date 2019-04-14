@@ -116,6 +116,9 @@ export default {
 </script>
 
 <style>
+	view{
+		line-height: 1;
+	}
 	.mian-box{
 		background: #FFFFFF;
 		height: 100%;
@@ -144,6 +147,5 @@ export default {
 		margin-bottom: 60upx;
 	}
 	.title-line textarea{
-		margin-top: 14upx;
 	}
 </style>

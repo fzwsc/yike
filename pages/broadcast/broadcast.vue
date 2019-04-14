@@ -6,19 +6,21 @@
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info">
-				<view class="name-img">
-					<view class="user-box">
-						<image src="../../static/bofang.png" mode=""></image>
-						<view class="text-info">
-							<text>萧逸风</text>
-							<text>04-02 12:00</text>
+			<view class="user-info" >
+				<view @click="detiles()">
+					<view class="name-img" @click.stop>
+						<view class="user-box">
+							<image src="../../static/bofang.png" mode=""></image>
+							<view class="text-info">
+								<text>萧逸风</text>
+								<text>04-02 12:00</text>
+							</view>
 						</view>
+						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
+						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
 					</view>
-					<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-					<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
+					<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
 				</view>
-				<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
 				<view class="bo-cont">
 					<view>
 						<image src="../../static/bf.png" mode=""></image>
@@ -30,7 +32,7 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico">
+					<view class="box-ico box-ico1">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
@@ -38,7 +40,7 @@
 						<image src="../../static/pinglun.png" mode="" />
 						22
 					</view>
-					<view class="box-ico">
+					<view class="box-ico box-ico2">
 						<image src="../../static/zan.png" mode="" />
 						33
 					</view>
@@ -68,7 +70,7 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico">
+					<view class="box-ico box-ico1">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
@@ -76,7 +78,7 @@
 						<image src="../../static/pinglun.png" mode="" />
 						22
 					</view>
-					<view class="box-ico">
+					<view class="box-ico box-ico2">
 						<image src="../../static/zan.png" mode="" />
 						33
 					</view>
@@ -111,6 +113,12 @@ export default {
 		};
 	},
 	methods: {
+		// 跳转详情
+		detiles(){
+			uni.navigateTo({
+				url:'../playaudio/playaudio?id=000000',
+			})
+		},
 		choseTab(index) {
 			this.activeIndex = index;
 		},
@@ -242,11 +250,15 @@ export default {
 .bo-cont {
 	display: flex;
 	border-bottom: 1upx #eeeeee solid;
-	padding: 6upx 0;
+	padding: 12upx 0 18upx 0;
+	align-items: center;
+	line-height: 28upx;
 }
 .bo-cont view{
 	font-size: 20upx;
 	color: #666666;
+	display: flex;
+	align-items: center;
 }
 .bo-cont view image {
 	width: 28upx;
@@ -259,19 +271,29 @@ export default {
 .control-box {
 	padding: 18upx 0 0 0;
 	display: flex;
-	text-align-last: center;
 	width: 100%;
+	justify-content: space-between;
+	align-items: center;
 }
 .control-box .box-ico {
-	flex: 1;
 	color: #666666;
 	font-size: 23upx;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	
+}
+.control-box .box-ico1{
+	padding-left: 40upx;
+}
+.control-box .box-ico2{
+	padding-right: 40upx;
 }
 .control-box .box-ico image {
-	vertical-align: middle;
 	margin-right: 5upx;
 	height: 38upx;
 	width: 38upx;
+	vertical-align: middle;
 }
 .mark {
 	position: fixed;
