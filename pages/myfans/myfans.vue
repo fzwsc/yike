@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	
+	import api from '@/request/api.js'
 	export default {
 		data() {
 			return {
@@ -33,7 +33,10 @@
 			};
 		},
 		onLoad() {
-
+          let data = {};
+		  api.myfans(data).then(res => {
+			  console.log(res)
+		  })
 		}
 	}
 </script>

@@ -32,7 +32,7 @@
 				评论(5)
 			</view>
 			<view class="comment-list">
-				<navigator url="../comment-rely/comment-rely" class="comment-item" hover-class="none">
+				<navigator url="../commentrely/commentrely" class="comment-item" hover-class="none">
 					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="portrait"></image>
 					<view class="comment-info">
 						<view class="name">林小雅</view>

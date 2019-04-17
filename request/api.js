@@ -1,4 +1,4 @@
-var network = require('./network.js');
+const network = require('./network.js');
 export default{
     // 成功案例列表
     CaseList(data) {
@@ -57,8 +57,8 @@ export default{
         return network.post("/mobile/index.php?act=kjw_task&op=task_add",data);
     },
     // 获取经纬度
-    GetLocation(data) {
-       return network.post("/mobile/index.php?act=kjw_common&op=get_location",data);
+    myfans(data) {
+       return network.get("/ygb/user/attention_list",data);
     }
 
 }
