@@ -48,7 +48,7 @@
 			}
 		},
 		onLoad() {
-
+			uni.setStorageSync("user","user")
 		},
 		methods: {
          
