@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import App from './App'
-import api from '/request/api.js'
-import yapi from '/request/yapi.js'
+import api from './request/api.js'
 Vue.config.productionTip = false
-
+Vue.prototype.api = api
 App.mpType = 'app'
 
 const app = new Vue({

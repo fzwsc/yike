@@ -50,7 +50,6 @@
 
 <script>
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
-	import api from '@/request/api.js'
 	export default {
 		data() {
 			return {
@@ -59,13 +58,12 @@
 			};
 		},
 		onLoad() {
-			console.log(uni);
-         this.fansList()
+          this.fansList()
 		},
 		methods: {
 			fansList() {
 				let data = {};
-				api.myfans(data).then(res => {
+				this.api.myfans(data).then(res => {
 		             this.list = res.datas
 				}).catch(err => {
 					
