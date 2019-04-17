@@ -6,7 +6,7 @@
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" >
+			<view class="user-info">
 				<view @click="detiles()">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
@@ -36,7 +36,7 @@
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
-					<view class="box-ico">
+					<view class="box-ico" @click="comment()">
 						<image src="../../static/pinglun.png" mode="" />
 						22
 					</view>
@@ -88,7 +88,7 @@
 		<!-- mark -->
 		<view class="mark" v-show="isShowMark" @click="hidenMark($event)">
 			<view class="list">
-				<view class="luy ss" @click="search()">
+				<view class="luy ss" @click="gotoSearch()">
 					<image src="../../static/sousuo.png" mode=""></image>
 					搜索
 				</view>
@@ -113,11 +113,30 @@ export default {
 		};
 	},
 	methods: {
+		// 评论
+		comment(){
+			uni.navigateTo({
+				url:'../comment-detail/comment-detail'
+			});
+		},
 		// 跳转详情
-		detiles(){
+		detiles() {
 			uni.navigateTo({
 				url:'../playaudio/playaudio?id=000000',
-			})
+				// url: '../soundRecording/soundRecording'
+			});
+			uni.setStorage({
+				key: 'storage_key',
+				data: 'hello',
+				success: function() {
+					console.log('success');
+				}
+			});
+		},
+		gotoSearch() {
+			uni.navigateTo({
+				url: '../searchpage/searchpage'
+			});
 		},
 		choseTab(index) {
 			this.activeIndex = index;
@@ -129,13 +148,13 @@ export default {
 			this.isFollow = true;
 		},
 		search() {
-			console.log("0000000000000000")
+			console.log('0000000000000000');
 		},
 		// 录音
 		soundAudio() {
 			uni.navigateTo({
-				url:'../soundSavue/soundSavue'
-			})
+				url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
+			});
 		},
 		hidenMark() {
 			this.isShowMark = false;
@@ -149,8 +168,11 @@ export default {
 </script>
 
 <style>
+view {
+	line-height: 1.5;
+}
 .active {
-	color: #fc4e51!important;
+	color: #fc4e51 !important;
 }
 .active::after {
 	content: '';
@@ -236,11 +258,11 @@ export default {
 	padding-top: 15upx;
 }
 .text-info text:nth-child(1) {
-	font-size: 26upx;
+	font-size: 28upx;
 	color: #333333;
 }
 .text-info text:nth-child(2) {
-	font-size: 15upx;
+	font-size: 20upx;
 	color: #666666;
 }
 .ques-cont {
@@ -254,7 +276,7 @@ export default {
 	align-items: center;
 	line-height: 28upx;
 }
-.bo-cont view{
+.bo-cont view {
 	font-size: 20upx;
 	color: #666666;
 	display: flex;
@@ -281,12 +303,11 @@ export default {
 	text-align: center;
 	display: flex;
 	justify-content: center;
-	
 }
-.control-box .box-ico1{
+.control-box .box-ico1 {
 	padding-left: 40upx;
 }
-.control-box .box-ico2{
+.control-box .box-ico2 {
 	padding-right: 40upx;
 }
 .control-box .box-ico image {

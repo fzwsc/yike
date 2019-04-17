@@ -65,7 +65,7 @@
 						</view>
 						<view class="nei-ron">马克思主义认识论揭示了人类认识的本质和发展的一般规律。</view>
 						<view class="zan-comment">
-							<view><image src="../../static/pinglun.png" mode=""></image>21</view>
+							<view><image src="../../static/pinglun.png" mode="" @click="comment()"></image>21</view>
 							<view><image src="../../static/zan.png" mode=""></image>666</view>
 						</view>
 					 </view>
@@ -84,7 +84,7 @@
 						</view>
 						<view class="nei-ron">马克思主义认识论揭示了人类认识的本质和发展的一般规律。</view>
 						<view class="zan-comment">
-							<view><image src="../../static/pinglun.png" mode=""></image>21</view>
+							<view><image src="../../static/pinglun.png" mode="" @click="comment()"></image>21</view>
 							<view><image src="../../static/zan.png" mode=""></image>666</view>
 						</view>
 					 </view>
@@ -179,6 +179,11 @@ export default {
 		}, 3000);
 	},
 	methods: {
+		comment(){
+			uni.navigateTo({
+				url:"../comment-rely/comment-rely"
+			})
+		},
 		againEdit() {
 			uni.navigateBack({
 				
@@ -269,10 +274,10 @@ page {
 	padding-top: 15upx;
 }
 .text-info text:nth-child(1) {
-	font-size: 30upx;
+	font-size: 28upx;
 }
 .text-info text:nth-child(2) {
-	margin-top: 12upx;
+	margin-top: 5upx;
 	font-size: 20upx;
 }
 .name-img .follow {
@@ -384,8 +389,10 @@ page {
 	color: #666666;
 	font-size: 15upx;
     padding: 0 118upx;
+	
 }
 .comment-box .zan-comment view{
+	font-size: 20upx;
 	display: flex;
 	align-items:center;
 }
