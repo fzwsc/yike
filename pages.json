@@ -23,6 +23,7 @@
 		    "path" : "pages/playarea/playarea",
 		    "style" : {
 				"navigationBarTitleText": "播放区"
+				
 			}
 		}
         ,{
@@ -127,6 +128,22 @@
         ,{
             "path" : "pages/comment-rely/comment-rely",
             "style" : {"navigationBarTitleText": "回复"}
+        }
+        ,{
+            "path" : "pages/searchpage/searchpage",
+              "style" : {"navigationBarTitleText": "搜索"}
+        }
+        ,{
+            "path" : "pages/login/login",
+              "style" : {"navigationBarTitleText": "登录"}
+        }
+        ,{
+            "path" : "pages/bindWeixin/bindWeixin",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/resetmm/resetmm",
+            "style" : {}
         }
     ],
 	"globalStyle": {

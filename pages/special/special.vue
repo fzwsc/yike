@@ -237,11 +237,11 @@ export default {
 	padding-top: 15upx;
 }
 .text-info text:nth-child(1) {
-	font-size: 26upx;
+	font-size: 28upx;
 	color: #333333;
 }
 .text-info text:nth-child(2) {
-	font-size: 15upx;
+	font-size: 20upx;
 	color: #666666;
 }
 .ques-cont {

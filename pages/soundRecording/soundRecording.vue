@@ -1,9 +1,7 @@
 <template>
 	<view>
-		<web-view  class="web-page" src="https://sale.vmall.com/honor.html?cid=99151"></web-view>
-		<view class="save" @click="save()">
-			 hahahh 
-		</view>
+		<!-- <web-view :src="url" @message="getMessage"></web-view> -->
+		<web-view :src="url" @message="getMessage"></web-view>
 	</view>
 </template>
 
@@ -11,24 +9,25 @@
 	export default {
 		data() {
 			return {
-				
-			};
-		},methods:{
-			save(){
-				
+				url: ''
+			}
+		},
+		onLoad(options) {
+			if (options && options.url) {
+				this.url = decodeURIComponent(options.url);
+			}
+		},
+		methods: {
+			getMessage(event) {
+				uni.showModal({
+					content: JSON.stringify(event.detail),
+					showCancel: false
+				});
 			}
 		}
 	}
 </script>
 
 <style>
-	.web-page{
-		height: 100upx;
-		overflow: hidden;
-	}
-   .save{
-	   position: fixed;
-	   top: 0px;
-	   z-index: 999;
-   }
+
 </style>
