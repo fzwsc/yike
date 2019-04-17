@@ -83,7 +83,12 @@
 		<view class="shadow-area" v-if="hidden"></view>
 		<!-- 输入框 -->
 		<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
-			<textarea :value="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
+			<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
+			 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
+			<view class="btn-group">
+				 <view class="textarea-num">{{getWordNumber}}</view>
+				 <button type="primary" hover-class="none" :disabled="isDisabled">发送</button>
+			 </view>
 		</view>
 	</view>
 </template>
@@ -94,7 +99,16 @@
 			return {
                msgContent: '',
 			   bottom: 0,
-			   hidden: false
+			   hidden: false,
+			}
+		},
+		computed: {
+			getWordNumber() {
+				return this.msgContent.length
+			},
+			isDisabled() {
+				if (!this.msgContent.length) return true
+				else return false
 			}
 		},
 		methods: {
@@ -112,10 +126,28 @@
 </script>
 
 <style>
+	button {
+		margin-left: 16upx;
+		margin-right: 0;
+		font-size: 14px;
+		line-height: 2;
+		background: #F74C44;
+		 outline:none;
+		 appearance: none;
+	}
 	view {
 		line-height: 1.5;
 	}
-
+	
+    button[type=primary]{
+		background: #F74C44;
+	}
+	 button[disabled][type=primary] {
+		 background: #eaeaea;
+	 }
+	 button[disabled] {
+		color:#c1c1c1;
+	}
 	.comment-detail .comments-header {
 		padding: 31upx 31upx 30upx 30upx;
 		margin-bottom: 20upx;
@@ -130,9 +162,7 @@
 	.comment-detail .comments-header .user-info {
 		flex: 1;
 		display: flex;
-
 	}
-
 	.comment-detail .comments-header .user-info .pic {
 		display: block;
 		width: 100upx;
@@ -335,5 +365,11 @@
 		padding: 15upx;
 		/* height: 80upx; */
 		width: 100vw;
+	}
+	.comment-detail .area .btn-group {
+		display: flex;
+		justify-content:  flex-end;
+		align-items: center;
+	    padding:0 15upx 15upx 0;
 	}
 </style>

@@ -217,10 +217,11 @@ export default {
 			this.isFinish = true;
 		}
 	},
-	
+	onHide() {
+		 if (this.audioContext) this.audioContext.destroy();
+	},
 	onUnload() {
-		// console.log("audio",this.audioContext);
-		this.audioContext.destroy();
+		if (this.audioContext) this.audioContext.destroy();
 		uni.setStorageSync('flag',true)
 	},
 	components: {

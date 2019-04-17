@@ -64,6 +64,7 @@
 		data() {
 			return {
 		}
+		
 	   }
 	}
 </script>
