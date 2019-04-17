@@ -76,7 +76,7 @@
 					</view>
 					<view class="box-ico">
 						<image src="../../static/pinglun.png" mode="" />
-						22
+						223
 					</view>
 					<view class="box-ico box-ico2">
 						<image src="../../static/zan.png" mode="" />
