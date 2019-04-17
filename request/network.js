@@ -20,7 +20,7 @@ function requestGet(url,data) {
         
       },
       fail: function(err) {
-         reject(err.data);
+         reject(err);
       }
     })
   })

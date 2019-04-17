@@ -99,7 +99,7 @@
 					<image src="../../static/tiwen.png" mode=""></image>
 					提问
 				</view>
-				<navigator url="../comment-detail/comment-detail" class="box-ico" hover-class="none">
+				<navigator url="../commentdetail/commentdetail" class="box-ico" hover-class="none">
 					<image src="../../static/pinglun.png" mode="" />
 					22
 				</navigator>
@@ -241,7 +241,7 @@ page {
 }
 
 .head-box{
-	
+	background:#f74c44;
 }
 .user-info {
 	background: #ffffff;
