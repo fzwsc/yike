@@ -112,7 +112,18 @@ export default {
 			isShowMark: false
 		};
 	},
+	onLoad() {
+	   this.getTab()
+	},
 	methods: {
+		getTab(){
+			
+			this.specialTab(Date).then(res=>{
+				console.log(res)
+			}).catch(Error=>{
+				
+			})
+		},
 		// 评论
 		comment(){
 			uni.navigateTo({
