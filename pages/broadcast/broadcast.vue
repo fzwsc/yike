@@ -131,6 +131,7 @@ export default {
 		search() {
 			console.log("0000000000000000")
 		},
+		
 		// 录音
 		soundAudio() {
 			uni.navigateTo({
