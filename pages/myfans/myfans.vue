@@ -5,6 +5,27 @@
 	  		<view class="info-area">
 	  			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
 	  			<view class="user-info">
+	  					<view class="user-name">林小雅</view>
+	  					<view class="user-ide">
+	  						学生
+	  					</view>
+	  				</view>
+	  		</view>
+	  			<!-- <view class="already-fans red">已关注</view> -->
+	  		
+	  	</navigator>
+	  	<view class="fans-b">
+	  		<view class="faculty">
+	  			院系： 马格思主义院系
+	  		</view>
+	  		<view class="course">教授课程：毛概</view>
+	  	</view>
+	  </view>
+	  <view class="fans-item">
+	  	<navigator url="../persondetail/persondetail" class="fans-t" hover-class="none">
+	  		<view class="info-area">
+	  			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+	  			<view class="user-info">
 					<view class="user-name">林小雅</view>
 					<view class="user-ide">
 						学生
@@ -21,22 +42,41 @@
 	  		<view class="course">教授课程：毛概</view>
 	  	</view>
 	  </view>
+	  <view :hidden="hidden">
+	  	<uni-load-more status="loading"></uni-load-more>
+	  </view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	import api from '@/request/api.js'
 	export default {
 		data() {
 			return {
-				
+				list: [],
+				hidden: true
 			};
 		},
 		onLoad() {
-          let data = {};
-		  api.myfans(data).then(res => {
-			  console.log(res)
-		  })
+			console.log(uni);
+         this.fansList()
+		},
+		methods: {
+			fansList() {
+				let data = {};
+				api.myfans(data).then(res => {
+		             this.list = res.datas
+				}).catch(err => {
+					
+				})
+			}
+		},
+		onReachBottom() {
+			
+		},
+		components: {
+			uniLoadMore
 		}
 	}
 </script>
