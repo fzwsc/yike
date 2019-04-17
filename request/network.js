@@ -1,7 +1,7 @@
 // var API_URL = 'https://kjw.wx.fzwsc.com';
 import {API_URL} from './base'
 // var API_URL = 'https://m.wx.fjtogo.com';
-
+console.log(uni);
 function requestGet(url,data) {
   return new Promise((resolve, reject) => {
     uni.request({
@@ -15,7 +15,11 @@ function requestGet(url,data) {
         if (res.data.code == 200) {
           resolve(res.data);
         }else{
-          reject(res.data)
+          // reject(res.data)
+					 uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+					});
         }
         
       },
