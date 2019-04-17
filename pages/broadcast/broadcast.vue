@@ -154,7 +154,8 @@ export default {
 		// 录音
 		soundAudio() {
 			uni.navigateTo({
-				url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
+				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
+				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
 			});
 		},
 		hidenMark() {

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- <web-view :src="url" @message="getMessage"></web-view> -->
-		<web-view :src="url" @message="getMessage"></web-view>
+		<view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view></view>
 	</view>
 </template>
 

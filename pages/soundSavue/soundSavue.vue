@@ -1,8 +1,9 @@
 <template>
 	<view>
-		<custom-header :title="title" :backBtnClass="backBtnClass" @click="backClick" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header>
-		<!-- <web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view> -->
-		<view class="mian-box">
+		<!-- <custom-header :title="title" :backBtnClass="backBtnClass" @click="backClick" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header> -->
+	
+		<!-- <view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view></view> -->
+		<view class="mian-box"  >
 			<view class="title-line">
 				<text class="title">标题：</text>
 				<view>这是标题</view>
@@ -76,6 +77,7 @@ export default {
 			webviewStyles:{
 				top:'44px',
 			},
+			showWeb:true,
 			tipBox:"true",
 			title: '主页导航文字',
 			showBack: true,
