@@ -34,6 +34,7 @@
 			</view>
 			<view class="sure-an title-line" @click="showSinglePicker2">
 				<text class="title">答案A：</text>
+				<textarea value="" placeholder="输入问题" />
 				<!-- <mpvue-picker ref="mpvuePicker" :deepLength="deepLength" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mpvue-picker> -->
 			</view>
 
@@ -114,10 +115,18 @@ export default {
 		};
 	},
 	onLoad(options) {
-		console.log(decodeURIComponent(options.url));
-		if (options && options.url) {
-			this.url = decodeURIComponent(options.url);
-		}
+// 		console.log(options)
+// 		console.log(decodeURIComponent(options.url));
+       let Data = {}
+	   Data.token = uni.getStorageSync("token")
+       this.yapi.getAddYunCont(Data).then(res=>{
+		   
+	   }).catch(err=>{
+		   
+	   })
+// 		if (options && options.url) {
+// 			this.url = decodeURIComponent(options.url);
+// 		}
 	},
 	onLaunch(options) {
 		console.log('app.js ---onLaunch---' + JSON.stringify(options));

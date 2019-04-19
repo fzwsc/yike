@@ -1,33 +1,33 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList">{{ item }}</view>
+			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList">{{ item.title }}</view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info">
+			<view class="user-info" v-for="item in boxList">
 				<view @click="detiles()">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
-							<image src="../../static/bofang.png" mode=""></image>
+							<image :src="item.avatar" mode=""></image>
 							<view class="text-info">
-								<text>萧逸风</text>
-								<text>04-02 12:00</text>
+								<text>{{item.name}}</text>
+								<text>{{item.createtime}}</text>
 							</view>
 						</view>
 						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
 						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
 					</view>
-					<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
+					<view class="ques-cont"><text>{{item.title}}</text></view>
 				</view>
 				<view class="bo-cont">
 					<view>
 						<image src="../../static/bf.png" mode=""></image>
-						300次
+						{{item.read_num}}次
 					</view>
 					<view>
 						<image src="../../static/shijian.png" mode=""></image>
-						时间
+						{{item.duration}}
 					</view>
 				</view>
 				<view class="control-box">
@@ -37,15 +37,20 @@
 					</view>
 					<view class="box-ico">
 						<image src="../../static/pinglun.png" mode="" />
-						22
+						{{item.comment_num}}
 					</view>
 					<view class="box-ico box-ico2">
 						<image src="../../static/zan.png" mode="" />
-						33
+						{{item.like_num}}
 					</view>
 				</view>
 			</view>
-			<view class="user-info">
+			<view class="no-data" v-if="boxList.length<=0?true:false">
+				<image src="../../static/noData.png" mode=""></image>
+				<view class="tip-color">抱歉，暂无相关数据。</view>
+			</view>
+			
+		<!-- 	<view class="user-info">
 				<view class="name-img">
 					<view class="user-box">
 						<image src="../../static/bofang.png" mode=""></image>
@@ -82,21 +87,10 @@
 						33
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<!-- mark -->
-		<view class="mark" v-show="isShowMark" @click="hidenMark($event)">
-			<view class="list">
-				<view class="luy ss" @click="search()">
-					<image src="../../static/sousuo.png" mode=""></image>
-					搜索
-				</view>
-				<view class="luy" @click="soundAudio()">
-					<image src="../../static/luyin.png" mode=""></image>
-					录音
-				</view>
-			</view>
-		</view>
+		
 	</view>
 </template>
 
@@ -105,20 +99,45 @@ import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 	data() {
 		return {
-			tabList: ['时事政策', '课程解析', '其他分类'],
+			tabList: [],
 			activeIndex: 0,
 			isFollow: true,
-			isShowMark: false
+			isShowMark: false,
+			curpage:1,
+			boxList:[]
 		};
 	},
+	onLoad() {
+		this.getTab()
+	},
 	methods: {
+		getTab(){
+			this.yapi.specialTab().then(res=>{
+				this.tabList = res.datas
+				this.choseTab(0,res.datas[0])
+				console.log(res.datas[0].id)
+			}).catch(Error=>{
+				
+			})
+		},
 		detiles(){
 			uni.navigateTo({
 				url:'../playaudio/playaudio?id=000000',
 			})
 		},
-		choseTab(index) {
+		// 切换tab
+		choseTab(index,item) {
+			this.boxList =[]
 			this.activeIndex = index;
+			let data = {}
+			data.topic_id = item.id;
+			data.curpage = this.curpage;
+			data.pagesize = 10;
+			this.yapi.specialList(data).then(res=>{
+				this.boxList = res.datas.data
+			}).catch(err=>{
+				
+			})
 		},
 		follow() {
 			this.isFollow = false;
@@ -225,6 +244,7 @@ export default {
 .name-img .user-box image {
 	height: 100upx;
 	width: 100upx;
+	border-radius: 50%;;
 }
 .name-img .user-box {
 	display: flex;
@@ -341,4 +361,21 @@ export default {
 	margin-right: 12upx;
 	vertical-align: middle;
 }
+.no-data{
+		position: absolute;
+		text-align: center;
+		margin-top: 179upx;
+		width: 100%;
+		
+	}
+	.no-data image{
+		width: 290upx;
+		height: 239upx;
+		margin: auto;
+	}
+	.no-data .tip-color{
+		color: #666666;
+		margin-top: 91upx;
+		text-align: center;
+	}
 </style>

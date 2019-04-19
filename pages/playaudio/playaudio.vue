@@ -1,7 +1,7 @@
 <template>
 	<view class="play-audio">
 		<!-- 头部播放区 -->
-		<view class="head-box">
+		<view class="head-box" v-for="item in contList" :key="item.toString()">
 			<view class="name-img">
 				<view class="user-box">
 					<image src="../../static/bofang.png" mode=""></image>
@@ -15,7 +15,7 @@
 				</view>
 			</view>
 			<view class="audio-title">
-			   这是录音标题
+			   {{item.title}}
 			</view>
 			<view class="audio">
 				<imt-audio
@@ -119,6 +119,8 @@ export default {
 		return {
 			audioContext: null,
 			isFinish: false,
+			contList:{},
+			pLconList:[],
 			audio: [
 				
 				{
@@ -169,6 +171,13 @@ export default {
 	},
 	onLoad:function(option){
 		console.log(option)
+		this.yapi.getYunDetils({"radio_id":option.id}).then(res=>{
+			this.contList = res.datas
+			this.pLconList = res.datas.comment_list
+			
+		}).catch(err=>{
+			
+		})
 		
 	},
 	onReachBottom() {

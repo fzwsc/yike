@@ -1,33 +1,27 @@
 <template>
 	<view>
-		<!-- <web-view :src="url" @message="getMessage"></web-view> -->
-		<view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view></view>
+		<web-view :src="url" ></web-view>
+		<!-- <view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" :message="postMessage"></web-view></view> -->
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				url: ''
-			}
-		},
-		onLoad(options) {
-			if (options && options.url) {
-				this.url = decodeURIComponent(options.url);
-			}
-		},
-		methods: {
-			getMessage(event) {
-				uni.showModal({
-					content: JSON.stringify(event.detail),
-					showCancel: false
-				});
-			}
+export default {
+	data() {
+		return {
+			url: '',
+			ss: ''
+		};
+	},
+	// 获取web-url
+	onLoad(options) {
+		if (options && options.url) {
+			this.url = decodeURIComponent(options.url);
 		}
+	},
+	methods: {
 	}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
