@@ -2,63 +2,58 @@
 	<view class="comment-detail">
 		<view class="comments-header">
 			<view class="flex">
-				<view class="user-info">
-					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<view class="user-info" v-if="detail.user_info">
+					<image :src="detail.user_info.avatar" mode="" class="pic"></image>
 					<view class="">
-						<view class="user-name">林小雅</view>
+						<view class="user-name">{{detail.user_info.avatar.name}}</view>
 						<view class="content">
-							中共十九大重要通知
+							{{detail.title}}
 						</view>
 					</view>
 				</view>
-				<view class="already-concern">+关注</view>
+				<template v-if="detail.user_info.attention_status == 1">
+					<view class="already-concern">+关注</view>
+				</template>
+				<template v-if="detail.user_info.attention_status == 2">
+					<view class="already-concern">已关注</view>
+				</template>
+				
 			</view>
 			<view class="user-state">
 				<view class="play-num">
 					<image src="../../static/bf.png" mode="" class="pic"></image>
-					<view class="text">2954次</view>
+					<view class="text">{{detail.read_num}}次</view>
 				</view>
 				<view class="timer">
 					<image src="../../static/shijian.png" mode="" class="pic"></image>
-					<view class="text">4'20'</view>
+					<view class="text">{{detail.duration}}'</view>
 				</view>
 				<view class="time">
-					04-02 12:00
+					{{detail.createtime}}
 				</view>
 			</view>
 		</view>
 		<view class="content">
 			<view class="content-title">
-				评论(5)
+				评论({{list.length}})
 			</view>
 			<view class="comment-list">
-				<navigator url="../commentrely/commentrely" class="comment-item" hover-class="none">
-					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="portrait"></image>
+				<navigator :url="'../commentrely/commentrely?id='+item.comment_id" v-for="(item,index) in list" :key="index" class="comment-item" hover-class="none">
+					<image :src="item.avatar" mode="" class="portrait"></image>
 					<view class="comment-info">
-						<view class="name">林小雅</view>
-						<view class="msg">收到</view>
+						<view class="name">{{item.name}}</view>
+						<view class="msg">{{item.content}}</view>
 						<view class="state">
 							<view class="time">昨天 12:15</view>
 							<view class="icon half">
-								<image src="../../static/pinglun.png" mode="" class="pic" />22</view>
+								<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}</view>
 							<view class="icon">
-								<image src="../../static/zan.png" mode="" class="pic" />33</view>
+								<image src="../../static/zan.png" mode="" class="pic" />{{item.like_num}}</view>
 						</view>
 					</view>
 				</navigator>
-				<view class="comment-item">
-					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="portrait"></image>
-					<view class="comment-info">
-						<view class="name">林小雅</view>
-						<view class="msg">收到</view>
-						<view class="state">
-							<view class="time">昨天 12:15</view>
-							<view class="icon half">
-								<image src="../../static/pinglun.png" mode="" class="pic" />22</view>
-							<view class="icon">
-								<image src="../../static/zan.png" mode="" class="pic" />33</view>
-						</view>
-					</view>
+				 <view :hidden="loadingHidden">
+					<uni-load-more status="loading"></uni-load-more>
 				</view>
 			</view>
 		</view>
@@ -80,7 +75,7 @@
 			</view>
 		</view>
 		<!-- 阴影层 -->
-		<view class="shadow-area" v-if="hidden"></view>
+		<view class="shadow-area" v-if="hidden" @click="hide"></view>
 		<!-- 输入框 -->
 		<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
 			<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
@@ -94,13 +89,25 @@
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
                msgContent: '',
 			   bottom: 0,
 			   hidden: false,
+			   radioId: '',
+			   detail: {},
+			   list: [],
+			   loadingHidden: true,
+			   hasmore: true,
+			   curpage: 1,
+			   pagesize: 10,
 			}
+		},
+		onLoad(option) {
+			this.radioId = option.radioId
+			this.getCommentList()
 		},
 		computed: {
 			getWordNumber() {
@@ -112,6 +119,9 @@
 			}
 		},
 		methods: {
+		  hide() {
+			this.hidden = !this.hidden  
+		  },
           pop() {
 			  this.hidden = true;
 		  },
@@ -120,7 +130,35 @@
 		  },
 		  blur(e) {
 			  this.bottom = 0
+		  },
+		  getCommentList() {
+			  let data = {};
+			  data["radio_id"] = this.radioId;
+			  data['curpage'] = this.curpage;
+			  data['pagesize'] = this.pagesize
+			  this.loadingHidden = true;
+			  this.api.commentList(data).then(res => {
+				  this.detail = res.datas;
+			  	 if (this.curpage == 1) this.list = []
+			  	 this.list = [...this.list,...res.datas.comment_list.data]
+			  	 this.hasmore = res.datas.comment_list.has_more
+			  	 this.curpage++
+			  	 
+			  }).catch(err => {
+			  	
+			  })
 		  }
+		},
+		components: {
+			uniLoadMore
+		},
+		onReachBottom() {
+			if(this.hasmore) this.loadingHidden = false
+			else{
+				this.loadingHidden = true
+				return;
+			}
+			this.getCommentList()
 		}
 	}
 </script>

@@ -3,48 +3,53 @@
 		<view class="info-list">
 			<view class="info-item">
 				<view class="text">头像：</view>
-			    <image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+			    <image :src="info.avatar" mode="" class="pic"></image>
 			</view>
 			<view class="info-item">
 				<view class="text">用户名：</view>
-			    <view class="response">蔡</view>
+			    <view class="response">{{info.realname}}</view>
 			</view>
 			<view class="info-item">
 				<view class="text">性别：</view>
-			   <view class="response">男</view>
+			   <view class="response">{{info.gender == 0 ? '男' : '女'}}</view>
 			</view>
 			<view class="info-item">
 				<view class="text">出生日期：</view>
-			     <view class="response">1989/10/19</view>
+			     <view class="response">{{info.birthday}}</view>
 			</view>
 			<view class="info-item">
 				<view class="text">学校：</view>
-			    <view class="response">南昌大学</view>
+			    <view class="response">{{info.schoolname}}</view>
 			</view>
-			<view class="info-item">
-				<view class="text">学院：</view>
-			    <view class="response">马克思主义学院</view>
-			</view>
+			
 			<view class="info-item" v-if="isTeacher">
+				<view class="info-item">
+					<view class="text">院系：</view>
+				    <view class="response">{{info.collegename}}</view>
+				</view>
 				<view class="text">部门：</view>
-			     <view class="response">行政部</view>
+			     <view class="response">{{info.department}}</view>
 			</view>
 			<template v-if="!isTeacher">
 				<view class="info-item">
+					<view class="text">学院：</view>
+				    <view class="response">{{info.college}}</view>
+				</view>
+				<view class="info-item">
 					<view class="text">院系：</view>
-				    <view class="response">思政系</view>
+				    <view class="response">{{info.collegename}}</view>
 				</view>
 				<view class="info-item">
 					<view class="text">专业：</view>
-				    <view class="response">马格思主义原理</view>
+				    <view class="response">{{info.profession}}</view>
 				</view>
 				<view class="info-item">
 					<view class="text">年级：</view>
-				    <view class="response">2017级</view>
+				    <view class="response">{{info.enteryear}}</view>
 				</view>
 				<view class="info-item">
 					<view class="text">班级：</view>
-				    <view class="response">一班</view>
+				    <view class="response">{{info.classname}}</view>
 				</view>
 			</template>
 		</view>
@@ -55,9 +60,38 @@
 	export default {
 		data() {
 			return {
-			   isTeacher: false	
+			   isTeacher: false,
+			   info: {},
+			   token: uni.getStorageSync('token')
 			}
-		}
+		},
+		onLoad(option) {
+			let role = option.role - 0;
+			if (role == 1) {
+				this.isTeacher = false
+				this.studentInfo()
+			}else {
+				this.isTeacher = true
+				this.teacherInfo()
+			} 
+		},
+		methods: {
+			studentInfo() {
+				let data = {};
+				data['token'] = this.token
+				this.api.studentInfo(data).then(res => {
+					this.info = res.datas;
+				})
+			},
+			teacherInfo() {
+				let data = {};
+				data['token'] = this.token
+				this.api.teacherInfo(data).then(res => {
+					this.info = res.datas;
+				})
+				
+			}
+		},
 	}
 </script>
 

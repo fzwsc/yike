@@ -1,64 +1,92 @@
 const network = require('./network.js');
 export default{
-    // 成功案例列表
-    CaseList(data) {
-        return network.post("/mobile/index.php?act=kjw_common&op=successcase_list",data)
+    // 登录
+    Login(data) {
+        return network.post("/ygb/user/login",data)
     },
-    // 成功案例详情
-    CaseListDetail(data) {
-       return network.post("/mobile/index.php?act=kjw_common&op=successcase_info",data);
-    },
-    // 低价资讯列表
-    LowList(data) {
-       return network.get("/mobile/index.php?act=kjw_common&op=lowcostnews_list",data)
-    },
-    // 低价资讯详情
-    LowListDetail(data) {
-       return network.get("/mobile/index.php?act=kjw_common&op=lowcostnews_info",data);
-    },
-    // 砍价师列表
-    BarginList(data) {
-        return network.post("/mobile/index.php?act=kjw_bargainer&op=bargainer_list",data)
-    },
-    // 砍价师详情
-    BarginDetail(data) {
-        return network.post("/mobile/index.php?act=kjw_bargainer&op=bargainerinfo",data)
-    },
-    // 砍价师评价明细
-    BarginEvaluate(data) {
-        return network.post('/mobile/index.php?act=kjw_bargainer&op=bargainer_allpraise',data)
-    },
-   // 砍价王用户登录
-   Login(data) {
-       return network.post('/mobile/index.php?act=connect_xcx&op=wxLogin',data)
-   },
-   // 发送验证码
-   SendCode(data) {
-       return network.post('/mobile/index.php?act=member_account&op=bind_mobile_step1',data)
-   },
-   // 注册手机号码
-   RegisterPhone(data) {
-       return network.post('/mobile/index.php?act=member_account&op=bind_mobile_step2',data);
-   },
-   // 获取个人信息
-   GetPersonInfo(data) {
-       return network.get('/mobile/index.php?act=kjw_member&op=wx_user_info',data);
-   },
-   // 城市3级列表
-    AreaLevel() {
-      return network.get('/mobile/index.php?act=kjw_area&op=area3level',{});
-    },
-   // 图片上传
-    PictureUpload(filePath,name,data) {
-      return network.pic('/mobile/index.php?act=kjw_task&op=upload_image',filePath,name,data);  
-    },
-    // 发布任务
-    PublishTask(data) {
-        return network.post("/mobile/index.php?act=kjw_task&op=task_add",data);
-    },
-    // 获取经纬度
+	// 获取消息点赞列表
+	belikeList(data) {
+		return network.post('/ygb/like/belike_list',data)
+	},
+	// 获取消息评论列表
+	recedList(datda) {
+		return network.post('/ygb/comment/get_reced_list',data)
+	},
+	// 获取消息回复列表
+	answerList(data) {
+		return network.post('/ygb/comment/get_answered_list',data)
+	},
+	//
+	ygbComment(data) {
+		
+	},
+	// 评论列表
+	commentList(data) {
+		return network.get('/ygb/topic/comment_list',data)
+	},
+	// 回复列表
+	replyList(data) {
+	  return network.get('/ygb/topic/reply_list',data) 	
+	},
+	// 消息列表
+	messageList(data) {
+		return network.post('/ygb/message/get_user_message_list',data)
+	},
+	// 播放区
+	playArea(data) {
+		return network.get('/ygb/index/play_area',data)
+	},
+	// 学生详情
+	studentDetail(data) {
+		return network.get('/ygb/user/student_detail',data)
+	},
+	// 老师详情
+	teacherDetail(data) {
+		return network.get('/ygb/user/teacher_detail',data)
+	},
+	// 老师动态
+	teacherDynamic(data) {
+		return network.get('/ygb/user/teacher_dynamic',data)
+	},
+	// 教师个人中心
+	teacherInfo(data) {
+		return network.get('/ygb/user/teacher_info',data)
+	},
+	// 个人中心
+	myInfo(data) {
+		return network.get('/ygb/user/my_info',data)
+	},
+	// 学生个人中心
+	studentInfo(data) {
+		return network.get('/ygb/user/student_info',data)
+	},
+	// 我的积分
+	scoreList(data) {
+		return network.post('/ygb/user/get_scorelist',data)
+	},
+	// 我的点赞
+	myLikeList(data) {
+		return network.post('/ygb/like/like_list',data)
+	},
+	// 我的评论
+	myRecedList(data) {
+		return network.post('/ygb/comment/get_my_reced_list',data)
+	},
+    // 我的粉丝
     myfans(data) {
-       return network.get("/ygb/user/attention_list",data);
-    }
+       return network.post("/ygb/user/fans_list",data);
+    },
+	// 已关注
+	attentionList(data) {
+		return network.post('/ygb/user/attention_list',data)
+	},
+	// 推荐列表
+	recommendList(data) {
+		return network.post('/ygb/user/recommend_list',data)
+	},
+	// 最近收听
+	historyList(data) {
+		return network.post('/ygb/user/history_list',data)
+	}
 
 }

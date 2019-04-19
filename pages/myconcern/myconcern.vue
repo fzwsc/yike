@@ -1,48 +1,29 @@
 <template>
 	<view class="my-concern">
+		<view class="concern-header">
+			<view class="concern-header-item" :class="{active: active == 0}" @click="tab(0)">已关注</view>
+			<view class="concern-header-item" :class="{active: active == 1}" @click="tab(1)">推荐</view>
+		</view>
 		<view class="concern-list">
-			<view class="title">
-				<view class="radius"></view>已关注
-			</view>
 			<view class="set-space">
-				<view class="concern-item">
+				<view class="concern-item" v-for="(item,index) in list" :key="index">
 					<navigator url="../persondetail/persondetail" class="concern-l" hover-class="none">
 						<view class="info-area">
-							<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-							<view class="user-name">林小雅</view>
+							<image :src="item.avatar" mode="" class="pic"></image>
+							<view class="user-name">{{item.realname}}</view>
 						</view>
 						<view class="faculty">
-							院系： 马格思主义院系
+							院系： {{item.collegename}}
 						</view>
 					</navigator>
 					<view class="concern-r">
-						<view class="already-concern">已关注</view>
-						<view class="course">教授课程：毛概</view>
+						<view class="already-concern" v-if="item.status == 1">已关注</view>
+						<view class="already-concern red" v-else>+关注</view>
+						<!-- <view class="course">教授课程：毛概</view> -->
 					</view>
 				</view>
-			</view>
-		</view>
-		<!-- 推荐列表 -->
-		<view class="concern-list">
-			<view class="title">
-				<view class="radius"></view>推荐
-			</view>
-			<view class="set-space">
-				<view class="concern-item">
-					<navigator url="../persondetail/persondetail" class="concern-l" hover-class="none">
-							<view class="info-area">
-								<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-								<view class="user-name">林小雅</view>
-							</view>
-							<view class="faculty">
-								院系： 马格思主义院系
-							</view>
-						</navigator>
-						<view class="concern-r">
-							<view class="already-concern red">+关注</view>
-							<view class="course">教授课程：毛概</view>
-						</view>
-					</view>
+				  <view :hidden="hidden">
+					<uni-load-more status="loading"></uni-load-more>
 				</view>
 			</view>
 		</view>
@@ -50,35 +31,122 @@
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-				
+				active: 0,
+				list: [],
+				hidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				token: uni.getStorageSync("token")
 			};
-		}
+		},
+		onLoad() {
+			this.getAttentionList();
+		},
+		methods: {
+			tab(type) {
+				this.active = type
+				this.curpage = 1
+				if (this.active) {
+					this.getRecommendList()
+				} else{
+					this.getAttentionList()
+				}
+				
+			},
+			getAttentionList() {
+				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.attentionList(data).then(res => {
+					console.log(res);
+					 if (this.curpage == 1) this.list = []
+					 this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+					 
+				}).catch(err => {
+					
+				})
+			},
+			getRecommendList() {
+				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.recommendList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					 this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+				}).catch(err => {
+					
+				})
+			},
+			onReachBottom() {
+				if(this.hasmore) this.hidden = false
+				else{
+					this.hidden = true
+					return;
+				}
+				if (this.active) {
+					this.getRecommendList()
+				} else{
+					this.getAttentionList()
+				}
+				
+			},
+			
+		},
+		components: {
+			uniLoadMore
+		},
+		
 	}
 </script>
 
 <style>
+	.my-concern .concern-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		display: flex;
+		background: #FFFFFF;
+	}
+	.my-concern .concern-header .concern-header-item {
+		position: relative;
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 66upx;
+		font-size: 32upx;
+	}
+	.my-concern .concern-header .concern-header-item.active {
+		color: #F74C44;
+	}
+	.my-concern .concern-header .concern-header-item.active:after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 170upx;
+		right: 170upx;
+		height: 3px;
+		background: #F74C44;
+	}
 	.my-concern .set-space {
 		padding: 0 30upx;
+		margin-top: 86upx;
 		 background: #fff;
 	}
-  .my-concern .concern-list .title {
-	  display: flex;
-	  align-items: center;
-	  padding-left: 30upx;
-	  border-bottom: 1px solid #EEEEEE;
-	  background: #fff;
-	  font-size: 28upx;
-  }
-   .my-concern .concern-list .title .radius {
-	   width: 10upx;
-	   height: 10upx;
-	   margin-right: 8upx;
-	   border-radius: 50%;
-	   background: #F74C44 ;
-   }
   .my-concern .concern-list .concern-item {
 	  display: flex;
 	  justify-content: space-between;

@@ -1,51 +1,118 @@
 <template>
 	<view class="notice">
-		 <view class="type-list">
-			<view class="type-item" >
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-				<view class="text">提问</view>
-				<view class="arrow"></view>
+		<template v-if="role == 1">
+			 <view class="type-list">
+				<view class="type-item" >
+					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
+					<view class="text">问答</view>
+					<view class="arrow"></view>
+				</view>
+					<navigator url="../noticeanswer/noticeanswer" class="type-item" hover-class="none">
+					<image src="../../static/msg-huifu.png" mode="" class="pic"></image>
+					<view class="text">回复</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../noticepraise/noticepraise" class="type-item" hover-class="none">
+					<image src="../../static/msg-zan.png" mode="" class="pic"></image>
+					<view class="text">赞</view>
+					<view class="arrow"></view>
+				</navigator>
 			</view>
-			<navigator url="../noticecomment/noticecomment" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-				<view class="text">评论</view>
-				<view class="arrow"></view>
-			</navigator>
-			<navigator url="../noticepraise/noticepraise" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-				<view class="text">赞</view>
-				<view class="arrow"></view>
-			</navigator>
-		</view>
+		</template>
+		<template v-else>
+			 <view class="type-list">
+				<view class="type-item" >
+					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
+					<view class="text">提问</view>
+					<view class="arrow"></view>
+				</view>
+				<navigator url="../noticecomment/noticecomment" class="type-item" hover-class="none">
+					<image src="../../static/msg-pinglun.png" mode="" class="pic"></image>
+					<view class="text">评论</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../noticepraise/noticepraise" class="type-item" hover-class="none">
+					<image src="../../static/msg-zan.png" mode="" class="pic"></image>
+					<view class="text">赞</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../noticeanswer/noticeanswer" class="type-item" hover-class="none">
+					<image src="../../static/msg-huifu.png" mode="" class="pic"></image>
+					<view class="text">回复</view>
+					<view class="arrow"></view>
+				</navigator>
+			</view>
+		</template>
 		<view class="user-list">
-			<navigator url="../noticedetail/noticedetail" class="user-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+			<navigator :url="'../noticedetail/noticedetail?id='+item.origin_user_id" v-for="(item,index) in list" :key="index" class="user-item" hover-class="none">
+				<image :src="item.avatar" mode="" class="pic"></image>
 				<view class="user-info">
 					<view class="user-text">
-						<view class="user-name">林小雅</view>
+						<view class="user-name">{{item.name}}</view>
 						<view class="time">
-							22:211
+							{{item.createtime}}
 						</view>
 					</view>
 					<view class="user-text">
-						<view class="dynamic">林小雅老师发布了一条新动态</view>
+						<view class="dynamic">{{item.message_title}}</view>
 						<view class="radius">
-							1
+							{{item.num}}
 						</view>
 					</view>
 				</view>
 			</navigator>
+			<view :hidden="hidden">
+				<uni-load-more status="loading"></uni-load-more>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-				
+				role: uni.getStorageSync("role"),
+				token: uni.getStorageSync("token"),
+				hidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				list: []
 			};
-		}
+		},
+		onShow() {
+			this.getMessageList()
+		},
+		methods: {
+			getMessageList() {
+				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.messageList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					 this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+				}).catch(err => {
+					
+				})
+			}
+		},
+		onReachBottom() {
+			if(this.hasmore) this.hidden = false
+			else{
+				this.hidden = true
+				return;
+			}
+			this.getMessageList()
+		},
+		components: {
+			uniLoadMore
+		},
 	}
 </script>
 

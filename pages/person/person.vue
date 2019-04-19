@@ -2,17 +2,17 @@
 	<view class="person">
 		<view class="set-space">
 			<view class="my-info">
-				<navigator url="../personinfo/personinfo" class="pic-con" hover-class="none">
-					<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="pic-con" hover-class="none">
+					<image :src="userInfo.avatar" mode="" class="pic"></image>
 				</navigator>
-				<navigator url="../personinfo/personinfo" class="info-desc" hover-class="none">
-					<view class="nickname">林小雅的专属</view>
+				<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="info-desc" hover-class="none">
+					<view class="nickname">{{userInfo.realname}} <image :src="userInfo.gender == 0 ? '../../static/nan.png' : '../../static/nv.png'" mode="" class="sex"></image></view>
 					<view class="scholl-name">
-						南昌大学
+						{{userInfo.schoolname}}
 					</view>
 				</navigator>
-				<navigator url="../myfans/myfans" class="btn-fans" hover-class="none">
-					粉丝(99+)
+				<navigator url="../myfans/myfans" class="btn-fans" hover-class="none" v-if="userInfo.role_type == 2">
+					粉丝({{userInfo.total_fans_num > 99 ? '99+':userInfo.total_fans_num }})
 				</navigator>
 			</view>
 		</view>
@@ -20,9 +20,9 @@
 			<view class="text">我的关注</view>
 			<view class="follow-area">
 				<view class="follow-list">
-					<navigator url="../persondetail/persondetail" class="follow-item" hover-class="none">
-						<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-						<view class="user-name">我的名字</view>
+					<navigator :url="'../persondetail/persondetail?role='+userInfo.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
+						<image :src="item.avatar" mode="" class="pic"></image>
+						<view class="user-name">{{item.realname}}</view>
 					</navigator>
 				</view>
 				<navigator url="../myconcern/myconcern" class="more" hover-class="none">更多</navigator>
@@ -30,27 +30,27 @@
 		</view>
 		<view class="type-list">
 			<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image src="../../static/jife.png" mode="" class="pic"></image>
 				<view class="text">我的积分</view>
 				<view class="arrow"></view>
 			</navigator>
 			<navigator url="../mypraise/mypraise" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image src="../../static/dianzan.png" mode="" class="pic"></image>
 				<view class="text">我的点赞</view>
 				<view class="arrow"></view>
 			</navigator>
 			<navigator url="../mycomments/mycomments" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image src="../../static/my-pinglun.png" mode="" class="pic"></image>
 				<view class="text">我的评论</view>
 				<view class="arrow"></view>
 			</navigator>
 			<navigator url="../listen/listen" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image src="../../static/shouting.png" mode="" class="pic"></image>
 				<view class="text">最近收听</view>
 				<view class="arrow"></view>
 			</navigator>
 			<navigator url="../setting/setting" class="type-item" hover-class="none">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image src="../../static/shezhi.png" mode="" class="pic"></image>
 				<view class="text">设置</view>
 				<view class="arrow"></view>
 			</navigator>
@@ -63,11 +63,23 @@
 	export default {
 		data() {
 			return {
-				
+				token: uni.getStorageSync("token"),
+				userInfo: {},
+				concernList: []
 			}
 		},
 		onShow() {
-			
+			this.myInfo()
+		},
+		methods: {
+			myInfo() {
+				let data = {}
+				data['token'] = this.token
+				this.api.myInfo(data).then(res => {
+					this.userInfo = res.datas.user
+					this.concernList = res.datas.fans_list
+				})
+			}
 		}
 	}
 </script>
@@ -93,6 +105,8 @@
 		width: 118upx;
 		height: 118upx;
 		margin-right: 31upx;
+		overflow: hidden;
+		border-radius: 50%;
 	}
 
 	.person .my-info .pic {
@@ -106,8 +120,15 @@
 	}
 
 	.person .my-info .info-desc .nickname {
+		display: flex;
+		align-items: center;
 		margin-bottom: 18upx;
 		font-size: 32upx;
+	}
+	.person .my-info .info-desc .nickname .sex {
+		width: 24upx;
+		height: 24upx;
+		margin-left: 9upx;
 	}
 
 	.person .my-info .info-desc .scholl-name {
@@ -133,6 +154,7 @@
 	}
 
 	.person .follow-con .follow-area {
+		margin-top: 17upx;
 		display: flex;
 		align-items: center;
 	}
@@ -145,12 +167,17 @@
 
 	.person .follow-con .follow-item {
 		margin-right: 30upx;
+		text-align: center;
+		
 	}
 
 	.person .follow-con .follow-item .pic {
 		display: block;
 		width: 70upx;
 		height: 70upx;
+		margin: 0 auto;
+		border-radius: 50%;
+		overflow: hidden;
 	}
 
 	.person .follow-con .follow-item .user-name {

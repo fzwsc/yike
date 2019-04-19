@@ -1,23 +1,31 @@
 <template>
 	<view class="play-audio">
 		<!-- 头部播放区 -->
-		<view class="head-box" v-for="item in contList" :key="item.toString()">
-			<view class="name-img">
+		<view class="head-box">
+			<view class="name-img" v-if="area.user_info">
 				<view class="user-box">
-					<image src="../../static/bofang.png" mode=""></image>
+					<image :src="area.user_info.avatar" mode=""></image>
 					<view class="text-info">
-						<text>萧逸风</text>
-						<text>04-02 12:00</text>
+						<text>{{area.user_info.name}}</text>
+						<text>{{area.user_info.attention_num}}人关注</text>
 					</view>
 				</view>
-				<view class="concern-btn">
-					+关注
-				</view>
+				<template v-if="area.attention_status == 1">
+					<view class="concern-btn">
+						+关注
+					</view>
+				</template>
+				<template v-if="area.attention_status == 2">
+					<view class="concern-btn">
+					    已关注
+					</view>
+				</template>
+				
 			</view>
 			<view class="audio-title">
-			   {{item.title}}
+			   {{area.title}}
 			</view>
-			<view class="audio">
+			<view class="audio" v-if="audio.length > 0">
 				<imt-audio
 					:src="audio[now].src"
 					:duration="audio[now].duration"
@@ -53,44 +61,27 @@
 		<!-- 评论区 -->
 		<view class="comment-box">
 			<text class="comment-line">评论区</text>
-			<view class="line">
-				<view class="line-in-box">
-					 <view class="coment-box-in">
-						<view class="user-box comment-box-user">
-							<image src="../../static/bofang.png" mode=""></image>
-							<view class="text-info">
-								<text>萧逸风</text>
-								<text>04-02 12:00</text>
+			<template v-if="area.comment_list.length > 0">
+				<view class="line" v-for="(item,index) in area.comment_list" :key="index">
+					<view class="line-in-box">
+						 <view class="coment-box-in">
+							<view class="user-box comment-box-user">
+								<image :src="item.avatar" mode=""></image>
+								<view class="text-info">
+									<text>{{item.name}}</text>
+									<text>{{item.createtime}}</text>
+								</view>
 							</view>
-						</view>
-						<view class="nei-ron">马克思主义认识论揭示了人类认识的本质和发展的一般规律。</view>
-						<view class="zan-comment">
-							<view><image src="../../static/pinglun.png" mode="" @click="comment()"></image>21</view>
-							<view><image src="../../static/zan.png" mode=""></image>666</view>
-						</view>
-					 </view>
-					
-				</view>
-			</view>
-			<view class="line">
-				<view class="line-in-box">
-					 <view class="coment-box-in">
-						<view class="user-box comment-box-user">
-							<image src="../../static/bofang.png" mode=""></image>
-							<view class="text-info">
-								<text>萧逸风</text>
-								<text>04-02 12:00</text>
+							<view class="nei-ron">{{item.content}}</view>
+							<view class="zan-comment">
+								<view><image src="../../static/pinglun.png" mode="" @click="comment()"></image>{{item.reply_num}}</view>
+								<view><image src="../../static/zan.png" mode=""></image>{{item.like_num}}</view>
 							</view>
-						</view>
-						<view class="nei-ron">马克思主义认识论揭示了人类认识的本质和发展的一般规律。</view>
-						<view class="zan-comment">
-							<view><image src="../../static/pinglun.png" mode="" @click="comment()"></image>21</view>
-							<view><image src="../../static/zan.png" mode=""></image>666</view>
-						</view>
-					 </view>
-					
+						 </view>
+						
+					</view>
 				</view>
-			</view>
+			</template>
 		</view>
 		<!-- 底部 -->
 		<view class="button-cont">
@@ -99,13 +90,13 @@
 					<image src="../../static/tiwen.png" mode=""></image>
 					提问
 				</view>
-				<navigator url="../commentdetail/commentdetail" class="box-ico" hover-class="none">
+				<navigator :url="'../commentdetail/commentdetail?radioId='+area.id" class="box-ico" hover-class="none">
 					<image src="../../static/pinglun.png" mode="" />
-					22
+					{{area.comment_num}}
 				</navigator>
 				<view class="box-ico box-ico2">
 					<image src="../../static/zan.png" mode="" />
-					33
+					{{area.like_num}}
 				</view>
 			</view>
 		</view>
@@ -119,32 +110,9 @@ export default {
 		return {
 			audioContext: null,
 			isFinish: false,
-			contList:{},
-			pLconList:[],
-			audio: [
-				
-				{
-					src: 'http://mouyizhan.com/1.mp3',
-					duration: 212
-				}
-// 				{
-// 					src: 'http://mouyizhan.com/3.mp3',
-// 					duration: 214
-// 				},
-// 				{
-// 					src: 'http://mouyizhan.com/4.mp3',
-// 					duration: 205
-// 				},
-// 				{
-// 					src: 'http://mouyizhan.com/5.mp3',
-// 		
-// 					duration: 228
-// 				}，
-// 				{
-// 					src: 'http://mouyizhan.com/2.mp3',
-// 					duration: 189
-// 				}
-			],
+			audio: [],
+			area: {},
+			token: uni.getStorageSync('token'),
 			now: 0,
 			radioItems: [
 				{
@@ -169,16 +137,8 @@ export default {
 			],
 		};
 	},
-	onLoad:function(option){
-		console.log(option)
-		this.yapi.getYunDetils({"radio_id":option.id}).then(res=>{
-			this.contList = res.datas
-			this.pLconList = res.datas.comment_list
-			
-		}).catch(err=>{
-			
-		})
-		
+	onLoad:function(){
+		this.getAudioResource()
 	},
 	onReachBottom() {
 		this.hidden = false;
@@ -190,7 +150,7 @@ export default {
 	methods: {
 		comment(){
 			uni.navigateTo({
-				url:"../comment-rely/comment-rely"
+				url:"../commentrely/commentrely"
 			})
 		},
 		againEdit() {
@@ -224,6 +184,19 @@ export default {
 		// 获取音频已播完整首
 		finish(end) {
 			this.isFinish = true;
+		},
+		getAudioResource() {
+			let data = {};
+			data['token'] = this.token
+			this.api.playArea(data).then(res => {
+				this.area = res.datas
+				let audioJson = {
+					// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
+					src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
+					duration: res.datas.duration
+				}
+				this.audio.push(audioJson)
+			})
 		}
 	},
 	onHide() {
@@ -241,7 +214,7 @@ export default {
 
 <style>
 	view{
-		line-height: 1.5;
+		line-height: 1.6;
 	}
 page {
 	height: 100%;
