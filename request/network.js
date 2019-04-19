@@ -1,7 +1,4 @@
-// var API_URL = 'https://kjw.wx.fzwsc.com';
 import {API_URL} from './base'
-// var API_URL = 'https://m.wx.fjtogo.com';
-console.log(uni);
 function requestGet(url,data) {
   return new Promise((resolve, reject) => {
     uni.request({
@@ -12,14 +9,15 @@ function requestGet(url,data) {
         'content-type': 'application/x-www-form-urlencoded',
       },
       success: function(res){
-        if (res.data.code == 200) {
+         if (res.data.code == 200) {
           resolve(res.data);
-        }else{
-          // reject(res.data)
-					 uni.showToast({
-							title: res.data.msg,
-							icon: 'none'
-					});
+        }else if(res.data.code == -1){
+        	uni.showToast({
+        			title: res.data.msg,
+        			icon: 'none'
+        	});
+        }else {
+        	reject(res)
         }
         
       },
@@ -42,9 +40,14 @@ function requestPost(url,data) {
         //注意：可以对参数解密等处理
         if (res.data.code == 200) {
           resolve(res.data);
-        }else{
-          reject(res.data)
-        }
+        }else if(res.data.code == -1){
+					uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+					});
+        }else {
+					reject(res)
+				}
       },
       fail: function(err) {
          reject(err);

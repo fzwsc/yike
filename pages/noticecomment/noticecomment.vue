@@ -1,68 +1,81 @@
 <template>
 	<view class="notice-comment">
-		<view class="comments-item">
+		<view class="comments-item" v-for="(item,index) in list" :key="index">
 			<view class="user-info">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+				<image :src="item.avatar" mode="" class="pic"></image>
 				<view class="">
-					<view class="user-name">林小雅</view>
+					<view class="user-name">{{item.name}}</view>
 					<view class="content">
-						中共十九大重要通知
+						{{item.title}}
 					</view>
 				</view>
 			</view>
 			<view class="user-state">
 				<view class="play-num">
 					<image src="../../static/bf.png" mode="" class="pic"></image>
-					<view class="text">2954次</view>
+					<view class="text">{{item.read_num}}次</view>
 				</view>
 				<view class="timer">
 					<image src="../../static/shijian.png" mode="" class="pic"></image>
-					<view class="text">4'20'</view>
+					<view class="text">{{item.duration}}</view>
 				</view>
 				<view class="time">
-					04-02 12:00
+					{{item.createtime}}
 				</view>
 			</view>
-			<view class="notice">
-				@林小雅的专属<image src="../../static/pinglunle.png" mode="" class="pic"></image>了你：收到
+			<view class="notice" v-if="item.comment_info">
+				@{{item.comment_info.name}}<image src="../../static/pinglunle.png" mode="" class="pic"></image>了你：{{item.comment_info.content}}
 			</view>
 		</view>
-		<view class="comments-item">
-			<view class="user-info">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-				<view class="">
-					<view class="user-name">林小雅</view>
-					<view class="content">
-						中共十九大重要通知
-					</view>
-				</view>
-			</view>
-			<view class="user-state">
-				<view class="play-num">
-					<image src="../../static/bf.png" mode="" class="pic"></image>
-					<view class="text">2954次</view>
-				</view>
-				<view class="timer">
-					<image src="../../static/shijian.png" mode="" class="pic"></image>
-					<view class="text">4'20'</view>
-				</view>
-				<view class="time">
-					04-02 12:00
-				</view>
-			</view>
-			<view class="notice">
-				@林小雅的专属<image src="../../static/pinglunle.png" mode="" class="pic"></image>了你：收到
-			</view>
+		  <view :hidden="hidden">
+			<uni-load-more status="loading"></uni-load-more>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-
+	           list: [],
+	           hidden: true,
+	           hasmore: true,
+	           curpage: 1,
+	           pagesize: 10,
+	           token: uni.getStorageSync("token")
 			};
+		},
+		onLoad() {
+			this.getRecedList()
+		},
+		methods: {
+			getRecedList() {
+				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.recedList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					  this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+				}).catch(err => {
+					
+				})
+			}
+		},
+		onReachBottom() {
+			if(this.hasmore) this.hidden = false
+			else{
+				this.hidden = true
+				return;
+			}
+			this.getRecedList()
+		},
+		components: {
+			uniLoadMore
 		}
 	}
 </script>

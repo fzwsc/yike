@@ -1,45 +1,27 @@
 <template>
 	<view class="my-fans">
-	  <view class="fans-item">
-	  	<navigator url="../persondetail/persondetail" class="fans-t" hover-class="none">
+	  <view class="fans-item" v-for="item in list" :key="item.id">
+	  	<navigator :url="'../persondetail/persondetail?id='+item.id" class="fans-t" hover-class="none">
 	  		<view class="info-area">
-	  			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+	  			<image :src="item.avatar" mode="" class="pic"></image>
 	  			<view class="user-info">
-	  					<view class="user-name">林小雅</view>
+	  					<view class="user-name">{{item.realname}}</view>
 	  					<view class="user-ide">
-	  						学生
+	  						{{item.role_type == 1 ? '学生': '老师'}}
 	  					</view>
 	  				</view>
 	  		</view>
-	  			<!-- <view class="already-fans red">已关注</view> -->
+			<template v-if="item.role_type == 2">
+			  	 <view class="already-fans" v-if="item.status == 1">已关注</view>
+	          	<view class="already-fans red" v-else>+关注</view>
+			</template>
 	  		
 	  	</navigator>
 	  	<view class="fans-b">
 	  		<view class="faculty">
-	  			院系： 马格思主义院系
+	  			院系： {{item.collegename}}
 	  		</view>
-	  		<view class="course">教授课程：毛概</view>
-	  	</view>
-	  </view>
-	  <view class="fans-item">
-	  	<navigator url="../persondetail/persondetail" class="fans-t" hover-class="none">
-	  		<view class="info-area">
-	  			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-	  			<view class="user-info">
-					<view class="user-name">林小雅</view>
-					<view class="user-ide">
-						学生
-					</view>
-				</view>
-	  		</view>
-			<view class="already-fans red">已关注</view>
-	  		
-	  	</navigator>
-	  	<view class="fans-b">
-	  		<view class="faculty">
-	  			院系： 马格思主义院系
-	  		</view>
-	  		<view class="course">教授课程：毛概</view>
+	  		<!-- <view class="course">教授课程：毛概</view> -->
 	  	</view>
 	  </view>
 	  <view :hidden="hidden">
@@ -54,7 +36,11 @@
 		data() {
 			return {
 				list: [],
-				hidden: true
+				hidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				token: uni.getStorageSync("token")
 			};
 		},
 		onLoad() {
@@ -63,15 +49,28 @@
 		methods: {
 			fansList() {
 				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
 				this.api.myfans(data).then(res => {
-		             this.list = res.datas
+					 if (this.curpage == 1) this.list = []
+					  this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
 				}).catch(err => {
 					
 				})
 			}
+			
 		},
 		onReachBottom() {
-			
+			if(this.hasmore) this.hidden = false
+			else{
+				this.hidden = true
+				return;
+			}
+			this.fansList()
 		},
 		components: {
 			uniLoadMore

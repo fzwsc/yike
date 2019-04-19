@@ -1,16 +1,17 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	   
+	         {
+	        "path" : "pages/login/login",
+	          "style" : {"navigationBarTitleText": "登录"}
+	    },
 		{
 		    "path" : "pages/broadcast/broadcast",
 		    "style" : {
 				"navigationBarTitleText": "云广播"
 			}
 		},
-		  {
-		    "path" : "pages/login/login",
-		      "style" : {"navigationBarTitleText": "登录"}
-		},
+	 
+		 
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -144,6 +145,10 @@
         ,{
             "path" : "pages/resetmm/resetmm",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/noticeanswer/noticeanswer",
+            "style" : {"navigationBarTitleText": "回复"}
         }
     ],
 	"globalStyle": {

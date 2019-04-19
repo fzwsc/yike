@@ -9,18 +9,18 @@
 			</view>
 			<view class="gong-hao">
 				<view>工号</view>
-				<input type="text" value="" placeholder="请输入工号" />
+				<input type="number" v-model="usn"  placeholder="请输入工号" />
 			</view>
 			<view class="gong-hao">
 				<view>密码</view>
 				<view class="password">
-					<input type="text" value="" placeholder="请输入密码" />
-					<text class="rz-mm" @click="rzMm">重置密码</text>
+					<input type="text" v-model="psw" placeholder="请输入密码" />
+					<!-- <text class="rz-mm" @click="rzMm">重置密码</text> -->
 				</view>
 			</view>
-			<view class="bt-login" @click="loginM">
+			<button class="bt-login" open-type="getUserInfo" @getuserinfo="userinfo">
 				登 录
-			</view>
+			</button>
 		</view>
 	</view>
 </template>
@@ -29,8 +29,18 @@
 export default {
 	data() {
 		return {
-			
+			code: '',
+			usn: '',
+			psw: ''
 		};
+	},
+	onLoad() {
+		uni.login({
+		  provider: 'weixin',
+		  success: res => {
+			this.code = res.code
+		  }
+		});
 	},
 	methods:{
 		rzMm(){
@@ -38,11 +48,37 @@ export default {
 				url:'../resetmm/resetmm'
 			})
 		},
-		loginM(){
-			uni.navigateTo({
-				url:'../bindWeixin/bindWeixin'
-			})
-			
+		userinfo(e) {
+// 			if (this.usn && this.psw) {
+// 				let data = {};
+// 				data['account'] = this.usn
+// 				data['password'] = this.psw
+// 				data['code'] = this.code;
+// 				data["rawData"] = e.detail.rawData;
+// 				data["signature"] = e.detail.signature;
+// 				data["encryptedData"] = e.detail.encryptedData;
+// 				data["iv"] = e.detail.iv;
+// 				this.api.Login(data).then(res => {
+// 					uni.setStorageSync("token",res.datas.token)
+// 					uni.setStorageSync("userId",res.datas.user_id)
+//                  uni.setStorageSync("role",res.datas.role_type)
+// 					uni.switchTab({
+// 						url: '../broadcast/broadcast',
+// 					});
+// 					
+// 				})
+// 			}else {
+// 				uni.showToast({
+// 					title: '工号或密码不能为空',
+// 					icon: 'none'
+// 				})
+// 			}
+				uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
+				uni.setStorageSync("role",1)
+				uni.setStorageSync("userId",'7')
+			uni.switchTab({
+				url: '../broadcast/broadcast',
+			});
 		}
 	}
 };

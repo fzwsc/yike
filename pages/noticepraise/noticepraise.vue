@@ -1,53 +1,96 @@
 <template>
 	<view class="notice-praise">
-		<view class="notice-praise-item">
-			<view class="notice-header">
-				<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+		<view class="notice-praise-item" v-for="(item,index) in list" :key="index">
+			<view class="notice-header" v-if="item.user_info">
+				<image :src="item.user_info.avatar" mode="" class="pic"></image>
 				<view class="user-info">
-					<view class="user-name">林小雅</view>
-					<view class="time">04-02 16>:00</view>
+					<view class="user-name">{{item.user_info.name}}</view>
+					<view class="time">{{item.user_info.createtime}}</view>
 				</view>
 			</view>
 			<view class="notice-rely">
 				<image src="../../static/dianzanle.png" mode="" class="pic"></image>了这条评论
 			</view>
 			<view class="notice-con">
-				<view class="comments-item">
+				<view class="comments-item" v-if="item.radio_info">
+					<view class="commnet-rely" v-if="item.comment">
+						@{{item.comment.username}}：{{item.comment.content}}
+					</view>
 					<view class="user-info">
-						<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+						<image :src="item.radio_info.avatar" mode="" class="pic"></image>
 						<view class="">
-							<view class="user-name">林小雅</view>
+							<view class="user-name">{{item.radio_info.name}}</view>
 							<view class="content">
-								中共十九大重要通知
+								{{item.radio_info.title}}
 							</view>
 						</view>
 					</view>
-					<view class="user-state">
+					<view class="user-state" >
 						<view class="play-num">
 							<image src="../../static/bf.png" mode="" class="pic"></image>
-							<view class="text">2954次</view>
+							<view class="text">{{item.radio_info.read_num}}次</view>
 						</view>
 						<view class="timer">
 							<image src="../../static/shijian.png" mode="" class="pic"></image>
-							<view class="text">4'20'</view>
+							<view class="text">{{item.radio_info.duration}}</view>
 						</view>
 						<view class="time">
-							04-02 12:00
+							{{item.radio_info.createtime}}
 						</view>
 					</view>
 
 				</view>
 			</view>
 		</view>
+		  <view :hidden="hidden">
+			<uni-load-more status="loading"></uni-load-more>
+		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-
+	           list: [],
+	           hidden: true,
+	           hasmore: true,
+	           curpage: 1,
+	           pagesize: 10,
+	           token: uni.getStorageSync("token")
 			};
+		},
+		onLoad() {
+			this.getBelikeList()
+		},
+		methods: {
+			getBelikeList() {
+				let data = {};
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.belikeList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					  this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+				}).catch(err => {
+					
+				})
+			}
+		},
+		onReachBottom() {
+			if(this.hasmore) this.hidden = false
+			else{
+				this.hidden = true
+				return;
+			}
+			this.getBelikeList()
+		},
+		components: {
+			uniLoadMore
 		}
 	}
 </script>
@@ -122,7 +165,6 @@
 		margin-top: 10upx;
 		font-size: 30upx;
 	}
-
 	.notice-praise .comments-item .user-state {
 		display: flex;
 		margin-top: 30upx;
@@ -156,5 +198,8 @@
 		width: 28upx;
 		height: 28upx;
 		margin-right: 10upx;
+	}
+	  .notice-praise .commnet-rely {
+		margin-bottom: 10upx;
 	}
 </style>

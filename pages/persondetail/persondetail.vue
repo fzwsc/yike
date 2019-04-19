@@ -1,17 +1,33 @@
 <template>
 	<view class="person-detail">
-		<view class="detail-header">
-			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
-			<view class="flex">
-				<view class="info">
-					<view class="name">林小雅</view>
-					<view class="concern">454人关注</view>
-				</view>
-				<view class="already-concern">
-					+关注
+		<template v-if="isTeacher">
+			<view class="detail-header">
+				<image :src="teacher.avatar" mode="" class="pic"></image>
+				<view class="flex">
+					<view class="info">
+						<view class="name">{{teacher.realname}}</view>
+						<view class="concern">{{teacher.total_fans_num}}人关注</view>
+					</view>
+					<view class="already-concern">
+						+关注
+					</view>
 				</view>
 			</view>
-		</view>
+		</template>
+		<template v-else>
+			<view class="detail-header">
+				<image :src="student.avatar" mode="" class="pic"></image>
+				<view class="flex">
+					<view class="info">
+						<view class="name">{{student.realname}}</view>
+						<view class="concern">{{student.total_fans_num}}人关注</view>
+					</view>
+					<view class="already-concern">
+						+关注
+					</view>
+				</view>
+			</view>
+		</template>
 		<view class="detail-container">
 			<template v-if="isTeacher">
 				<view class="tab-list">
@@ -26,34 +42,37 @@
 					<template v-if="!active">
 						<view class="scholl-list">
 							<view class="scholl-item">
-								学校：南昌大学
+								学校：{{teacher.schoolname}}
 							</view>
 							<view class="scholl-item">
-								学院：马克思主义学院
+								学院：{{teacher.collegename}}
 							</view>
 							<view class="scholl-item">
-								部门：行政部
+								部门：{{teacher.department}}
 							</view>
 						</view>
 					</template>
 					<template v-else>
 						<scroll-view scroll-y class="scroll-view" @scrolltolower="lower">
 							<view class="teacher-list">
-								<view class="teacher-item" v-for="item in 30" :key="item">
-									<view class="title">中共十九大重要通知</view>
+								<view class="teacher-item" v-for="(item,index) in teacherList" :key="index">
+									<view class="title">{{item.title}}</view>
 									<view class="user-state">
 										<view class="play-num">
 											<image src="../../static/bf.png" mode="" class="pic"></image>
-											<view class="text">2954次</view>
+											<view class="text">{{item.title}}次</view>
 										</view>
 										<view class="timer">
 											<image src="../../static/shijian.png" mode="" class="pic"></image>
-											<view class="text">4'20'</view>
+											<view class="text">{{item.duration}}</view>
 										</view>
 										<view class="time">
-											04-02 12:00
+											{{item.createtime}}
 										</view>
 									</view>
+								</view>
+								<view :hidden="hidden">
+									<uni-load-more status="loading"></uni-load-more>
 								</view>
 							</view>
 						</scroll-view>
@@ -63,22 +82,22 @@
 			<template v-else>
 				<view class="scholl-list">
 					<view class="scholl-item">
-						学校：南昌大学
+						学校：{{student.schoolname}}
 					</view>
 					<view class="scholl-item">
-						学院：马克思主义学院
+						学院：{{student.college}}
 					</view>
 					<view class="scholl-item">
-						院系：西政吸
+						院系：{{student.collegename}}
 					</view>
 					<view class="scholl-item">
-						专业：软件学校
+						专业：{{student.profession}}
 					</view>
 					<view class="scholl-item">
-						年级：2017级
+						年级：{{student.enteryear}}
 					</view>
 					<view class="scholl-item">
-						班级：一班
+						班级：{{student.classname}}
 					</view>
 				</view>
 			</template>
@@ -87,21 +106,84 @@
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
 				isTeacher: true,
-				active: 0
+				active: 0,
+				userId: '',
+				student: {},
+				teacher: {},
+				teacherList: [],
+				hidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				user_id: '',
+				token: uni.getStorageSync('token')
 			};
+		},
+		onLoad(option) {
+			console.log(option);
+			let role = option.role - 0;
+			this.user_id = option.userId
+			if (role == 1){
+			  this.isTeacher = false
+			  this.studentInfo()
+			}else{
+				this.isTeacher = true
+				this.teacherInfo()
+			}
 		},
 		methods: {
 			tab(type) {
 				this.active = type
+				this.curpage = 1
 			},
 			lower(e) {
-				console.log(e);
+				if(this.hasmore) this.hidden = false
+				else{
+					this.hidden = true
+					return;
+				}
+				this.getTeacherDynamic()
+			},
+			studentInfo() {
+				let data = {};
+				data['user_id'] = this.user_id
+				data['token'] = this.token
+				this.api.studentDetail(data).then(res => {
+					this.student = res.datas;
+				})
+			},
+			teacherInfo() { 
+				let data = {};
+				data['user_id'] = this.user_id
+				data['token'] = this.token
+				this.api.teacherDetail(data).then(res => {
+					this.teacher = res.datas;
+				})
+				
+			},
+			getTeacherDynamic() {
+				let data = {};
+				data['token'] = this.token
+				data['user_id'] = this.user_id;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.api.teacherDynamic(data).then(res => {
+					if (this.curpage == 1) this.teacherList = []
+					this.teacherList = [...this.teacherList,...res.datas.data]
+					this.hasmore = res.datas.has_more
+					this.curpage++
+				})
+				
 			}
-		}
+		},
+		components: {
+			uniLoadMore
+		},
 	}
 </script>
 

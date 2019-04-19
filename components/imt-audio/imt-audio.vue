@@ -33,7 +33,10 @@
 		},
 		props: {
 			src: String, //音频链接
-			autoplay: Boolean, //是否自动播放
+			autoplay: {
+				type:Boolean,
+				default:false
+			}, //是否自动播放
 			duration: Number, //总时长（单位：s）
 			control: {
 				type:Boolean,
@@ -81,10 +84,10 @@
 			// 正在拖动事件
 			changing(e) {
 				
-// 				if(this.current < e.detail.value) {
-// 					this.flag = false;
-// 					return;
-// 				}
+				if(this.current < e.detail.value) {
+					this.flag = false;
+					return;
+				}
 				this.flag = true;
 				this.seek = true
 				this.current= e.detail.value
