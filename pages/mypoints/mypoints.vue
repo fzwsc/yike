@@ -23,6 +23,10 @@
 					</view>
 				</view>
 			</view>
+			<view class="empty-data" v-if="list.length <= 0">
+				<image src="../../static/noData.png" mode="" class="pic"></image>
+				<view class="text">暂无数据~</view>
+			</view>
 			<view :hidden="hidden">
 				<uni-load-more status="loading"></uni-load-more>
 			</view>

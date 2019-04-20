@@ -8,8 +8,11 @@
 						<view class="name">{{teacher.realname}}</view>
 						<view class="concern">{{teacher.total_fans_num}}人关注</view>
 					</view>
-					<view class="already-concern">
-						+关注
+					<view class="already-concern" v-if="teacher.attention_status == 1" @click="dealConcern(teacher)">
+						 已关注
+					</view>
+					<view class="already-concern" v-else @click="dealConcern(teacher)">
+						 +关注
 					</view>
 				</view>
 			</view>
@@ -22,8 +25,11 @@
 						<view class="name">{{student.realname}}</view>
 						<view class="concern">{{student.total_fans_num}}人关注</view>
 					</view>
-					<view class="already-concern">
-						+关注
+					<view class="already-concern" v-if="student.attention_status == 1" @click="dealConcern(student)">
+						 已关注
+					</view>
+					<view class="already-concern" v-else @click="dealConcern(student)">
+						 +关注
 					</view>
 				</view>
 			</view>
@@ -179,6 +185,18 @@
 					this.curpage++
 				})
 				
+			},
+			dealConcern(role) {
+				let data = {},status
+				data['token'] = this.token
+				data['user_id'] = role.id
+				if (role.attention_status == 1) status = 2
+				else status = 1
+				data['attention_status'] = status
+				this.api.addAttention(data).then(res => {
+					if (role.attention_status == 1) role.attention_status = 2
+					else role.attention_status = 1
+				})
 			}
 		},
 		components: {

@@ -27,6 +27,10 @@
 				你<image src="../../static/pinglunle.png" mode="" class="pic"></image>了@{{item.comment_info.name}}：{{item.comment_info.content}}
 			</view>
 		</view>
+		<view class="empty-data" v-if="list.length <= 0">
+			<image src="../../static/noData.png" mode="" class="pic"></image>
+			<view class="text">暂无数据~</view>
+		</view>
 		<view :hidden="hidden">
 			<uni-load-more status="loading"></uni-load-more>
 		</view>
@@ -56,7 +60,7 @@
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.addReplyComment(data).then(res => {
+				this.api.myRecedList(data).then(res => {
 					 if (this.curpage == 1) this.list = []
 					  this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more

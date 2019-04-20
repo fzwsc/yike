@@ -69,34 +69,42 @@ export default {
 			})
 		},
 		userinfo(e) {
-// 			if (this.usn && this.psw) {
-// 				let data = {};
-//                 data['schoolId'] = this.selectSchool.id
-// 				data['account'] = this.usn
-// 				data['password'] = this.psw
-// 				data['code'] = this.code;
-// 				data["rawData"] = e.detail.rawData;
-// 				data["signature"] = e.detail.signature;
-// 				data["encryptedData"] = e.detail.encryptedData;
-// 				data["iv"] = e.detail.iv;
-// 				this.api.Login(data).then(res => {
-// 					uni.setStorageSync("token",res.datas.token)
-// 					uni.setStorageSync("userId",res.datas.user_id)
-//                  uni.setStorageSync("role",res.datas.role_type)
-// 					uni.switchTab({
-// 						url: '../broadcast/broadcast',
-// 					});
-// 					
-// 				})
+// 			if(this.selectSchool.id) {
+// 				if (this.usn && this.psw ) {
+// 					let data = {};
+// 				 data['schoolId'] = this.selectSchool.id
+// 					data['account'] = this.usn
+// 					data['password'] = this.psw
+// 					data['code'] = this.code;
+// 					data["rawData"] = e.detail.rawData;
+// 					data["signature"] = e.detail.signature;
+// 					data["encryptedData"] = e.detail.encryptedData;
+// 					data["iv"] = e.detail.iv;
+// 					this.api.Login(data).then(res => {
+// 						uni.setStorageSync("token",res.datas.token)
+// 						uni.setStorageSync("userId",res.datas.user_id)
+// 					 uni.setStorageSync("role",res.datas.role_type)
+// 						uni.switchTab({
+// 							url: '../broadcast/broadcast',
+// 						});
+// 						
+// 					})
+// 				}else {
+// 					uni.showToast({
+// 						title: '工号或密码不能为空',
+// 						icon: 'none'
+// 					})
+// 				}
 // 			}else {
-// 				uni.showToast({
-// 					title: '工号或密码不能为空',
-// 					icon: 'none'
-// 				})
+// 				    uni.showToast({
+// 						title: '学校必须选择',
+// 						icon: 'none'
+// 					})
 // 			}
-				uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
-				uni.setStorageSync("role",1)
-				uni.setStorageSync("userId",'7')
+
+			uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
+			uni.setStorageSync("role",1)
+			uni.setStorageSync("userId",'7')
 			uni.switchTab({
 				url: '../broadcast/broadcast',
 			});

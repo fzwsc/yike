@@ -49,11 +49,16 @@
 				<view class="text">最近收听</view>
 				<view class="arrow"></view>
 			</navigator>
-			<navigator url="../setting/setting" class="type-item" hover-class="none">
+			<view class="type-item">
 				<image src="../../static/shezhi.png" mode="" class="pic"></image>
 				<view class="text">设置</view>
 				<view class="arrow"></view>
-			</navigator>
+			</view>
+			<!-- <navigator url="../setting/setting" class="type-item" hover-class="none">
+				<image src="../../static/shezhi.png" mode="" class="pic"></image>
+				<view class="text">设置</view>
+				<view class="arrow"></view>
+			</navigator> -->
 		</view>
 
 	</view>

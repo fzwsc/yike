@@ -22,9 +22,14 @@
 						<!-- <view class="course">教授课程：毛概</view> -->
 					</view>
 				</view>
+				
 				  <view :hidden="hidden">
 					<uni-load-more status="loading"></uni-load-more>
 				</view>
+			</view>
+			<view class="empty-data" v-if="list.length <= 0">
+				<image src="../../static/noData.png" mode="" class="pic"></image>
+				<view class="text">暂无数据~</view>
 			</view>
 		</view>
 	</view>
@@ -65,7 +70,6 @@
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
 				this.api.attentionList(data).then(res => {
-					console.log(res);
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -106,17 +110,14 @@
 			dealConcern(item,index) {
 				let data = {},status
 				data['token'] = this.token
-				data['user_id'] = item.be_user_id
+				if (!this.active) data['user_id'] = item.be_user_id
+				else data['user_id'] = item.user_id
 				if (item.status == 1) status = 2
 				else status = 1
 				data['attention_status'] = status
-				// this.$set(this.list,index,item)
-				// console.log(this.list);
 				this.api.addAttention(data).then(res => {
 					if (item.status == 1) item.status = 2
 					else item.status = 1
-// 					this.$set(this.list,index,item)
-// 					console.log(this.list);
 				})
 			}
 			

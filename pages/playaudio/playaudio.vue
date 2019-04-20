@@ -11,13 +11,13 @@
 					</view>
 				</view>
 				<template v-if="area.attention_status == 1">
-					<view class="concern-btn">
-						+关注
+					<view class="concern-btn"  @click="dealConcern(area.user_id,area.user_info.attention_status)">
+						已关注
 					</view>
 				</template>
-				<template v-if="area.attention_status == 2">
-					<view class="concern-btn">
-						已关注
+				<template v-else>
+					<view class="concern-btn" @click="dealConcern(area.user_id,area.user_info.attention_status)">
+						未关注
 					</view>
 				</template>
 
@@ -153,8 +153,8 @@
 						// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
 // 						src: res.datas.radio,
 // 						duration: res.datas.duration
-                         src: 'http://mouyizhan.com/1.mp3',
-					duration: 212
+                        src: 'http://mouyizhan.com/1.mp3',
+					    duration: 212
 					}
 				
 					this.audio.push(audioJson)
@@ -166,7 +166,7 @@
 			reply(item,index) {
 				if (!this.isFinish) {
 					uni.showToast({
-						title:'听完才能回答问题',
+						title:'录音听完才可以答题',
 						icon: 'none'
 					})
 					return;
@@ -218,6 +218,18 @@
 				this.api.likeygb(data).then(res => {
 			          this.area.like_num = this.area.like_num + 1
 					  this.area.like_status = 1
+				})
+			},
+		   dealConcern(id,sta) {
+				let data = {},status
+				data['token'] = this.token
+				data['user_id'] = id
+				if (sta == 1) status = 2
+				else status = 1
+				data['attention_status'] = status
+				this.api.addAttention(data).then(res => {
+					if (this.area.user_info.attention_status == 1) this.area.user_info.attention_status = 2
+					else this.area.user_info.attention_status = 1
 				})
 			}
 		},
@@ -470,7 +482,7 @@
 
 	.control-box .box-ico {
 		color: #666666;
-		font-size: 23upx;
+		font-size: 24upx;
 		text-align: center;
 		display: flex;
 		justify-content: center;

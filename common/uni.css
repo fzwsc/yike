@@ -6,6 +6,19 @@
 }
 
 /*通用 */
+.empty-data {
+	text-align: center;
+}
+.empty-data .pic {
+	display: block;
+	width: 223upx;
+	height: 188upx;
+	margin: 386upx auto 50upx;
+}
+.empty-data .text {
+	color: #999999;
+	font-size: 28upx;
+}
 view{
 	font-size:28upx; 
 	line-height:1.8;

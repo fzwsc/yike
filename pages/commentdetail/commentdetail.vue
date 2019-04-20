@@ -11,11 +11,11 @@
 						</view>
 					</view>
 				</view>
-				<template v-if="detail.user_info.attention_status == 1">
-					<view class="already-concern">+关注</view>
+				<template v-if="detail.user_info.attention_status == 1" >
+					<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">已关注</view>
 				</template>
-				<template v-if="detail.user_info.attention_status == 2">
-					<view class="already-concern">已关注</view>
+				<template v-else>
+					<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">+关注</view>
 				</template>
 				
 			</view>
@@ -186,6 +186,19 @@
 		 		  this.$set(this.detail.comment_list,index,item)
 		 	})
 		 },
+		 dealConcern(id,sta) {
+		 	let data = {},status
+		 	data['token'] = this.token
+		 	data['user_id'] = id
+			console.log(sta);
+		 	if (sta == 1) status = 2
+		 	else status = 1
+		 	data['attention_status'] = status
+		 	this.api.addAttention(data).then(res => {
+		 		if (this.detail.user_info.attention_status == 1) this.detail.user_info.attention_status = 2
+		 		else this.detail.user_info.attention_status = 1
+		 	})
+		 }
 		},
 		components: {
 			uniLoadMore
