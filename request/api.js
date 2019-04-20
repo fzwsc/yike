@@ -4,6 +4,10 @@ export default{
     Login(data) {
         return network.post("/ygb/user/login",data)
     },
+	// 学校列表
+	schoolList(data) {
+		return network.get('/ygb/user/school_list',data)
+	},
 	// 获取消息点赞列表
 	belikeList(data) {
 		return network.post('/ygb/like/belike_list',data)
@@ -16,22 +20,51 @@ export default{
 	answerList(data) {
 		return network.post('/ygb/comment/get_answered_list',data)
 	},
-	//
-	ygbComment(data) {
-		
+	// 点赞云广播
+	likeygb(data) {
+		 return network.post('/ygb/like/add_ygb_like',data)
+	},
+	// 点赞评论
+	likeComment(data) {
+		 return network.post('/ygb/like/add_comment_like',data)
+	},
+	// 关注/取消关注
+	addAttention(data) {
+	   return network.post('/ygb/user/attention',data)
+	},
+	// 答题
+	answerSubject(data) {
+		return network.post('/ygb/topic/answer_subject',data)
+	},
+	// 消息已读
+	updateMsgStatus(data) {
+		return network.get('/ygb/message/update_msg_status',data)
 	},
 	// 评论列表
 	commentList(data) {
 		return network.get('/ygb/topic/comment_list',data)
+	},
+	// 评论云广播
+	addYgbComment(data) {
+		return network.post('/ygb/comment/add_ygb_comment',data)
+	},
+	// 回复评论
+	addReplyComment(data) {
+		return network.post('/ygb/comment/add_reply_comment',data)
 	},
 	// 回复列表
 	replyList(data) {
 	  return network.get('/ygb/topic/reply_list',data) 	
 	},
 	// 消息列表
-	messageList(data) {
+	userMessageList(data) {
 		return network.post('/ygb/message/get_user_message_list',data)
 	},
+	// 消息内容列表
+	messageList(data) {
+		return network.post('/ygb/message/get_message_list',data)
+	},
+	
 	// 播放区
 	playArea(data) {
 		return network.get('/ygb/index/play_area',data)

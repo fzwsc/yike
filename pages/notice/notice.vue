@@ -44,7 +44,7 @@
 			</view>
 		</template>
 		<view class="user-list">
-			<navigator :url="'../noticedetail/noticedetail?id='+item.origin_user_id" v-for="(item,index) in list" :key="index" class="user-item" hover-class="none">
+			<view v-for="(item,index) in list" :key="index" class="user-item" @click="msg(item.origin_user_id,item.name)">
 				<image :src="item.avatar" mode="" class="pic"></image>
 				<view class="user-info">
 					<view class="user-text">
@@ -55,12 +55,12 @@
 					</view>
 					<view class="user-text">
 						<view class="dynamic">{{item.message_title}}</view>
-						<view class="radius">
+						<view class="radius" v-if="item.num">
 							{{item.num}}
 						</view>
 					</view>
 				</view>
-			</navigator>
+			</view>
 			<view :hidden="hidden">
 				<uni-load-more status="loading"></uni-load-more>
 			</view>
@@ -86,13 +86,24 @@
 			this.getMessageList()
 		},
 		methods: {
+			msg(id,name) {
+				let data = {}
+				data['token'] = this.token
+				data['origin_user_id'] = id
+				this.api.updateMsgStatus(data).then(res => {
+					uni.navigateTo({
+						url: '../noticedetail/noticedetail?id='+id+'&name='+name
+					})
+				})
+			},
+			
 			getMessageList() {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.messageList(data).then(res => {
+				this.api.userMessageList(data).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more

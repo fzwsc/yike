@@ -10,7 +10,7 @@
             <picker-view indicator-style="height: 40px;" class="mpvue-picker-view" :value="pickerValue" @change="pickerChange" v-if="mode==='selector' && pickerValueSingleArray.length > 0">
                 <block>
                     <picker-view-column>
-                        <view class="picker-item" v-for="(item,index) in pickerValueSingleArray" :key="index">{{item.label}}</view>
+                        <view class="picker-item" v-for="(item,index) in pickerValueSingleArray" :key="index">{{item.name}}</view>
                     </picker-view-column>
                 </block>
             </picker-view>
@@ -80,7 +80,7 @@
                 pickerValueMulThreeTwo: [],
                 pickerValueMulThreeThree: [],
 				/* 是否显示控件 */
-				showPicker: false,
+				// showPicker: false,
             };
         },
         props: {
@@ -109,7 +109,12 @@
                 default: 2
             },
             /* 主题色 */
-            themeColor: String
+            themeColor: String,
+			showPicker: {
+				type: Boolean,
+				default: false,
+				
+			}
         },
         watch: {
             pickerValueArray(oldVal, newVal) {
@@ -229,21 +234,29 @@
             pickerCancel() {
                 this.showPicker = false;
                 this._initPickerVale();
-                let pickObj = {
-                    index: this.pickerValue,
-                    value: this._getPickerLabelAndValue(this.pickerValue, this.mode).value,
-                    label: this._getPickerLabelAndValue(this.pickerValue, this.mode).label
-                };
+//                 let pickObj = {
+//                     index: this.pickerValue,
+//                     value: this._getPickerLabelAndValue(this.pickerValue, this.mode).value,
+//                     label: this._getPickerLabelAndValue(this.pickerValue, this.mode).label
+//                 };
+                  let pickObj = {
+					 id: this.pickerValueSingleArray[this.pickerValue].id,
+					 name: this.pickerValueSingleArray[this.pickerValue].name
+                 }
                 this.$emit('onCancel', pickObj);
             },
             pickerConfirm(e) {
                 this.showPicker = false;
                 this._initPickerVale();
-                let pickObj = {
-                    index: this.pickerValue,
-                    value: this._getPickerLabelAndValue(this.pickerValue, this.mode).value,
-                    label: this._getPickerLabelAndValue(this.pickerValue, this.mode).label
-                };
+//                 let pickObj = {
+//                     index: this.pickerValue,
+//                     value: this._getPickerLabelAndValue(this.pickerValue, this.mode).value,
+//                     label: this._getPickerLabelAndValue(this.pickerValue, this.mode).label
+//                 };
+                 let pickObj = {
+					 id: this.pickerValueSingleArray[this.pickerValue].id,
+					 name: this.pickerValueSingleArray[this.pickerValue].name
+				 }
                 this.$emit('onConfirm', pickObj);
             },
             showPickerView() {

@@ -75,6 +75,10 @@
 			myInfo() {
 				let data = {}
 				data['token'] = this.token
+// 				uni.showLoading({
+// 					title: '加载中',
+// 					mask: true
+// 				});
 				this.api.myInfo(data).then(res => {
 					this.userInfo = res.datas.user
 					this.concernList = res.datas.fans_list

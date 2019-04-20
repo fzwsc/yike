@@ -56,7 +56,7 @@
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.myRecedList(data).then(res => {
+				this.api.addReplyComment(data).then(res => {
 					 if (this.curpage == 1) this.list = []
 					  this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more

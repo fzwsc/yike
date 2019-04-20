@@ -3,9 +3,9 @@
 		<!-- 登录界面 -->
 		<view class="logo"><image src="../../static/logo.png" mode=""></image></view>
 		<view class="login-box">
-			<view class="chose-schoole">
+			<view class="chose-schoole" @click="chooseSchool">
 				<text class="text-schoole">学校：</text>
-				<view class="schoole-name"><text>福州大学</text><image src="../../static/shangla.png" mode=""></image></view>
+				<view class="schoole-name"><text>{{selectSchool.name}}</text><image src="../../static/shangla.png" mode=""></image></view>
 			</view>
 			<view class="gong-hao">
 				<view>工号</view>
@@ -21,17 +21,27 @@
 			<button class="bt-login" open-type="getUserInfo" @getuserinfo="userinfo">
 				登 录
 			</button>
+            <mp-vue-picker :pickerValueArray="schoolList" :pickerValueDefault="defaultIndex" :showPicker="showPicker" @onConfirm="onConfirm" @onCancel='onCancel'/>
 		</view>
 	</view>
 </template>
 
 <script>
+	import mpVuePicker from '../../components/mpvue-picker/mpvuePicker.vue'
 export default {
 	data() {
 		return {
 			code: '',
 			usn: '',
-			psw: ''
+			psw: '',
+			schoolList: [],
+			hidden: true,
+			defaultIndex: [0],
+			showPicker: false,
+			selectSchool: {
+				id: 0,
+				name: '请选择'
+			}
 		};
 	},
 	onLoad() {
@@ -41,6 +51,7 @@ export default {
 			this.code = res.code
 		  }
 		});
+		this.getSchoolList()
 	},
 	methods:{
 		rzMm(){
@@ -48,9 +59,19 @@ export default {
 				url:'../resetmm/resetmm'
 			})
 		},
+		chooseSchool() {
+			this.showPicker = !this.showPicker
+		},
+		getSchoolList() {
+			let data = {}
+			this.api.schoolList(data).then(res => {
+				this.schoolList = res.datas
+			})
+		},
 		userinfo(e) {
 // 			if (this.usn && this.psw) {
 // 				let data = {};
+//              data['schoolId'] = this.selectSchool.id
 // 				data['account'] = this.usn
 // 				data['password'] = this.psw
 // 				data['code'] = this.code;
@@ -79,8 +100,19 @@ export default {
 			uni.switchTab({
 				url: '../broadcast/broadcast',
 			});
+		},
+		onConfirm(e) {
+			console.log(e);
+			this.selectSchool = e;
+			this.showPicker = !this.showPicker
+		},
+		onCancel() {
+           this.showPicker = !this.showPicker
 		}
-	}
+	},
+	components: {
+		mpVuePicker
+	},
 };
 </script>
 

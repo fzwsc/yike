@@ -38,20 +38,24 @@
 				评论({{list.length}})
 			</view>
 			<view class="comment-list">
-				<navigator :url="'../commentrely/commentrely?id='+item.comment_id" v-for="(item,index) in list" :key="index" class="comment-item" hover-class="none">
-					<image :src="item.avatar" mode="" class="portrait"></image>
+				<view v-for="(item,index) in list" :key="index" class="comment-item"  >
+					<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" class="portrait-style" hover-class="none">
+						<image :src="item.avatar" mode="" class="portrait" ></image>
+					</navigator>
 					<view class="comment-info">
-						<view class="name">{{item.name}}</view>
-						<view class="msg">{{item.content}}</view>
+						<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" hover-class="none">
+							<view class="name">{{item.name}}</view>
+							<view class="msg">{{item.content}}</view>
+						</navigator>
 						<view class="state">
 							<view class="time">昨天 12:15</view>
 							<view class="icon half">
 								<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}</view>
-							<view class="icon">
-								<image src="../../static/zan.png" mode="" class="pic" />{{item.like_num}}</view>
+							<view class="icon" @click="like(item.comment_id,index,item)">
+								<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
 						</view>
 					</view>
-				</navigator>
+				</view>
 				 <view :hidden="loadingHidden">
 					<uni-load-more status="loading"></uni-load-more>
 				</view>
@@ -82,7 +86,7 @@
 			 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
 			<view class="btn-group">
 				 <view class="textarea-num">{{getWordNumber}}</view>
-				 <button type="primary" hover-class="none" :disabled="isDisabled">发送</button>
+				 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
 			 </view>
 		</view>
 	</view>
@@ -102,7 +106,8 @@
 			   loadingHidden: true,
 			   hasmore: true,
 			   curpage: 1,
-			   pagesize: 10,
+			   pagesize: 6,
+			   token: uni.getStorageSync('token')
 			}
 		},
 		onLoad(option) {
@@ -119,6 +124,21 @@
 			}
 		},
 		methods: {
+		  send() {
+			 let data = {}
+			 data['token'] = this.token
+			 data['radio_id'] = this.radioId
+			 data['content'] = this.msgContent
+			  this.api.addYgbComment(data).then(res => {
+				  uni.showToast({
+					title: '评论成功',
+					icon: 'none'
+				  })
+				  this.hidden = !this.hidden
+				  this.curpage = 1
+				  this.getCommentList()
+			  })
+		  },
 		  hide() {
 			this.hidden = !this.hidden  
 		  },
@@ -133,6 +153,7 @@
 		  },
 		  getCommentList() {
 			  let data = {};
+			  data["token"] = this.token
 			  data["radio_id"] = this.radioId;
 			  data['curpage'] = this.curpage;
 			  data['pagesize'] = this.pagesize
@@ -147,7 +168,24 @@
 			  }).catch(err => {
 			  	
 			  })
-		  }
+		  },
+		 like(id,index,item) {
+			 if (item.like_status == 1) {
+			 	uni.showToast({
+			 	   title: '已赞',
+			 	   icon: 'none'
+			 	})
+			 	return 
+			 }
+		 	let data = {}
+		 	data['token'] = this.token
+		 	data['comment_id'] = id
+		 	this.api.likeComment(data).then(res => {
+		           item.like_num = item.like_num + 1
+		 		  item.like_status = 1
+		 		  this.$set(this.detail.comment_list,index,item)
+		 	})
+		 },
 		},
 		components: {
 			uniLoadMore
@@ -164,6 +202,10 @@
 </script>
 
 <style>
+	page {
+		padding-bottom:115upx;
+
+	}
 	button {
 		margin-left: 16upx;
 		margin-right: 0;
@@ -283,12 +325,16 @@
     .comment-detail .comment-item view{
 		line-height: 1;
 	}
-	.comment-detail .comment-item .portrait {
+	.comment-detail .comment-item .portrait-style{
 		width: 60upx;
 		height: 60upx;
 		overflow: hidden;
 		border-radius: 50%;
 		margin-right: 15upx;
+	}
+	.comment-detail .comment-item .portrait-style .portrait {
+		width: 100%;
+		height: 100%;
 	}
 
 	.comment-detail .comment-item .comment-info {
@@ -306,7 +352,7 @@
 	.comment-detail .comment-item .comment-info .msg {
 		margin: 20upx 0;
 		color: #333333;
-		font-size: 30upx;
+		font-size: 26upx;
 	}
 
 	.comment-detail .comment-item .comment-info .state {

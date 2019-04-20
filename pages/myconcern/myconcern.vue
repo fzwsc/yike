@@ -17,8 +17,8 @@
 						</view>
 					</navigator>
 					<view class="concern-r">
-						<view class="already-concern" v-if="item.status == 1">已关注</view>
-						<view class="already-concern red" v-else>+关注</view>
+						<view class="already-concern" v-if="item.status == 1" @tap="dealConcern(item,index)">已关注</view>
+						<view class="already-concern red" v-else  @tap='dealConcern(item,index)'>+关注</view>
 						<!-- <view class="course">教授课程：毛概</view> -->
 					</view>
 				</view>
@@ -103,6 +103,22 @@
 				}
 				
 			},
+			dealConcern(item,index) {
+				let data = {},status
+				data['token'] = this.token
+				data['user_id'] = item.be_user_id
+				if (item.status == 1) status = 2
+				else status = 1
+				data['attention_status'] = status
+				// this.$set(this.list,index,item)
+				// console.log(this.list);
+				this.api.addAttention(data).then(res => {
+// 					if (item.status == 1) item.status = 2
+// 					else item.status = 1
+// 					this.$set(this.list,index,item)
+// 					console.log(this.list);
+				})
+			}
 			
 		},
 		components: {

@@ -1,22 +1,65 @@
 <template>
 	<view class="notice-detail">
-		<view class="notice-item">
-			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="pic"></image>
+		<view class="notice-item" v-for="(item,index) in list" :key="index">
+			<image :src="item.avatar" mode="" class="pic"></image>
 			<view class="notice-con">
 				<view class="title">我发表了一个动态</view>
-				<navigator url="../playarea/playarea" class="link" hover-class="none" open-type="switchTab">小雅发表了她的录音</navigator>
+				<navigator url="../playarea/playarea" class="link" hover-class="none" open-type="switchTab">{{item.message_title}}</navigator>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-				
+				token: uni.getStorageSync("token"),
+				hidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				list: [],
+				id: ''
 			};
-		}
+		},
+		onLoad(option) {
+			this.id = option.id
+			uni.setNavigationBarTitle({
+				title: option.name
+			});
+			this.getMessageList()
+		},
+		methods: {
+			getMessageList() {
+			    let data = {};
+				data['origin_user_id'] = this.id;
+				data["token"] = this.token;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.hidden = true;
+				this.api.userMessageList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					 this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+				}).catch(err => {
+					
+				})
+			}
+		},
+		onReachBottom() {
+			if(this.hasmore) this.hidden = false
+			else{
+				this.hidden = true
+				return;
+			}
+			this.getMessageList()
+		},
+		components: {
+			uniLoadMore
+		},
 	}
 </script>
 
@@ -39,6 +82,7 @@
 	   width: 454upx;
 	   padding: 30upx 0 30upx 26upx;
 	   background: #FFFFFF;
+	   border-radius:5px;
 	   
    }
     .notice-detail .notice-item .notice-con:after {
