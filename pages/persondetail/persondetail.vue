@@ -125,7 +125,7 @@
 			};
 		},
 		onLoad(option) {
-			console.log(option);
+			// console.log(option);
 			let role = option.role - 0;
 			this.user_id = option.userId
 			if (role == 1){

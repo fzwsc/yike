@@ -43,6 +43,10 @@
 				default:true
 			}, //是否需要上一曲/下一曲按钮
 			continue:Boolean,//播放完成后是否继续播放下一首，需定义@next事件
+			isNext: {
+				type: Boolean,
+				default: false
+			},
 			color: {
 				type:String,
 				default:'#fff'
@@ -83,11 +87,14 @@
 			},
 			// 正在拖动事件
 			changing(e) {
-				
-				if(this.current < e.detail.value) {
-					this.flag = false;
-					return;
+				console.log(this.isNext);
+				if (!this.isNext) {
+					if(this.current < e.detail.value) {
+						this.flag = false;
+						return;
+					}
 				}
+				
 				this.flag = true;
 				this.seek = true
 				this.current= e.detail.value

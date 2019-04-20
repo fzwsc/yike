@@ -113,8 +113,8 @@
 				// this.$set(this.list,index,item)
 				// console.log(this.list);
 				this.api.addAttention(data).then(res => {
-// 					if (item.status == 1) item.status = 2
-// 					else item.status = 1
+					if (item.status == 1) item.status = 2
+					else item.status = 1
 // 					this.$set(this.list,index,item)
 // 					console.log(this.list);
 				})

@@ -447,7 +447,8 @@
     .mpvue-picker__action {
         display: block;
         flex: 1;
-        color: #1aad19;
+        /* color: #1aad19; */
+		color: #F74C44;
     }
 
     .mpvue-picker__action:first-child {
