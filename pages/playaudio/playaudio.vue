@@ -36,19 +36,19 @@
 			<view class="ti-cont-line">{{radioItems[0].descript}}</view>
 			<view class="answer-box">
 				<view class="answer" @click="reply(radioItems,1)">
-				    <image :src=" right == 1 ? '../../static/dui.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
+				    <image :src=" right == 1 ? '../../static/dui.png' : error == 1 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
 					<view class="text">{{radioItems[0].option1}}</view>
 				</view>
 				<view class="answer" @click="reply(radioItems,2)">
-				    <image :src=" right == 2 ? '../../static/dui.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
+				    <image :src=" right == 2 ? '../../static/dui.png' : error == 2 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
 					<view class="text">{{radioItems[0].option2}}</view>
 				</view>
 				<view class="answer" v-if="radioItems[0].option3" @click="reply(radioItems,3)">
-				    <image :src=" right == 3 ? '../../static/dui.png' :'../../static/xuanxiang.png'" mode="" class="pic"></image> 
+				    <image :src=" right == 3 ? '../../static/dui.png' : error == 3 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic"></image> 
 					<view class="text">{{radioItems[0].option3}}</view>
 				</view>
 				<view class="answer" v-if="radioItems[0].option4" @click="reply(radioItems,4)">
-				    <image :src=" right == 4 ? '../../static/dui.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image>
+				    <image :src=" right == 4 ? '../../static/dui.png' : error == 4 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image>
 					<view class="text">{{radioItems[0].option4}}</view>
 				</view>
 			</view>
@@ -157,10 +157,18 @@
 				
 					this.audio.push(audioJson)
 				    this.radioItems = res.datas.subject_list
+					if (res.datas.subject_list[0].is_answer) this.right = res.datas.subject_list[0].right_option
 				})
 			},
 			// 答题
 			reply(item,index) {
+				if (!this.isFinish) {
+					uni.showToast({
+						title:'听完才能回答问题',
+						icon: 'none'
+					})
+					return;
+				}
 				let data = {}
 				data['token'] = this.token
 				data['subject_id'] = item[0].id

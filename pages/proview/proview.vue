@@ -1,23 +1,23 @@
 <template>
 	<view>
 		<!-- 头部播放区 -->
-		<view class="head-box">
+		<view class="head-box"  :key="item.tostring">
 			<view class="name-img">
 				<view class="user-box">
-					<image src="../../static/bofang.png" mode=""></image>
+					<image :src="contJson.userInfo.avatar" mode=""></image>
 					<view class="text-info">
-						<text>萧逸风</text>
-						<text>04-02 12:00</text>
+						<text>{{contJson.userInfo.realname}}</text>
+						<text>{{contJson.userInfo.fans_num}} 关注</text>
 					</view>
 				</view>
-				<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-				<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
+				<!-- <view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
+				<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view> -->
 			</view>
 			<view class="audio">
 				<imt-audio
 					continue
-					:src="audio[now].src"
-					:duration="audio[now].duration"
+					:src="contJson.mp3Url"
+					:duration="contJson.title	"
 					@prev="now = now === 0 ? audio.length - 1 : now - 1"
 					@next="now = now === audio.length - 1 ? 0 : now + 1"
 				></imt-audio>
@@ -25,15 +25,15 @@
 		</view>
 		<view class="ti-cont">
 			<view class="title">问题：</view>
-			<view class="ti-cont-line">这是问题这是问题这是问题这是问题这是问题这是问题</view>
+			<view class="ti-cont-line">{{contJson.descript}}</view>
 			<view class="answer-box">
 				<view class="answer">
-					<radio-group class="radio-group-rad" @change="radioChange">
-						<label class="" v-for="(item, index) in radioItems" :key="index">
+					<radio-group class="radio-group-rad" >
+						<label class="" v-for="(items, index) in radioItems" :key="index">
 							<view class="box-grop">
-								<view class="ridio-by"><radio :id="item.name" :value="item.name" :checked="item.checked"></radio></view>
+								<view class="ridio-by"><radio  :checked="index==contJson.right_option" disabled></radio></view>
 								<view class="cont-box">
-									<text>{{ item.value }}</text>
+									<text>{{ items }}----{{index==item.right_option}}---{{index}}--=={{contJson.right_option}}</text>
 								</view>
 							</view>
 						</label>
@@ -42,7 +42,7 @@
 			</view>
 			<view class="bt-grop">
 				<button class="again-edit" @click="againEdit">重新编辑</button>
-				<button class="up-sure">确定上传</button>
+				<button class="up-sure" @click="upFile">确定上传</button>
 			</view>
 		</view>
 	</view>
@@ -53,6 +53,7 @@ import imtAudio from 'components/imt-audio/imt-audio';
 export default {
 	data() {
 		return {
+			contJson:{},
 			audio: [
 				{
 					src: 'http://mouyizhan.com/1.mp3',
@@ -77,28 +78,28 @@ export default {
 			],
 			now: 0,
 			radioItems: [
-				{
-					name: 'USA',
-					value: '题目题目题目题目题目'
-				},
-				{
-					name: 'CHN',
-					value:
-						'题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目111',
-					checked: 'true'
-				},
-				{
-					name: 'USA',
-					value: '题目题目题目题目题目'
-				},
-				{
-					name: 'CHN',
-					value:
-						'题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目题目111'
-				}
+			
 			]
 		};
 	},
+		onLoad(options) {
+			this.contJson = uni.getStorageSync('onjcont')
+			var obj = {}
+			 this.radioItems = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4)
+		
+// 			this.radioItems.add()
+// 			for(var i=1;i<=4;i++){
+// 				var obj = {}
+// 				obj.name = this.contJson.option+i
+// 				this.radioItems.push()
+// 				
+// 			}
+			
+		
+			console.log(this.contJson)
+			console.log(this.radioItems)
+			
+		},
 	onReachBottom() {
 		this.hidden = false;
 		console.log('aaa');
@@ -113,17 +114,36 @@ export default {
 			})
 			
 		},
-		radioChange(e) {
-			var checked = e.target.value;
-			var changed = {};
-			for (var i = 0; i < this.radioItems.length; i++) {
-				if (checked.indexOf(this.radioItems[i].name) !== -1) {
-					changed['radioItems[' + i + '].checked'] = true;
-				} else {
-					changed['radioItems[' + i + '].checked'] = false;
+		upFile(){
+			this.contJson.token = uni.getStorageSync('token');
+			this.yapi.addYunCont(this.contJson).then(res=>{
+				if(res.code==200){
+					
+					uni.switchTab({
+						url:'../broadcast/broadcast'
+					})
+					return
+				}else{
+					uni.showToast({
+						icon:"none",
+						title:'上传失败,请重试'
+					})
 				}
-			}
+			}).catch(err=>{
+				
+			})
 		}
+// 		radioChange(e) {
+// 			var checked = e.target.value;
+// 			var changed = {};
+// 			for (var i = 0; i < this.radioItems.length; i++) {
+// 				if (checked.indexOf(this.radioItems[i].name) !== -1) {
+// 					changed['radioItems[' + i + '].checked'] = true;
+// 				} else {
+// 					changed['radioItems[' + i + '].checked'] = false;
+// 				}
+// 			}
+// 		}
 	},
 	components: {
 		imtAudio

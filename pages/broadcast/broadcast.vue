@@ -1,34 +1,34 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList">{{ item }}</view>
-			<view class="img-add" @click="addMark()"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
+			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
+			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info">
-				<view @click="detiles()">
+			<view class="user-info" v-for="item in getHoneList" :key="item.toString">
+				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
-							<image src="../../static/bofang.png" mode=""></image>
+							<image :src="item.avatar" mode=""></image>
 							<view class="text-info">
-								<text>萧逸风</text>
-								<text>04-02 12:00</text>
+								<text>{{item.name}}</text>
+								<text>{{item.createtime}}</text>
 							</view>
 						</view>
 						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
 						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
 					</view>
-					<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
+					<view class="ques-cont"><text>{{item.title}}</text></view>
 				</view>
 				<view class="bo-cont">
 					<view>
 						<image src="../../static/bf.png" mode=""></image>
-						300次
+						{{item.read_num}}次
 					</view>
 					<view>
 						<image src="../../static/shijian.png" mode=""></image>
-						时间
+						{{item.duration}}
 					</view>
 				</view>
 				<view class="control-box">
@@ -38,51 +38,17 @@
 					</view>
 					<view class="box-ico" @click="comment()">
 						<image src="../../static/pinglun.png" mode="" />
-						22
+						{{item.comment_num}}
 					</view>
 					<view class="box-ico box-ico2">
 						<image src="../../static/zan.png" mode="" />
-						33
+						{{item.like_num}}
 					</view>
 				</view>
 			</view>
-			<view class="user-info">
-				<view class="name-img">
-					<view class="user-box">
-						<image src="../../static/bofang.png" mode=""></image>
-						<view class="text-info">
-							<text>萧逸风</text>
-							<text>04-02 12:00</text>
-						</view>
-					</view>
-					<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-					<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
-				</view>
-				<view class="ques-cont"><text>中共十九大重要通知1中共十九大重要通知1中共十九大重要通知1</text></view>
-				<view class="bo-cont">
-					<view>
-						<image src="../../static/bf.png" mode=""></image>
-						300次
-					</view>
-					<view>
-						<image src="../../static/shijian.png" mode=""></image>
-						时间
-					</view>
-				</view>
-				<view class="control-box">
-					<view class="box-ico box-ico1">
-						<image src="../../static/tiwen.png" mode=""></image>
-						提问
-					</view>
-					<view class="box-ico">
-						<image src="../../static/pinglun.png" mode="" />
-						223
-					</view>
-					<view class="box-ico box-ico2">
-						<image src="../../static/zan.png" mode="" />
-						33
-					</view>
-				</view>
+				<view class="no-data" v-if="getHoneList.length<=0?true:false">
+				<image src="../../static/noData.png" mode=""></image>
+				<view class="tip-color">抱歉，暂无相关数据。</view>
 			</view>
 		</view>
 		<!-- mark -->
@@ -106,34 +72,39 @@ import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 	data() {
 		return {
-			tabList: ['关注', '推荐', '热门', '最新'],
+			tabList: [],
 			activeIndex: 0,
 			isFollow: true,
-			isShowMark: false
+			isShowMark: false,
+			getHoneList:[],
+			token:uni.getStorageSync('token'),
+			userid:uni.getStorageSync('userId'),
+			role: 2//parseInt(uni.getStorageSync('role'))
 		};
 	},
 	onLoad() {
 	   this.getTab()
 	},
 	methods: {
-		getTab(){
+		getTabList(id){
 			
-			this.specialTab(Date).then(res=>{
-				console.log(res)
-			}).catch(Error=>{
-				
-			})
+		},
+		getList(){
+			
 		},
 		// 评论
 		comment(){
 			uni.navigateTo({
 				url:'../comment-detail/comment-detail'
+				// url:'../soundSavue/soundSavue'
+				
 			});
 		},
 		// 跳转详情
-		detiles() {
+		detiles(item) {
+			console.log(item.radio_id)
 			uni.navigateTo({
-				url:'../playaudio/playaudio?id=000000',
+				url:'../playaudio/playaudio?id='+item.radio_id,
 				// url: '../soundRecording/soundRecording'
 			});
 			uni.setStorage({
@@ -149,8 +120,28 @@ export default {
 				url: '../searchpage/searchpage'
 			});
 		},
-		choseTab(index) {
+		getTab(){
+			let data = {}
+			data.token = this.token;
+			this.yapi.getHoneTab(data).then((res)=>{
+				this.tabList = res.datas
+				this.choseTab(0,res.datas[0])
+			}).catch(()=>{
+			})
+		},
+		choseTab(index,item) {
 			this.activeIndex = index;
+			let pram = {}
+			pram.type = item.id;
+			pram.curpage = 1;
+			pram.pagesize = 10;
+			pram.token = this.token
+			this.yapi.getHoneList(pram).then((res)=>{
+				this.getHoneList = res.datas.data
+				
+			}).catch(()=>{
+			})
+			
 		},
 		follow() {
 			this.isFollow = false;
@@ -165,8 +156,9 @@ export default {
 		// 录音
 		soundAudio() {
 			uni.navigateTo({
-				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
-				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888')
+				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
+				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
+				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&id='+this.userid)
 			});
 		},
 		hidenMark() {
@@ -181,6 +173,23 @@ export default {
 </script>
 
 <style>
+	.no-data{
+			position: absolute;
+			text-align: center;
+			margin-top: 179upx;
+			width: 100%;
+			
+		}
+		.no-data image{
+			width: 290upx;
+			height: 239upx;
+			margin: auto;
+		}
+		.no-data .tip-color{
+			color: #666666;
+			margin-top: 91upx;
+			text-align: center;
+		}
 view {
 	line-height: 1.5;
 }
@@ -259,6 +268,7 @@ view {
 .name-img .user-box image {
 	height: 100upx;
 	width: 100upx;
+	border-radius: 50%;
 }
 .name-img .user-box {
 	display: flex;
