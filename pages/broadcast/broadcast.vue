@@ -2,7 +2,7 @@
 	<view>
 		<view class="tab-box">
 			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
-			<view class="img-add" @click="addMark()"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
+			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
@@ -77,8 +77,9 @@ export default {
 			isFollow: true,
 			isShowMark: false,
 			getHoneList:[],
-			token:11111,
-			userid:333333333
+			token:uni.getStorageSync('token'),
+			userid:uni.getStorageSync('userId'),
+			role: 2//parseInt(uni.getStorageSync('role'))
 		};
 	},
 	onLoad() {
@@ -95,6 +96,8 @@ export default {
 		comment(){
 			uni.navigateTo({
 				url:'../comment-detail/comment-detail'
+				// url:'../soundSavue/soundSavue'
+				
 			});
 		},
 		// 跳转详情
@@ -118,7 +121,9 @@ export default {
 			});
 		},
 		getTab(){
-			this.yapi.getHoneTab().then((res)=>{
+			let data = {}
+			data.token = this.token;
+			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
 				this.choseTab(0,res.datas[0])
 			}).catch(()=>{
@@ -130,6 +135,7 @@ export default {
 			pram.type = item.id;
 			pram.curpage = 1;
 			pram.pagesize = 10;
+			pram.token = this.token
 			this.yapi.getHoneList(pram).then((res)=>{
 				this.getHoneList = res.datas.data
 				

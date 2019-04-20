@@ -21,10 +21,14 @@ export default{
 	getYunDetils(data){
 	    return network.get('/ygb/topic/radio_detail',data)
 	},
-	// 添加云广播页面加载接口
+	// 添加云广播专题页面加载接口
 	getAddYunCont(data){
 		return network.get('/ygb/topic/add_radio_before',data)
 		
+	},
+	// 添加云广播
+	addYunCont(data){
+		return network.post('/ygb/topic/add_radio',data)
 	}
 	
 	

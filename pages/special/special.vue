@@ -5,7 +5,7 @@
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" v-for="item in boxList">
+			<view class="user-info" v-for="item in boxList" :key='item.toString'>
 				<view @click="detiles()">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
@@ -104,7 +104,10 @@ export default {
 			isFollow: true,
 			isShowMark: false,
 			curpage:1,
-			boxList:[]
+			boxList:[],
+		     dataConfig:{
+				 token:uni.getStorageSync('token')
+			 }
 		};
 	},
 	onLoad() {
@@ -112,7 +115,7 @@ export default {
 	},
 	methods: {
 		getTab(){
-			this.yapi.specialTab().then(res=>{
+			this.yapi.specialTab(this.dataConfig).then(res=>{
 				this.tabList = res.datas
 				this.choseTab(0,res.datas[0])
 				console.log(res.datas[0].id)
@@ -130,6 +133,7 @@ export default {
 			this.boxList =[]
 			this.activeIndex = index;
 			let data = {}
+			data.token = uni.getStorageSync('token')
 			data.topic_id = item.id;
 			data.curpage = this.curpage;
 			data.pagesize = 10;
