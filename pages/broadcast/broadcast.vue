@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
+			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{activeIndex}}--{{index}}{{ item.name }}</view>
 			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" v-for="item in getHoneList" :key="item.toString">
+			<view class="user-info" v-for="(item,index) in getHoneList" :key="item.toString">
 				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
@@ -32,7 +32,7 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico box-ico1">
+					<view class="box-ico box-ico1" @click="questions">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
@@ -40,8 +40,12 @@
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>
-					<view class="box-ico box-ico2">
+					<view class="box-ico box-ico2" @click="like(item,index)" v-if="item.like_status==2">
 						<image src="../../static/zan.png" mode="" />
+						{{item.like_num}}
+					</view>
+					<view class="box-ico box-ico2" v-else >
+						<image src="../../static/dianzan.png" mode="" />
 						{{item.like_num}}
 					</view>
 				</view>
@@ -82,8 +86,9 @@ export default {
 			role: 2//parseInt(uni.getStorageSync('role'))
 		};
 	},
-	onLoad() {
+	onShow() {
 	   this.getTab()
+	   console.log('onLoad')
 	},
 	methods: {
 		getTabList(id){
@@ -95,16 +100,36 @@ export default {
 		// 评论
 		comment(){
 			uni.navigateTo({
-				url:'../comment-detail/comment-detail'
+				url:'../commentdetail/commentdetail'
 				// url:'../soundSavue/soundSavue'
 				
 			});
+		},
+		// 点赞
+		like(item,index){
+			let par  = {}
+			par.token= uni.getStorageSync('token');
+			par.radio_id = item.radio_id
+			this.yapi.addLike(par).then(res=>{
+				if(res.code==200){
+					this.getHoneList[index].like_status=1
+				}
+				
+			}).catch(err=>{
+				
+			})
+		},
+			questions(){
+			uni.showToast({
+				icon:"none",
+				title:'该功能暂未开放'
+			})
 		},
 		// 跳转详情
 		detiles(item) {
 			console.log(item.radio_id)
 			uni.navigateTo({
-				url:'../playaudio/playaudio?id='+item.radio_id,
+				url:'../yundetails/yundetails?id='+item.radio_id,
 				// url: '../soundRecording/soundRecording'
 			});
 			uni.setStorage({
@@ -125,11 +150,13 @@ export default {
 			data.token = this.token;
 			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
-				this.choseTab(0,res.datas[0])
+				this.choseTab(this.activeIndex,res.datas[0])
 			}).catch(()=>{
 			})
 		},
 		choseTab(index,item) {
+			console.log(index+'-------------'+item)
+			console.log(item)
 			this.activeIndex = index;
 			let pram = {}
 			pram.type = item.id;

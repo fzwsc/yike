@@ -102,7 +102,7 @@ export default {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
 		// console.log(decodeURIComponent(options.url));
 		uni.getStorageSync('userId')
-		var url =`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/ ${uni.getStorageSync('userId')}/${options.id}.mp3`
+		var url ='http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/null/20190420125738eyxl.mp3'//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		console.log(url)
 		this.contJson.radio = options.id; //赋值web页面穿过来的音频文件名
 		this.contJson.mp3Url = url; //赋值web页面穿过来的音频文件名
