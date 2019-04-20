@@ -175,7 +175,7 @@ export default {
 				this.area = res.datas
 				let audioJson = {
 					// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
-					src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
+					src: res.datas.radio,//http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
 					duration: res.datas.duration
 				}
 				this.audio.push(audioJson)

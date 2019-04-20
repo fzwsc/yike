@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList">{{ item.title }}</view>
+			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key='item.toString'>{{ item.title }}</view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
 			<view class="user-info" v-for="(item,index) in boxList" :key='item.toString'>
-				<view @click="detiles()">
+				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
 							<image :src="item.avatar" mode=""></image>
@@ -35,7 +35,7 @@
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
-					<view class="box-ico">
+					<view class="box-ico" @click="comment(item)">
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>
@@ -127,6 +127,13 @@ export default {
 				
 			})
 		},
+		comment(item){
+			uni.navigateTo({
+				url:'../commentdetail/commentdetail?radioId='+item.radio_id
+				// url:'../soundSavue/soundSavue'
+				
+			});
+			},
 			// 点赞
 		like(item,index){
 			let par  = {}
@@ -142,12 +149,12 @@ export default {
 			})
 		},
 		questions(){
-			uni.showToast({
-				icon:"none",
-				title:'该功能暂未开放'
-			})
-		},
-		detiles(){
+		uni.showToast({
+			icon:"none",
+			title:'该功能暂未开放'
+		})
+	},
+		detiles(item){
 			uni.navigateTo({
 			  url:'../yundetails/yundetails?id='+item.radio_id,
 			})

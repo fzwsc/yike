@@ -16,8 +16,15 @@
 								<text>{{item.createtime}}</text>
 							</view>
 						</view>
-						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
+						<template>
+							<!-- 1已关注2未关注 -->
+								<view class="follow" v-if="item.attention_status==1" @click="follow(item,index)"><text>已关注</text></view>
+						</template>
+						<template>
+							<view class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
+						</template>
+					
+						
 					</view>
 					<view class="ques-cont"><text>{{item.title}}</text></view>
 				</view>
@@ -36,7 +43,7 @@
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
-					<view class="box-ico" @click="comment()">
+					<view class="box-ico" @click="comment(item)">
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>
@@ -98,9 +105,9 @@ export default {
 			
 		},
 		// 评论
-		comment(){
+		comment(item){
 			uni.navigateTo({
-				url:'../commentdetail/commentdetail'
+				url:'../commentdetail/commentdetail?radioId='+item.radio_id
 				// url:'../soundSavue/soundSavue'
 				
 			});
@@ -113,6 +120,7 @@ export default {
 			this.yapi.addLike(par).then(res=>{
 				if(res.code==200){
 					this.getHoneList[index].like_status=1
+					this.getHoneList[index].like_num+1
 				}
 				
 			}).catch(err=>{
@@ -155,8 +163,6 @@ export default {
 			})
 		},
 		choseTab(index,item) {
-			console.log(index+'-------------'+item)
-			console.log(item)
 			this.activeIndex = index;
 			let pram = {}
 			pram.type = item.id;
@@ -170,8 +176,27 @@ export default {
 			})
 			
 		},
-		follow() {
-			this.isFollow = false;
+		follow(item,index) {
+		    let data = {};
+			data['token'] = this.token
+			data['user_id'] = item.user_id;
+			console.log(item.attention_status)
+			if(item.attention_status==1){
+				data['attention_status'] = 2;
+			}else{
+				data['attention_status'] = 1;
+			}
+			this.api.addAttention(data).then(res=>{
+					if(item.attention_status==1){
+						this.getHoneList[index].attention_status=2
+					}else{
+						this.getHoneList[index].attention_status=1
+					}
+					
+				
+			}).catch(err=>{
+				
+			})
 		},
 		noFllow() {
 			this.isFollow = true;
@@ -185,7 +210,7 @@ export default {
 			uni.navigateTo({
 				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&id='+this.userid)
+				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&userid='+this.userid)
 			});
 		},
 		hidenMark() {

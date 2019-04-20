@@ -41,6 +41,7 @@
 			<mpvue-picker
 				:themeColor="themeColor"
 				ref="mpvuePicker"
+				:showPicker=showPicker
 				:deepLength="deepLength"
 				:pickerValueDefault="pickerValueDefault"
 				@onConfirm="onConfirm"
@@ -50,6 +51,7 @@
 			<mpvue-picker
 				:themeColor="themeColor"
 				ref="mpvuePicker2"
+				:showPicker="showPicker2"
 				:deepLength="deepLength"
 				:pickerValueDefault="pickerValueDefault"
 				@onConfirm="onConfirm2"
@@ -86,40 +88,47 @@ export default {
 			titleStyle: 'font-size:15px;color:#ffffff',
 			url: '',
 			getMessage: '',
-			Answer: [{ label: '答案A',value:0 }, { label: '答案B',value:1 }, { label: '答案C',value:2 }, { label: '答案D',value:3 }],
+			Answer: [{ name: '答案A',id:0 }, { name: '答案B',id:1 }, { name: '答案C',id:2 }, { name: '答案D',id:3 }],
 			optionList: [],
 			themeColor: '#007AFF',
 			pickerText: '',
 			pickerText2: '',
 			deepLength: 1,
 			pickerValueDefault: [0],
+			pickerValueDefault2: [0],
 			pickerValueArray: [],
 			pickerValueArray2: [],
-			contJson: {}
+			contJson: {},
+			showPicker2:false,
+			showPicker:false
 		};
 	},
 	onLoad(options) {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
 		// console.log(decodeURIComponent(options.url));
-		uni.getStorageSync('userId')
-		var url ='http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/null/20190420125738eyxl.mp3'//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
-		console.log(url)
-		this.contJson.radio = options.id; //赋值web页面穿过来的音频文件名
-		this.contJson.mp3Url = url; //赋值web页面穿过来的音频文件名
+		// uni.getStorageSync('userId')
+		var fileName = options.id
+		var url =`http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
+		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
+		console.log(options.id)
+		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
+		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
 		let Data = {};
 		Data.token = uni.getStorageSync('token');
 		this.yapi
 			.getAddYunCont(Data)
 			.then(res => {
-				this.optionList = res.datas.topic_list;
+			
 				this.contJson.userInfo = res.datas.user_info;
+					this.optionList = res.datas.topic_list;
 				for (var i = 0; i < this.optionList.length; i++) {
-					this.optionList[i]['label'] = this.optionList[i].title;
-					this.optionList[i]['value'] = this.optionList[i].id;
+					this.optionList[i]['name'] = this.optionList[i].title;
+					this.optionList[i]['id'] = this.optionList[i].id;
 				}
+				
 				// this.pickerText = this.optionList[0].label
 				console.log(this.optionList);
-				console.log(this.pickerSingleArray);
+				// console.log(this.pickerSingleArray);
 			})
 			.catch(err => {});
 		// 		if (options && options.url) {
@@ -174,24 +183,32 @@ export default {
 			this.pickerValueArray = this.optionList; //this.pickerSingleArray;
 			this.deepLength = 1;
 			this.pickerValueDefault = [0];
-			this.$refs.mpvuePicker.show();
+			// this.$refs.mpvuePicker.show();
+			this.showPicker = !this.showPicker
 		},
 		showSinglePicker2() {
+			console.log('999999999')
 			this.pickerValueArray2 = this.Answer; //this.Answer;
 			this.deepLength = 1;
 			this.pickerValueDefault2 = [0];
-			this.$refs.mpvuePicker2.show();
+			// this.$refs.mpvuePicker2.show();
+			this.showPicker2 = !this.showPicker2
 		},
 		onConfirm(e) {
-			this.pickerText = e.label; //JSON.stringify(e)['label'];
-			this.contJson.radio = e.value;
+			this.pickerText = e.name; //JSON.stringify(e)['label'];
+			// this.contJson.radioName = e.id;
+			this.contJson.radioName = e.name;
+			this.showPicker = !this.showPicker
 		},
 		onConfirm2(e) {
-			this.pickerText2 = e.label; //JSON.stringify(e)['label'];
-			this.contJson.right_option = e.value;
+			this.pickerText2 = e.name; //JSON.stringify(e)['label'];
+			this.contJson.right_option = e.id;
+			this.showPicker2 = !this.showPicker2
 		},
 		onCancel(e) {
 			console.log(e);
+				this.showPicker2 = false
+				this.showPicker = false
 		},
 		// 		onBackPress() {
 		// 			if (this.$refs.mpvuePicker.showPicker) {
@@ -199,11 +216,11 @@ export default {
 		// 				return true;
 		// 			}
 		// 		},
-		onUnload() {
-			if (this.$refs.mpvuePicker.showPicker) {
-				this.$refs.mpvuePicker.pickerCancel();
-			}
-		}
+// 		onUnload() {
+// 			if (this.$refs.mpvuePicker.showPicker) {
+// 				this.$refs.mpvuePicker.pickerCancel();
+// 			}
+// 		}
 	},
 	components: {
 		mpvuePicker,
