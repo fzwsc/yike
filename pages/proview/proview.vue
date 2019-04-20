@@ -31,7 +31,7 @@
 					<radio-group class="radio-group-rad" >
 						<label class="" v-for="(items, index) in radioItems" :key="index">
 							<view class="box-grop">
-								<view class="ridio-by"><radio  :checked="index==contJson.right_option" disabled></radio></view>
+								<view class="ridio-by"><radio  :checked="(index+1)==contJson.right_option" disabled></radio></view>
 								<view class="cont-box">
 									<text>{{ items }}----{{index==item.right_option}}---{{index}}--=={{contJson.right_option}}</text>
 								</view>
@@ -114,17 +114,13 @@ export default {
 			})
 			
 		},
-		questions(){
-			uni.showToast({
-				icon:"none",
-				title:'该功能暂未开放'
-			})
-		},
+		
 		upFile(){
 			this.contJson.token = uni.getStorageSync('token');
 			this.yapi.addYunCont(this.contJson).then(res=>{
 				if(res.code==200){
-					uni.switchTab({
+					uni.reLaunch({
+						
 						url:'/pages/broadcast/broadcast'
 					})
 					return

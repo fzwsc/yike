@@ -88,7 +88,7 @@ export default {
 			titleStyle: 'font-size:15px;color:#ffffff',
 			url: '',
 			getMessage: '',
-			Answer: [{ name: '答案A',id:0 }, { name: '答案B',id:1 }, { name: '答案C',id:2 }, { name: '答案D',id:3 }],
+			Answer: [{ name: '答案A',id:1 }, { name: '答案B',id:2 }, { name: '答案C',id:3 }, { name: '答案D',id:4 }],
 			optionList: [],
 			themeColor: '#007AFF',
 			pickerText: '',
@@ -114,21 +114,20 @@ export default {
 		console.log(options.id)
 		console.log(url)
 		
-		    const audio = uni.createInnerAudioContext();
-			// audio.autoplay = true;
-			audio.src = url
-			 audio.onCanplay(()=> {
-			  // 必须。可以当做是初始化时长
-			   audio.duration;
-			  // 必须。不然也获取不到时长
-			  setTimeout(() => {
-				this.duration = audio.duration;
-				console.log(audio.duration); // 401.475918
-			  }, 1000)
-			  })
+// 		    const audio = uni.createInnerAudioContext();
+// 			// audio.autoplay = true;
+// 			audio.src = url
+// 			 audio.onCanplay(()=> {
+// 			  // 必须。可以当做是初始化时长
+// 			   audio.duration;
+// 			  // 必须。不然也获取不到时长
+// 			  setTimeout(() => {
+// 				this.duration = audio.duration;
+// 				console.log(audio.duration); // 401.475918
+// 			  }, 1000)
+// 			  })
 		
-		
-		
+	
 		console.log(this.duration)
 		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
 		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
