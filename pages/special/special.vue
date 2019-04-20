@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList">{{ item.title }}</view>
+			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key='item.toString'>{{ item.title }}</view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" v-for="item in boxList" :key='item.toString'>
-				<view @click="detiles()">
+			<view class="user-info" v-for="(item,index) in boxList" :key='item.toString'>
+				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
 							<image :src="item.avatar" mode=""></image>
@@ -31,16 +31,20 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico box-ico1">
+					<view class="box-ico box-ico1" @click="questions">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
 					</view>
-					<view class="box-ico">
+					<view class="box-ico" @click="comment(item)">
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>
-					<view class="box-ico box-ico2">
+					<view class="box-ico box-ico2" @click="like(item,index)" v-if="item.like_status==2">
 						<image src="../../static/zan.png" mode="" />
+						{{item.like_num}}
+					</view>
+					<view class="box-ico box-ico2" v-else >
+						<image src="../../static/dianzan.png" mode="" />
 						{{item.like_num}}
 					</view>
 				</view>
@@ -110,7 +114,7 @@ export default {
 			 }
 		};
 	},
-	onLoad() {
+	onShow() {
 		this.getTab()
 	},
 	methods: {
@@ -123,9 +127,36 @@ export default {
 				
 			})
 		},
-		detiles(){
+		comment(item){
 			uni.navigateTo({
-				url:'../playaudio/playaudio?id=000000',
+				url:'../commentdetail/commentdetail?radioId='+item.radio_id
+				// url:'../soundSavue/soundSavue'
+				
+			});
+			},
+			// 点赞
+		like(item,index){
+			let par  = {}
+			par.token= uni.getStorageSync('token');
+			par.radio_id = item.radio_id
+			this.yapi.addLike(par).then(res=>{
+				if(res.code==200){
+					this.boxList[index].like_status=1
+				}
+				
+			}).catch(err=>{
+				
+			})
+		},
+		questions(){
+		uni.showToast({
+			icon:"none",
+			title:'该功能暂未开放'
+		})
+	},
+		detiles(item){
+			uni.navigateTo({
+			  url:'../yundetails/yundetails?id='+item.radio_id,
 			})
 		},
 		// 切换tab

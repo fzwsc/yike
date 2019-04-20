@@ -114,13 +114,18 @@ export default {
 			})
 			
 		},
+		questions(){
+			uni.showToast({
+				icon:"none",
+				title:'该功能暂未开放'
+			})
+		},
 		upFile(){
 			this.contJson.token = uni.getStorageSync('token');
 			this.yapi.addYunCont(this.contJson).then(res=>{
 				if(res.code==200){
-					
 					uni.switchTab({
-						url:'../broadcast/broadcast'
+						url:'/pages/broadcast/broadcast'
 					})
 					return
 				}else{

@@ -29,6 +29,10 @@ export default{
 	// 添加云广播
 	addYunCont(data){
 		return network.post('/ygb/topic/add_radio',data)
+	},
+	// 点赞
+	addLike(data){
+		return network.post('/ygb/like/add_ygb_like',data)
 	}
 	
 	

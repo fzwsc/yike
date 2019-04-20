@@ -150,6 +150,10 @@
             "path" : "pages/noticeanswer/noticeanswer",
             "style" : {"navigationBarTitleText": "回复"}
         }
+        ,{
+            "path" : "pages/yundetails/yundetails",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",
