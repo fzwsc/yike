@@ -3,9 +3,9 @@
 		<!-- 登录界面 -->
 		<view class="logo"><image src="../../static/logo.png" mode=""></image></view>
 		<view class="login-box">
-			<view class="chose-schoole">
+			<view class="chose-schoole" @click="chooseSchool">
 				<text class="text-schoole">学校：</text>
-				<view class="schoole-name"><text>福州大学</text><image src="../../static/shangla.png" mode=""></image></view>
+				<view class="schoole-name"><text>{{selectSchool.name}}</text><image src="../../static/shangla.png" mode=""></image></view>
 			</view>
 			<view class="gong-hao">
 				<view>工号</view>
@@ -21,17 +21,27 @@
 			<button class="bt-login" open-type="getUserInfo" @getuserinfo="userinfo">
 				登 录
 			</button>
+            <mp-vue-picker :pickerValueArray="schoolList" :pickerValueDefault="defaultIndex" :showPicker="showPicker" @onConfirm="onConfirm" @onCancel='onCancel'/>
 		</view>
 	</view>
 </template>
 
 <script>
+	import mpVuePicker from '../../components/mpvue-picker/mpvuePicker.vue'
 export default {
 	data() {
 		return {
 			code: '',
 			usn: '',
-			psw: ''
+			psw: '',
+			schoolList: [],
+			hidden: true,
+			defaultIndex: [0],
+			showPicker: false,
+			selectSchool: {
+				id: 100,
+				name: '请选择'
+			}
 		};
 	},
 	onLoad() {
@@ -41,6 +51,7 @@ export default {
 			this.code = res.code
 		  }
 		});
+		this.getSchoolList()
 	},
 	methods:{
 		rzMm(){
@@ -48,39 +59,62 @@ export default {
 				url:'../resetmm/resetmm'
 			})
 		},
+		chooseSchool() {
+			this.showPicker = !this.showPicker
+		},
+		getSchoolList() {
+			let data = {}
+			this.api.schoolList(data).then(res => {
+				this.schoolList = res.datas
+			})
+		},
 		userinfo(e) {
-// 			if (this.usn && this.psw) {
-// 				let data = {};
+			// if (this.usn && this.psw) {
+				let data = {};
+                data['schoolId'] = this.selectSchool.id
 // 				data['account'] = this.usn
 // 				data['password'] = this.psw
-// 				data['code'] = this.code;
-// 				data["rawData"] = e.detail.rawData;
-// 				data["signature"] = e.detail.signature;
-// 				data["encryptedData"] = e.detail.encryptedData;
-// 				data["iv"] = e.detail.iv;
-// 				this.api.Login(data).then(res => {
-// 					uni.setStorageSync("token",res.datas.token)
-// 					uni.setStorageSync("userId",res.datas.user_id)
-//                  uni.setStorageSync("role",res.datas.role_type)
-// 					uni.switchTab({
-// 						url: '../broadcast/broadcast',
-// 					});
-// 					
-// 				})
+                data['account'] = 43281478234  
+                data['password'] = 123456
+				data['code'] = this.code;
+				data["rawData"] = e.detail.rawData;
+				data["signature"] = e.detail.signature;
+				data["encryptedData"] = e.detail.encryptedData;
+				data["iv"] = e.detail.iv;
+				this.api.Login(data).then(res => {
+					uni.setStorageSync("token",res.datas.token)
+					uni.setStorageSync("userId",res.datas.user_id)
+                 uni.setStorageSync("role",res.datas.role_type)
+					uni.switchTab({
+						url: '../broadcast/broadcast',
+					});
+					
+				})
 // 			}else {
 // 				uni.showToast({
 // 					title: '工号或密码不能为空',
 // 					icon: 'none'
 // 				})
 // 			}
-				uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
-				uni.setStorageSync("role",1)
-				uni.setStorageSync("userId",'7')
-			uni.switchTab({
-				url: '../broadcast/broadcast',
-			});
+// 				uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
+// 				uni.setStorageSync("role",1)
+// 				uni.setStorageSync("userId",'7')
+// 			uni.switchTab({
+// 				url: '../broadcast/broadcast',
+// 			});
+		},
+		onConfirm(e) {
+			console.log(e);
+			this.selectSchool = e;
+			this.showPicker = !this.showPicker
+		},
+		onCancel() {
+           this.showPicker = !this.showPicker
 		}
-	}
+	},
+	components: {
+		mpVuePicker
+	},
 };
 </script>
 

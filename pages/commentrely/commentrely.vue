@@ -1,30 +1,148 @@
 <template>
 	<view class="comment-rely">
-		<view class="rely-item">
-			<image src="http://app.fjtogo.com/kjwwap/kjw/kjw.png" mode="" class="portrait"></image>
+		<view class="rely-item" v-for="(item,index) in list " :key="index">
+			<image :src="item.avatar" mode="" class="portrait"></image>
 			<view class="rely-info">
-				<view class="name">林小雅</view>
-				<view class="msg">理想还是要回归现实的</view>
-			     <view class="time">昨天 12:15</view>
+				<view class="name">{{item.name}}</view>
+				<view class="msg">{{item.content}}</view>
+				<view class="time">{{item.createtime}}</view>
 			</view>
+		</view>
+		<view :hidden="loadingHidden">
+			<uni-load-more status="loading"></uni-load-more>
+		</view>
+		<view class="footer-area" v-if="!hidden" @click="pop">
+			<view class="input-area" ></view>
+			<view class="text">发布</view>
+		</view>
+		<!-- 阴影层 -->
+		<view class="shadow-area" v-if="hidden" @click="hide"></view>
+		<!-- 输入框 -->
+		<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
+			<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
+			 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
+			<view class="btn-group">
+				 <view class="textarea-num">{{getWordNumber}}</view>
+				 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
+			 </view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 	export default {
 		data() {
 			return {
-				
+				radio_id: '',
+				comment_id: '',
+				msgContent: '',
+				bottom: 0,
+				hidden: false,
+				radioId: '',
+				detail: {},
+				list: [],
+				loadingHidden: true,
+				hasmore: true,
+				curpage: 1,
+				pagesize: 10,
+				token: uni.getStorageSync('token')
+			}
+		},
+		onLoad(option) {
+			this.radio_id = option.radioId
+			this.comment_id = option.commentId
+			this.getReplyList()
+		},
+		computed: {
+			getWordNumber() {
+				return this.msgContent.length
+			},
+			isDisabled() {
+				if (!this.msgContent.length) return true
+				else return false
 			}
 		},
 		methods: {
-			
-		}
+			send() {
+				 let data = {}
+				data['token'] = this.token
+				data['radio_id'] = this.radio_id
+				data['comment_id'] = this.comment_id
+				data['content'] = this.msgContent
+				 this.api.addReplyComment(data).then(res => {
+					  uni.showToast({
+						title: '回复成功',
+						icon: 'none'
+					  })
+					  this.hidden = !this.hidden
+					  this.curpage = 1
+					  this.getReplyList()
+				 })
+			},
+			getReplyList() {
+				let data = {};
+				data["token"] = this.token
+				data["comment_id"] = this.comment_id;
+				data['curpage'] = this.curpage;
+				data['pagesize'] = this.pagesize
+				this.loadingHidden = true;
+				this.api.replyList(data).then(res => {
+					 if (this.curpage == 1) this.list = []
+					 this.list = [...this.list,...res.datas.data]
+					 this.hasmore = res.datas.has_more
+					 this.curpage++
+					 
+				}).catch(err => {
+					
+				})
+			},
+			 hide() {
+				this.hidden = !this.hidden  
+			},
+			pop() {
+				this.hidden = true;
+			},
+			focus(e) {
+				this.bottom = e.detail.height
+			},
+			blur(e) {
+				this.bottom = 0
+			},
+		},
+		onReachBottom() {
+			if(this.hasmore) this.loadingHidden = false
+			else{
+				this.loadingHidden = true
+				return;
+			}
+			this.getReplyList()
+		},
+		components: {
+			uniLoadMore
+		},
 	}
 </script>
 
 <style>
+	button {
+		margin-left: 16upx;
+		margin-right: 0;
+		font-size: 14px;
+		line-height: 2;
+		background: #F74C44;
+		 outline:none;
+		 appearance: none;
+	}
+	button[type=primary]{
+		background: #F74C44;
+	}
+	 button[disabled][type=primary] {
+		 background: #eaeaea;
+	 }
+	 button[disabled] {
+		color:#c1c1c1;
+	}
    view {
 	   line-height: 1;
    }
@@ -62,4 +180,54 @@
    	color: #999999;
    	font-size: 24upx;
    }
+   	.comment-rely .shadow-area {
+   	position: fixed;
+   	top: 0;
+   	bottom: 0;
+   	left: 0;
+   	width: 100vw;
+   	height: 100vh;
+   	background: rgba(0,0,0,.3);
+   	z-index: 9;
+   }
+   .comment-rely .area {
+   	position: fixed;
+   	left: 0;
+   	width: 100vw;
+   	background: #FFFFFF;
+   	z-index: 10;
+   }
+   .comment-rely .write {
+   	padding: 15upx;
+   	width: 100vw;
+   }
+   .comment-rely .area .btn-group {
+   	display: flex;
+   	justify-content:  flex-end;
+   	align-items: center;
+    padding:0 15upx 15upx 0;
+   }
+   .comment-rely .footer-area {
+	   position: fixed;
+	   bottom: 0;
+	   left: 0;
+	   width: 100vw;
+	   padding: 28upx;
+	   box-sizing: border-box;
+	   height: 90upx;
+	   display: flex;
+	   justify-content: space-between;
+	   align-items: center;
+	   background: #fff;
+   }
+   .comment-rely .footer-area .input-area {
+	   width: 550upx;
+	   height: 60upx;
+	   border-radius: 27upx;
+	   background: #EEEEEE;
+   }
+    .comment-rely .footer-area .text {
+		color: #FC4E51;
+		font-size: 28upx;
+	}
 </style>
