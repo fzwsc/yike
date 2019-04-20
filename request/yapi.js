@@ -33,6 +33,10 @@ export default{
 	// 点赞
 	addLike(data){
 		return network.post('/ygb/like/add_ygb_like',data)
+	},
+	// 页面搜索
+	search(data){
+		return network.post("/ygb/index/search",data)
 	}
 	
 	

@@ -100,7 +100,8 @@ export default {
 			pickerValueArray2: [],
 			contJson: {},
 			showPicker2:false,
-			showPicker:false
+			showPicker:false,
+			duration:''
 		};
 	},
 	onLoad(options) {
@@ -111,6 +112,24 @@ export default {
 		var url =`http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		console.log(options.id)
+		console.log(url)
+		
+		    const audio = uni.createInnerAudioContext();
+			// audio.autoplay = true;
+			audio.src = url
+			 audio.onCanplay(()=> {
+			  // 必须。可以当做是初始化时长
+			   audio.duration;
+			  // 必须。不然也获取不到时长
+			  setTimeout(() => {
+				this.duration = audio.duration;
+				console.log(audio.duration); // 401.475918
+			  }, 1000)
+			  })
+		
+		
+		
+		console.log(this.duration)
 		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
 		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
 		let Data = {};

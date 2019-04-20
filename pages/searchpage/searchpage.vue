@@ -5,33 +5,38 @@
 		<!-- 数据界面 -->
 		<view class="cont-box">
 			<view class="tab-box">
-				<view :class="[{'active':index==itemIndex},'tan-nav']" @click="chose(index)" v-for="(item,index) in tabList">{{item}}</view>
+				<view :class="[{'active':index==itemIndex},'tan-nav']" @click="chose(index)" v-for="(item,index) in tabList" :key='item.toString'>{{item}}</view>
 			</view>
 			<view class="yun-box">
 				<!-- 云广播 -->
-				<view class="yun-cont">
-					<image src="../../static/bofang.png" mode="" class="user-img"></image>
+				<view class="yun-cont" v-for="item in contData" :key='item.toString' v-if="show">
+					<image :src="item.avatar" mode="" class="user-img"></image>
 					<view class="user-box">
 						<view class="name">
-							赵胜男
+							{{item.name}}
 						</view>
 						<view class="time">
-							2019-4-15 10:26:37
+							{{item.createtime}}
 						</view>
 					</view>
 					<view class="yun-nei-ro">
-						哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈哈哈哈啊哈
+						{{item.title}}
 					</view>
 				</view>
 				<!-- 老师 -->
-				<view class="teacher-cont">
+				<view class="teacher-cont" v-for="item in maincont" :key='item.toString' v-if="!show">
 					<view class="left-box">
-						<view class="user"><image src="../../static/bofang.png" mode=""></image>黄森艺</view>
-						<view class="courtyard">马克思哲学院系</view>
+						<view class="user"><image :src="item.avatar" mode=""></image>{{item.name}}</view>
+						<view class="courtyard">{{item.collegename}}</view>
 					</view>
 					<view class="right-box">
-						<view class="follow"><text>已关注</text></view>
-						<!-- <view class="no-follow"><text>+关注</text></view> -->
+					<template>
+						<!-- 1已关注2未关注 -->
+							<view class="follow" v-if="item.attention_status==1" @click="follow(item,index)"><text>已关注</text></view>
+					</template>
+					<template>
+						<view class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
+					</template>
 						<view class="courtyard">教授课程：毛概</view>
 					</view>
 				</view>
@@ -40,7 +45,7 @@
 		</view>
 		<!-- 没有数据界面 -->
 
-		<view class="no-data">
+		<view class="no-data" v-show="noData">
 			<image src="../../static/no_data.png" mode=""></image>
 			<view class="tip-color">抱歉，未找到相关结果。</view>
 		</view>
@@ -53,16 +58,50 @@
 		data() {
 			return {
 				tabList:['动态','老师'],
-				itemIndex:0
-				
+				itemIndex:0,
+				contData:[],
+				contDataTeach:[],
+				maincont:[],
+				show:true,
+				noData:false
 			};
 		},
 		methods:{
 		 search(e, val) {
             console.log(e, val);
+			if(e==''){
+				this.noData = false
+			}
+			let par = {}
+			par['token'] = uni.getStorageSync('token')
+			par['words'] = e
+			this.yapi.search(par).then(res=>{
+				 if(res.datas.radio_list==0){
+					    this.noData = true
+				}
+				this.contData = res.datas.radio_list
+				this.contDataTeach = res.datas.teacher_list
+			}).catch(err=>{
+				
+			})
+			
 		  },
 		  chose(index){
 			  this.itemIndex = index
+			  if(this.itemIndex==0){
+				  this.maincont = this.contData
+				  this.show =true
+				  if(this.contData==0){
+					  this.noData = true
+				  }
+			  }else{
+				  this.maincont = this.contDataTeach
+				  this.show =false
+				  if(this.contDataTeach==0){
+				  		this.noData = true
+				  }
+				  
+			  }
 		  }
 		},
 		components:{
