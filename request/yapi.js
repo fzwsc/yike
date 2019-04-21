@@ -37,6 +37,10 @@ export default{
 	// 页面搜索
 	search(data){
 		return network.post("/ygb/index/search",data)
+	},
+	// 收听云广播
+	listenAudo(data){
+		return network.post("/ygb/topic/listen_radio",data)
 	}
 	
 	

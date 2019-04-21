@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key='item.toString'>{{ item.title }}</view>
+			<view @click="choseTab(index,item)" :class="[{ active: activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key='index'>{{ item.title }}</view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" v-for="(item,index) in boxList" :key='item.toString'>
+			<view class="user-info" v-for="(item,index) in boxList" :key='index'>
 				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
@@ -94,7 +94,9 @@
 			</view> -->
 		</view>
 		<!-- mark -->
-		
+		 <view :hidden="hidden">
+			<uni-load-more status="loading"></uni-load-more>
+		</view>
 	</view>
 </template>
 
@@ -107,11 +109,14 @@ export default {
 			activeIndex: 0,
 			isFollow: true,
 			isShowMark: false,
-			curpage:1,
 			boxList:[],
 		     dataConfig:{
 				 token:uni.getStorageSync('token')
-			 }
+			 },
+			 hidden: true,
+			 hasmore: true,
+			 curpage: 1,
+			 pagesize: 10
 		};
 	},
 	onShow() {
@@ -162,16 +167,33 @@ export default {
 		// 切换tab
 		choseTab(index,item) {
 			this.boxList =[]
+			this.curpage=1
 			this.activeIndex = index;
+			this.getNetData(index,item)
+// 			let data = {}
+// 			data.token = uni.getStorageSync('token')
+// 			data.topic_id = item.id;
+// 			data.curpage = this.curpage;
+// 			data.pagesize = 10;
+// 			this.yapi.specialList(data).then(res=>{
+// 				this.boxList = res.datas.data
+// 			}).catch(err=>{
+// 				
+// 			})
+		},
+		getNetData(index,item){
 			let data = {}
 			data.token = uni.getStorageSync('token')
 			data.topic_id = item.id;
 			data.curpage = this.curpage;
 			data.pagesize = 10;
 			this.yapi.specialList(data).then(res=>{
-				this.boxList = res.datas.data
-			}).catch(err=>{
+				 if (this.curpage == 1) this.boxList = []
+					this.boxList = [...this.boxList,...res.datas.data]
+					this.hasmore = res.datas.has_more
+					this.curpage++
 				
+			}).catch(()=>{
 			})
 		},
 		follow() {
@@ -195,6 +217,14 @@ export default {
 		addMark() {
 			this.isShowMark = true;
 		}
+	},
+	onReachBottom() {
+		if(this.hasmore) this.hidden = false
+		else{
+			this.hidden = true
+			return;
+		}
+		this.getNetData(this.activeIndex,this.tabList[this.activeIndex])
 	},
 	components: { uniLoadMore }
 };
