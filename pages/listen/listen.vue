@@ -54,13 +54,13 @@
 			this.getHistoryList()
 		},
 		methods: {
-			getHistoryList() {
+			getHistoryList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.historyList(data).then(res => {
+				this.api.historyList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -76,7 +76,7 @@
 				this.hidden = true
 				return;
 			}
-			this.getHistoryList()
+			this.getHistoryList(true)
 		},
 		components: {
 			uniLoadMore

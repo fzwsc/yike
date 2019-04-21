@@ -32,14 +32,14 @@
 			this.getMessageList()
 		},
 		methods: {
-			getMessageList() {
+			getMessageList(onlyOne = false) {
 			    let data = {};
 				data['origin_user_id'] = this.id;
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.userMessageList(data).then(res => {
+				this.api.userMessageList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -55,7 +55,7 @@
 				this.hidden = true
 				return;
 			}
-			this.getMessageList()
+			this.getMessageList(true)
 		},
 		components: {
 			uniLoadMore

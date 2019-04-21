@@ -153,7 +153,7 @@
 					this.hidden = true
 					return;
 				}
-				this.getTeacherDynamic()
+				this.getTeacherDynamic(true)
 			},
 			studentInfo() {
 				let data = {};
@@ -172,13 +172,13 @@
 				})
 				
 			},
-			getTeacherDynamic() {
+			getTeacherDynamic(onlyOne = false) {
 				let data = {};
 				data['token'] = this.token
 				data['user_id'] = this.user_id;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
-				this.api.teacherDynamic(data).then(res => {
+				this.api.teacherDynamic(data,onlyOne).then(res => {
 					if (this.curpage == 1) this.teacherList = []
 					this.teacherList = [...this.teacherList,...res.datas.data]
 					this.hasmore = res.datas.has_more

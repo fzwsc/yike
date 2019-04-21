@@ -50,13 +50,13 @@
 			this.getRecedList()
 		},
 		methods: {
-			getRecedList() {
+			getRecedList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.recedList(data).then(res => {
+				this.api.recedList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					  this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -72,7 +72,7 @@
 				this.hidden = true
 				return;
 			}
-			this.getRecedList()
+			this.getRecedList(true)
 		},
 		components: {
 			uniLoadMore
