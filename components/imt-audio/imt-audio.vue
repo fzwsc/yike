@@ -98,6 +98,46 @@
 				this.flag = true;
 				this.seek = true
 				this.current= e.detail.value
+			},
+			init() {
+				this.audio = uni.createInnerAudioContext();
+				this.audio.src = this.src
+				this.current = 0
+				this.durationTime = this.format(this.duration)
+				this.audio.obeyMuteSwitch = false
+				this.audio.autoplay = this.autoplay
+				this.getaudio(this.audio)
+				//音频进度更新事件
+				this.audio.onTimeUpdate(() => {
+					if (!this.seek) {
+						this.current = this.audio.currentTime
+					}
+				})
+				//音频播放事件
+				this.audio.onPlay(() => {
+					this.paused = false
+					this.loading = false
+				})
+				//音频暂停事件
+				this.audio.onPause(() => {
+					this.paused = true
+				})
+				//音频结束事件
+				this.audio.onEnded(() => {
+					console.log("endendend---",this.continue);
+				
+					if (this.continue) {
+						this.next()
+					} else {
+					    this.audioEnd(true)
+						this.paused = true
+						this.current = 0
+					}
+				})
+				//音频完成更改进度事件
+				this.audio.onSeeked(() => {
+					this.seek = false
+				})
 			}
 		},
 		created() {

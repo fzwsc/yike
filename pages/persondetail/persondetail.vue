@@ -1,113 +1,115 @@
 <template>
 	<view class="person-detail">
-		<template v-if="isTeacher">
-			<view class="detail-header">
-				<image :src="teacher.avatar" mode="" class="pic"></image>
-				<view class="flex">
-					<view class="info">
-						<view class="name">{{teacher.realname}}</view>
-						<view class="concern">{{teacher.total_fans_num}}人关注</view>
-					</view>
-					<view class="already-concern" v-if="teacher.attention_status == 1" @click="dealConcern(teacher)">
-						 已关注
-					</view>
-					<view class="already-concern" v-else @click="dealConcern(teacher)">
-						 +关注
-					</view>
-				</view>
-			</view>
-		</template>
-		<template v-else>
-			<view class="detail-header">
-				<image :src="student.avatar" mode="" class="pic"></image>
-				<view class="flex">
-					<view class="info">
-						<view class="name">{{student.realname}}</view>
-						<view class="concern">{{student.total_fans_num}}人关注</view>
-					</view>
-					<view class="already-concern" v-if="student.attention_status == 1" @click="dealConcern(student)">
-						 已关注
-					</view>
-					<view class="already-concern" v-else @click="dealConcern(student)">
-						 +关注
-					</view>
-				</view>
-			</view>
-		</template>
-		<view class="detail-container">
+		<template v-if="!whiteScreen">
 			<template v-if="isTeacher">
-				<view class="tab-list">
-					<view class="tab-item" :class="{active: active == 0}" @click="tab(0)">
-						<text class="text">简介</text>
-					</view>
-					<view class="tab-item" :class="{active: active == 1}" @click="tab(1)">
-						<text class="text">动态</text>
-					</view>
-				</view>
-				<view class="tab-con">
-					<template v-if="!active">
-						<view class="scholl-list">
-							<view class="scholl-item">
-								学校：{{teacher.schoolname}}
-							</view>
-							<view class="scholl-item">
-								学院：{{teacher.collegename}}
-							</view>
-							<view class="scholl-item">
-								部门：{{teacher.department}}
-							</view>
+				<view class="detail-header">
+					<image :src="teacher.avatar" mode="" class="pic"></image>
+					<view class="flex">
+						<view class="info">
+							<view class="name">{{teacher.realname}}</view>
+							<view class="concern">{{teacher.total_fans_num}}人关注</view>
 						</view>
-					</template>
-					<template v-else>
-						<scroll-view scroll-y class="scroll-view" @scrolltolower="lower">
-							<view class="teacher-list">
-								<view class="teacher-item" v-for="(item,index) in teacherList" :key="index">
-									<view class="title">{{item.title}}</view>
-									<view class="user-state">
-										<view class="play-num">
-											<image src="../../static/bf.png" mode="" class="pic"></image>
-											<view class="text">{{item.title}}次</view>
-										</view>
-										<view class="timer">
-											<image src="../../static/shijian.png" mode="" class="pic"></image>
-											<view class="text">{{item.duration}}</view>
-										</view>
-										<view class="time">
-											{{item.createtime}}
-										</view>
-									</view>
-								</view>
-								<view :hidden="hidden">
-									<uni-load-more status="loading"></uni-load-more>
-								</view>
-							</view>
-						</scroll-view>
-					</template>
+						<view class="already-concern" v-if="teacher.attention_status == 1" @click="dealConcern(teacher)">
+							 已关注
+						</view>
+						<view class="already-concern" v-else @click="dealConcern(teacher)">
+							 +关注
+						</view>
+					</view>
 				</view>
 			</template>
 			<template v-else>
-				<view class="scholl-list">
-					<view class="scholl-item">
-						学校：{{student.schoolname}}
-					</view>
-					<view class="scholl-item">
-						学院：{{student.college}}
-					</view>
-					<view class="scholl-item">
-						院系：{{student.collegename}}
-					</view>
-					<view class="scholl-item">
-						专业：{{student.profession}}
-					</view>
-					<view class="scholl-item">
-						年级：{{student.enteryear}}
-					</view>
-					<view class="scholl-item">
-						班级：{{student.classname}}
+				<view class="detail-header">
+					<image :src="student.avatar" mode="" class="pic"></image>
+					<view class="flex">
+						<view class="info">
+							<view class="name">{{student.realname}}</view>
+							<view class="concern">{{student.total_fans_num}}人关注</view>
+						</view>
+						<view class="already-concern" v-if="student.attention_status == 1" @click="dealConcern(student)">
+							 已关注
+						</view>
+						<view class="already-concern" v-else @click="dealConcern(student)">
+							 +关注
+						</view>
 					</view>
 				</view>
 			</template>
-		</view>
+			<view class="detail-container">
+				<template v-if="isTeacher">
+					<view class="tab-list">
+						<view class="tab-item" :class="{active: active == 0}" @click="tab(0)">
+							<text class="text">简介</text>
+						</view>
+						<view class="tab-item" :class="{active: active == 1}" @click="tab(1)">
+							<text class="text">动态</text>
+						</view>
+					</view>
+					<view class="tab-con">
+						<template v-if="!active">
+							<view class="scholl-list">
+								<view class="scholl-item">
+									学校：{{teacher.schoolname}}
+								</view>
+								<view class="scholl-item">
+									学院：{{teacher.collegename}}
+								</view>
+								<view class="scholl-item">
+									部门：{{teacher.department}}
+								</view>
+							</view>
+						</template>
+						<template v-else>
+							<scroll-view scroll-y class="scroll-view" @scrolltolower="lower">
+								<view class="teacher-list">
+									<view class="teacher-item" v-for="(item,index) in teacherList" :key="index">
+										<view class="title">{{item.title}}</view>
+										<view class="user-state">
+											<view class="play-num">
+												<image src="../../static/bf.png" mode="" class="pic"></image>
+												<view class="text">{{item.title}}次</view>
+											</view>
+											<view class="timer">
+												<image src="../../static/shijian.png" mode="" class="pic"></image>
+												<view class="text">{{item.duration}}</view>
+											</view>
+											<view class="time">
+												{{item.createtime}}
+											</view>
+										</view>
+									</view>
+									<view :hidden="hidden">
+										<uni-load-more status="loading"></uni-load-more>
+									</view>
+								</view>
+							</scroll-view>
+						</template>
+					</view>
+				</template>
+				<template v-else>
+					<view class="scholl-list">
+						<view class="scholl-item">
+							学校：{{student.schoolname}}
+						</view>
+						<view class="scholl-item">
+							学院：{{student.college}}
+						</view>
+						<view class="scholl-item">
+							院系：{{student.collegename}}
+						</view>
+						<view class="scholl-item">
+							专业：{{student.profession}}
+						</view>
+						<view class="scholl-item">
+							年级：{{student.enteryear}}
+						</view>
+						<view class="scholl-item">
+							班级：{{student.classname}}
+						</view>
+					</view>
+				</template>
+			</view>
+		</template>
 	</view>
 </template>
 
@@ -127,7 +129,8 @@
 				curpage: 1,
 				pagesize: 10,
 				user_id: '',
-				token: uni.getStorageSync('token')
+				token: uni.getStorageSync('token'),
+				whiteScreen: true
 			};
 		},
 		onLoad(option) {
@@ -146,6 +149,8 @@
 			tab(type) {
 				this.active = type
 				this.curpage = 1
+				if(! this.active) this.teacherInfo()
+				else this.getTeacherDynamic()
 			},
 			lower(e) {
 				if(this.hasmore) this.hidden = false
@@ -160,6 +165,7 @@
 				data['user_id'] = this.user_id
 				data['token'] = this.token
 				this.api.studentDetail(data).then(res => {
+					this.whiteScreen = false
 					this.student = res.datas;
 				})
 			},
@@ -168,6 +174,7 @@
 				data['user_id'] = this.user_id
 				data['token'] = this.token
 				this.api.teacherDetail(data).then(res => {
+					this.whiteScreen = false
 					this.teacher = res.datas;
 				})
 				
@@ -189,7 +196,7 @@
 			dealConcern(role) {
 				let data = {},status
 				data['token'] = this.token
-				data['user_id'] = role.id
+				data['user_id'] = role.user_id
 				if (role.attention_status == 1) status = 2
 				else status = 1
 				data['attention_status'] = status

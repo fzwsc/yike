@@ -27,7 +27,7 @@
 	     			{{area.title}}
 	     		</view>
 	     		<view class="audio" v-if="audio.length > 0">
-	     			<imt-audio :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
+	     			<imt-audio ref="imt" :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
 	     			 @next="now = now === audio.length - 1 ? 0 : now + 1" @getaudio="getAudioContext" @end='finish'></imt-audio>
 	     		</view>
 	     	</view>
@@ -127,6 +127,13 @@
 		},
 		onLoad: function() {
 			this.getAudioResource()
+		},
+		onShow() {
+			// this.getAudioResource()
+			 if (this.audioContext) {
+                this.$refs.imt.init()
+				this.$refs.imt.paused = true
+			 }
 		},
 		methods: {
 			comment() {
@@ -240,6 +247,7 @@
 			}
 		},
 		onHide() {
+			console.log('hidden');
 			if (this.audioContext) this.audioContext.destroy();
 		},
 		onUnload() {

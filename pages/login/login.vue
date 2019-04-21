@@ -69,48 +69,48 @@ export default {
 			})
 		},
 		userinfo(e) {
-			if(this.selectSchool.id) {
-				if (this.usn && this.psw ) {
-					let data = {};
-				 data['schoolId'] = this.selectSchool.id
-					data['account'] = this.usn
-					data['password'] = this.psw
-					data['code'] = this.code;
-					data["rawData"] = e.detail.rawData;
-					data["signature"] = e.detail.signature;
-					data["encryptedData"] = e.detail.encryptedData;
-					data["iv"] = e.detail.iv;
-					this.api.Login(data).then(res => {
-						uni.setStorageSync("token",res.datas.token)
-						uni.setStorageSync("userId",res.datas.user_id)
-					 uni.setStorageSync("role",res.datas.role_type)
-						uni.switchTab({
-							url: '../broadcast/broadcast',
-						});
-						
-					})
-				}else {
-					uni.showToast({
-						title: '工号或密码不能为空',
-						icon: 'none'
-					})
-				}
-			}else {
-				    uni.showToast({
-						title: '学校必须选择',
-						icon: 'none'
-					})
-			}
+// 			if(this.selectSchool.id) {
+// 				if (this.usn && this.psw ) {
+// 					let data = {};
+// 				 data['schoolId'] = this.selectSchool.id
+// 					data['account'] = this.usn
+// 					data['password'] = this.psw
+// 					data['code'] = this.code;
+// 					data["rawData"] = e.detail.rawData;
+// 					data["signature"] = e.detail.signature;
+// 					data["encryptedData"] = e.detail.encryptedData;
+// 					data["iv"] = e.detail.iv;
+// 					this.api.Login(data).then(res => {
+// 						uni.setStorageSync("token",res.datas.token)
+// 						uni.setStorageSync("userId",res.datas.user_id)
+// 					 uni.setStorageSync("role",res.datas.role_type)
+// 						uni.switchTab({
+// 							url: '../broadcast/broadcast',
+// 						});
+// 						
+// 					})
+// 				}else {
+// 					uni.showToast({
+// 						title: '工号或密码不能为空',
+// 						icon: 'none'
+// 					})
+// 				}
+// 			}else {
+// 				    uni.showToast({
+// 						title: '学校必须选择',
+// 						icon: 'none'
+// 					})
+// 			}
 
-// 			uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
-// 			uni.setStorageSync("role",1)
-// 			uni.setStorageSync("userId",'7')
-// 			uni.switchTab({
-// 				url: '../broadcast/broadcast',
-// 			});
+			uni.setStorageSync("token",'7ff0068c-3ce8-4cc1-a4b8-1a2de8a3b992')
+			uni.setStorageSync("role",2)
+			uni.setStorageSync("userId",'8')
+			uni.switchTab({
+				url: '../broadcast/broadcast'
+			});
 		},
 		onConfirm(e) {
-			console.log(e);
+			// console.log(e);
 			this.selectSchool = e;
 			this.showPicker = !this.showPicker
 		},

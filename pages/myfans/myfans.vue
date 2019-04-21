@@ -1,8 +1,8 @@
 <template>
 	<view class="my-fans">
-	  <view class="fans-item" v-for="item in list" :key="item.id">
-	  	<navigator :url="'../persondetail/persondetail?id='+item.id" class="fans-t" hover-class="none">
-	  		<view class="info-area">
+	  <view class="fans-item" v-for="(item,index) in list" :key="index">
+	  	<view class="fans-t" hover-class="none">
+	  		<navigator :url="'../persondetail/persondetail?userId='+item.user_id+'&role='+item.role_type" class="info-area" hover-class="none">
 	  			<image :src="item.avatar" mode="" class="pic"></image>
 	  			<view class="user-info">
 	  					<view class="user-name">{{item.realname}}</view>
@@ -10,13 +10,13 @@
 	  						{{item.role_type == 1 ? '学生': '老师'}}
 	  					</view>
 	  				</view>
-	  		</view>
+	  		</navigator>
 			<template v-if="item.role_type == 2">
-			  	 <view class="already-fans" v-if="item.status == 1">已关注</view>
-	          	<view class="already-fans red" v-else>+关注</view>
+			  	 <view class="already-fans" v-if="item.status == 1" @click="dealConcern(item)">已关注</view>
+	          	<view class="already-fans red" v-else @click="dealConcern(item)">+关注</view>
 			</template>
 	  		
-	  	</navigator>
+	  	</view>
 	  	<view class="fans-b">
 	  		<view class="faculty">
 	  			院系： {{item.collegename}}
@@ -43,8 +43,12 @@
 				token: uni.getStorageSync("token")
 			};
 		},
-		onLoad() {
-          this.fansList()
+// 		onLoad() {
+//           this.fansList()
+// 		},
+		onShow() {
+			 if (this.list.length > 0) this.curpage = 1
+			this.fansList()
 		},
 		methods: {
 			fansList(onlyOne = false) {
@@ -61,7 +65,20 @@
 				}).catch(err => {
 					
 				})
-			}
+			},
+			dealConcern(item) {
+				console.log(item);
+				let data = {},status
+				data['token'] = this.token
+				data['user_id'] = item['user_id']
+				if (item.status == 1) status = 2
+				else status = 1
+				data['attention_status'] = status
+				this.api.addAttention(data).then(res => {
+					if (item.status == 1) item.status = 2
+					else item.status = 1
+				})
+			},
 			
 		},
 		onReachBottom() {
@@ -97,7 +114,8 @@
 	   color: #999999;
    }
      .my-fans .fans-t .info-area {
-   		display: flex;
+   		flex: 1;
+		display: flex;
    		align-items: center;
    		font-size: 30upx;
    		color: #333333;
