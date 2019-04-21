@@ -88,6 +88,8 @@ export default {
 		    uni.getStorage({
 		    	key:'objcont',success:function(res){
 					_this.contJson = res.data
+					var obj = {}
+					 _this.radioItems = new Array(_this.contJson.option1,_this.contJson.option2,_this.contJson.option3,_this.contJson.option4)
 				}
 		    })
 			
@@ -102,8 +104,7 @@ export default {
 // 				}
 		
 	
-			var obj = {}
-			 this.radioItems = new Array(_this.contJson.option1,_this.contJson.option2,_this.contJson.option3,_this.contJson.option4)
+			
 		
 // 			this.radioItems.add()
 // 			for(var i=1;i<=4;i++){

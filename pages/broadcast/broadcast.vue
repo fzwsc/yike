@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
+			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="index">{{ item.name }}</view>
 			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
-			<view class="user-info" v-for="(item,index) in getHoneList" :key="item.toString">
+			<view class="user-info" v-for="(item,index) in getHoneList" :key="index">
 				<view @click="detiles(item)">
 					<view class="name-img" @click.stop>
 						<view class="user-box">
@@ -75,6 +75,9 @@
 				</view>
 			</view>
 		</view>
+		  <view :hidden="hidden">
+			<uni-load-more status="loading"></uni-load-more>
+		</view>
 	</view>
 </template>
 
@@ -90,20 +93,19 @@ export default {
 			getHoneList:[],
 			token:uni.getStorageSync('token'),
 			userid:uni.getStorageSync('userId'),
-			role: 2//parseInt(uni.getStorageSync('role'))
+			role: parseInt(uni.getStorageSync('role')),
+			hidden: true,
+			hasmore: true,
+			curpage: 1,
+			pagesize: 10,
 		};
 	},
 	onShow() {
 	   this.getTab()
 	   console.log('onLoad')
+	   this.activeIndex = 0
 	},
 	methods: {
-		getTabList(id){
-			
-		},
-		getList(){
-			
-		},
 		// 评论
 		comment(item){
 			uni.navigateTo({
@@ -165,17 +167,24 @@ export default {
 		choseTab(index,item) {
 			console.log(item)
 			this.activeIndex = index;
+			this.curpage =1
+		    this.getNetData(index,item)
+			
+		},
+		getNetData(index,item){
 			let pram = {}
 			pram.type = item.id;
-			pram.curpage = 1;
-			pram.pagesize = 10;
+			pram.curpage = this.curpage;
+			pram.pagesize = this.pagesize;
 			pram.token = this.token
 			this.yapi.getHoneList(pram).then((res)=>{
-				this.getHoneList = res.datas.data
+				 if (this.curpage == 1) this.getHoneList = []
+					this.getHoneList = [...this.getHoneList,...res.datas.data]
+					this.hasmore = res.datas.has_more
+					this.curpage++
 				
 			}).catch(()=>{
 			})
-			
 		},
 		follow(item,index) {
 		    let data = {};
@@ -221,6 +230,14 @@ export default {
 		addMark() {
 			this.isShowMark = true;
 		}
+	},
+	onReachBottom() {
+		if(this.hasmore) this.hidden = false
+		else{
+			this.hidden = true
+			return;
+		}
+		this.getNetData(this.activeIndex,this.tabList[this.activeIndex])
 	},
 	components: { uniLoadMore }
 };

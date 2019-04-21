@@ -115,11 +115,14 @@ export default {
 			token: uni.getStorageSync('token'),
 			now: 0,
 			radioItems: [],
+			listenStatus:1.,
+			audioId:''
 		};
 	},
 	onLoad:function(option){
 		console.log(option)
-		this.getAudioResource(option.id)
+		this.audioId = option.id
+		this.getAudioResource()
 	},
 	onReachBottom() {
 		this.hidden = false;
@@ -129,6 +132,19 @@ export default {
 		}, 3000);
 	},
 	methods: {
+		// 收听云广播
+		listenRadio(){
+			let par={}
+			par.radio_id = this.audioId
+			par.listen_status = this.listenStatus
+			this.yapi.listenAudo(par).then(res=>{
+				
+				
+			}).catch(err=>{
+				
+			})
+			
+		},
 		comment(){
 			uni.navigateTo({
 				url:"../commentrely/commentrely"
@@ -165,11 +181,13 @@ export default {
 		// 获取音频已播完整首
 		finish(end) {
 			this.isFinish = true;
+			this.listenStatus = 2
+			this.listenRadio();
 		},
 		getAudioResource(id) {
 			let data = {};
 			data['token'] = this.token
-			data['radio_id'] = id;
+			data['radio_id'] = this.audioId;
 			this.yapi.getYunDetils(data).then(res => {
 				this.radioItems = new Array(res.datas.subject_list[0].option1,res.datas.subject_list[0].option2,res.datas.subject_list[0].option3,res.datas.subject_list[0].option4)
 				this.area = res.datas
