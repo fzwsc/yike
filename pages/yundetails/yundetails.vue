@@ -136,6 +136,7 @@ export default {
 		listenRadio(){
 			let par={}
 			par.radio_id = this.audioId
+			par.token = this.token
 			par.listen_status = this.listenStatus
 			this.yapi.listenAudo(par).then(res=>{
 				
