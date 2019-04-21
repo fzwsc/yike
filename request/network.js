@@ -28,6 +28,7 @@ function requestGet(url,data,onlyOne = false) {
         
       },
       fail: function(err) {
+					if(!onlyOne) uni.hideLoading()
          reject(err);
       }
     })
@@ -61,6 +62,7 @@ function requestPost(url,data,onlyOne = false) {
 				}
       },
       fail: function(err) {
+					if(!onlyOne) uni.hideLoading()
          reject(err);
       }
     })

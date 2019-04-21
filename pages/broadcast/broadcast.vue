@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{activeIndex}}--{{index}}{{ item.name }}</view>
+			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
 			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
@@ -163,6 +163,7 @@ export default {
 			})
 		},
 		choseTab(index,item) {
+			console.log(item)
 			this.activeIndex = index;
 			let pram = {}
 			pram.type = item.id;
@@ -210,7 +211,8 @@ export default {
 			uni.navigateTo({
 				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&userid='+this.userid)
+				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&userid='+this.userid)
+				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+this.token+'&userid='+this.userid)
 			});
 		},
 		hidenMark() {
