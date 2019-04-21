@@ -190,10 +190,22 @@ export default {
 				});
 			}
 			else{
-				uni.setStorageSync('onjcont',this.contJson)
-				uni.navigateTo({
-						url: '../proview/proview',
+// 				uni.setStorage({
+// 					key:'objcont',
+// 					data:this.contJson
+// 				})
+				uni.setStorage({
+						key: 'objcont',
+						data: this.contJson,
+						success: function () {
+								uni.navigateTo({
+									url: '../proview/proview',
+								});
+							console.log('success');
+						}
 					});
+				
+			
 					
 			}
 		},

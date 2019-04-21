@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{activeIndex}}--{{index}}{{ item.name }}</view>
+			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="item.toString">{{ item.name }}</view>
 			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
 		</view>
 		<!-- 内容 -->

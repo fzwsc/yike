@@ -14,13 +14,13 @@
 				<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view> -->
 			</view>
 			<view class="audio">
-				<imt-audio
+			<!-- 	<imt-audio
 					continue
 					:src="contJson.mp3Url"
 					:duration="contJson.title	"
 					@prev="now = now === 0 ? audio.length - 1 : now - 1"
 					@next="now = now === audio.length - 1 ? 0 : now + 1"
-				></imt-audio>
+				></imt-audio> -->
 			</view>
 		</view>
 		<view class="ti-cont">
@@ -83,9 +83,27 @@ export default {
 		};
 	},
 		onLoad(options) {
-			this.contJson = uni.getStorageSync('onjcont')
+			let _this = this
+			// this.contJson = uni.getStorage('objcont')
+		    uni.getStorage({
+		    	key:'objcont',success:function(res){
+					_this.contJson = res.data
+				}
+		    })
+			
+	
+// 	          try {
+// 				  const value = wx.getStorageSync('key')
+// 				  if (value) {
+// 					// Do something with return value
+// 				  }
+// 				} catch (e) {
+// 				  // Do something when catch error
+// 				}
+		
+	
 			var obj = {}
-			 this.radioItems = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4)
+			 this.radioItems = new Array(_this.contJson.option1,_this.contJson.option2,_this.contJson.option3,_this.contJson.option4)
 		
 // 			this.radioItems.add()
 // 			for(var i=1;i<=4;i++){
@@ -96,8 +114,8 @@ export default {
 // 			}
 			
 		
-			console.log(this.contJson)
-			console.log(this.radioItems)
+			console.log(_this.contJson)
+			console.log(_this.radioItems)
 			
 		},
 	onReachBottom() {
@@ -117,6 +135,7 @@ export default {
 		
 		upFile(){
 			this.contJson.token = uni.getStorageSync('token');
+			console.log(this.contJson)
 			this.yapi.addYunCont(this.contJson).then(res=>{
 				if(res.code==200){
 					uni.reLaunch({
