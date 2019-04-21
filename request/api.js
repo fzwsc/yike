@@ -9,16 +9,16 @@ export default{
 		return network.get('/ygb/user/school_list',data)
 	},
 	// 获取消息点赞列表
-	belikeList(data) {
-		return network.post('/ygb/like/belike_list',data)
+	belikeList(data,onlyOne) {
+		return network.post('/ygb/like/belike_list',data,onlyOne)
 	},
 	// 获取消息评论列表
-	recedList(datda) {
-		return network.post('/ygb/comment/get_reced_list',data)
+	recedList(datda,onlyOne) {
+		return network.post('/ygb/comment/get_reced_list',data,onlyOne)
 	},
 	// 获取消息回复列表
-	answerList(data) {
-		return network.post('/ygb/comment/get_answered_list',data)
+	answerList(data,onlyOne) {
+		return network.post('/ygb/comment/get_answered_list',data,onlyOne)
 	},
 	// 点赞云广播
 	likeygb(data) {
@@ -41,8 +41,8 @@ export default{
 		return network.get('/ygb/message/update_msg_status',data)
 	},
 	// 评论列表
-	commentList(data) {
-		return network.get('/ygb/topic/comment_list',data)
+	commentList(data,onlyOne) {
+		return network.get('/ygb/topic/comment_list',data,onlyOne)
 	},
 	// 评论云广播
 	addYgbComment(data) {
@@ -57,12 +57,12 @@ export default{
 	  return network.get('/ygb/topic/reply_list',data) 	
 	},
 	// 消息列表
-	userMessageList(data) {
-		return network.post('/ygb/message/get_user_message_list',data)
+	userMessageList(data,onlyOne) {
+		return network.post('/ygb/message/get_user_message_list',data,onlyOne)
 	},
 	// 消息内容列表
-	messageList(data) {
-		return network.post('/ygb/message/get_message_list',data)
+	messageList(data,onlyOne) {
+		return network.post('/ygb/message/get_message_list',data,onlyOne)
 	},
 	
 	// 播放区
@@ -78,8 +78,8 @@ export default{
 		return network.get('/ygb/user/teacher_detail',data)
 	},
 	// 老师动态
-	teacherDynamic(data) {
-		return network.get('/ygb/user/teacher_dynamic',data)
+	teacherDynamic(data,onlyOne) {
+		return network.get('/ygb/user/teacher_dynamic',data,onlyOne)
 	},
 	// 教师个人中心
 	teacherInfo(data) {
@@ -98,28 +98,28 @@ export default{
 		return network.post('/ygb/user/get_scorelist',data,onlyOne)
 	},
 	// 我的点赞
-	myLikeList(data) {
-		return network.post('/ygb/like/like_list',data)
+	myLikeList(data,onlyOne) {
+		return network.post('/ygb/like/like_list',data,onlyOne)
 	},
 	// 我的评论
-	myRecedList(data) {
-		return network.post('/ygb/comment/get_my_reced_list',data)
+	myRecedList(data,onlyOne) {
+		return network.post('/ygb/comment/get_my_reced_list',data,onlyOne)
 	},
     // 我的粉丝
-    myfans(data) {
-       return network.post("/ygb/user/fans_list",data);
+    myfans(data,onlyOne) {
+       return network.post("/ygb/user/fans_list",data,onlyOne);
     },
 	// 已关注
-	attentionList(data) {
-		return network.post('/ygb/user/attention_list',data)
+	attentionList(data,onlyOne) {
+		return network.post('/ygb/user/attention_list',data,onlyOne)
 	},
 	// 推荐列表
-	recommendList(data) {
-		return network.post('/ygb/user/recommend_list',data)
+	recommendList(data,onlyOne) {
+		return network.post('/ygb/user/recommend_list',data,onlyOne)
 	},
 	// 最近收听
-	historyList(data) {
-		return network.post('/ygb/user/history_list',data)
+	historyList(data,onlyOne) {
+		return network.post('/ygb/user/history_list',data,onlyOne)
 	}
 
 }

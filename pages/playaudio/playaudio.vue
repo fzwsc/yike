@@ -157,10 +157,10 @@
 					let audioJson = {
 						// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
 						// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
-// 						src: res.datas.radio,
-// 						duration: res.datas.duration
-                        src: 'http://mouyizhan.com/1.mp3',
-					    duration: 212
+						src: res.datas.radio,
+						duration: res.datas.duration
+//                         src: 'http://mouyizhan.com/1.mp3',
+// 					    duration: 212
 					}
 				
 					this.audio.push(audioJson)

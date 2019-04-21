@@ -63,13 +63,13 @@
 				}
 				
 			},
-			getAttentionList() {
+			getAttentionList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.attentionList(data).then(res => {
+				this.api.attentionList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -79,13 +79,13 @@
 					
 				})
 			},
-			getRecommendList() {
+			getRecommendList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.recommendList(data).then(res => {
+				this.api.recommendList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -101,9 +101,9 @@
 					return;
 				}
 				if (this.active) {
-					this.getRecommendList()
+					this.getRecommendList(true)
 				} else{
-					this.getAttentionList()
+					this.getAttentionList(true)
 				}
 				
 			},

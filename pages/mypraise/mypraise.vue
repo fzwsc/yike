@@ -69,13 +69,13 @@
 			this.getBelikeList()
 		},
 		methods: {
-			getBelikeList() {
+			getBelikeList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.myLikeList(data).then(res => {
+				this.api.myLikeList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					  this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -91,7 +91,7 @@
 				this.hidden = true
 				return;
 			}
-			this.getBelikeList()
+			this.getBelikeList(true)
 		},
 		components: {
 			uniLoadMore

@@ -1,31 +1,33 @@
 <template>
 	<view class="comment-rely">
-		<view class="rely-item" v-for="(item,index) in list " :key="index">
-			<image :src="item.avatar" mode="" class="portrait"></image>
-			<view class="rely-info">
-				<view class="name">{{item.name}}</view>
-				<view class="msg">{{item.content}}</view>
-				<view class="time">{{item.createtime}}</view>
+		<template v-if="!whiteScreen">
+			<view class="rely-item" v-for="(item,index) in list " :key="index">
+				<image :src="item.avatar" mode="" class="portrait"></image>
+				<view class="rely-info">
+					<view class="name">{{item.name}}</view>
+					<view class="msg">{{item.content}}</view>
+					<view class="time">{{item.createtime}}</view>
+				</view>
 			</view>
-		</view>
-		<view :hidden="loadingHidden">
-			<uni-load-more status="loading"></uni-load-more>
-		</view>
-		<view class="footer-area" v-if="!hidden" @click="pop">
-			<view class="input-area" ></view>
-			<view class="text">发布</view>
-		</view>
-		<!-- 阴影层 -->
-		<view class="shadow-area" v-if="hidden" @click="hide"></view>
-		<!-- 输入框 -->
-		<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
-			<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
-			 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
-			<view class="btn-group">
-				 <view class="textarea-num">{{getWordNumber}}</view>
-				 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
-			 </view>
-		</view>
+			<view :hidden="loadingHidden">
+				<uni-load-more status="loading"></uni-load-more>
+			</view>
+			<view class="footer-area" v-if="!hidden" @click="pop">
+				<view class="input-area" ></view>
+				<view class="text">发布</view>
+			</view>
+			<!-- 阴影层 -->
+			<view class="shadow-area" v-if="hidden" @click="hide"></view>
+			<!-- 输入框 -->
+			<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
+				<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
+				 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
+				<view class="btn-group">
+					 <view class="textarea-num">{{getWordNumber}}</view>
+					 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
+				 </view>
+			</view>
+		</template>
 	</view>
 </template>
 
@@ -46,7 +48,8 @@
 				hasmore: true,
 				curpage: 1,
 				pagesize: 10,
-				token: uni.getStorageSync('token')
+				token: uni.getStorageSync('token'),
+				whiteScreen: true
 			}
 		},
 		onLoad(option) {
@@ -80,14 +83,15 @@
 					  this.getReplyList()
 				 })
 			},
-			getReplyList() {
+			getReplyList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token
 				data["comment_id"] = this.comment_id;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.loadingHidden = true;
-				this.api.replyList(data).then(res => {
+				this.api.replyList(data,onlyOne).then(res => {
+					 this.whiteScreen = false
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more
@@ -116,7 +120,7 @@
 				this.loadingHidden = true
 				return;
 			}
-			this.getReplyList()
+			this.getReplyList(true)
 		},
 		components: {
 			uniLoadMore

@@ -1,94 +1,96 @@
 <template>
 	<view class="comment-detail">
-		<view class="comments-header">
-			<view class="flex">
-				<view class="user-info" v-if="detail.user_info">
-					<image :src="detail.user_info.avatar" mode="" class="pic"></image>
-					<view class="">
-						<view class="user-name">{{detail.user_info.avatar.name}}</view>
-						<view class="content">
-							{{detail.title}}
-						</view>
-					</view>
-				</view>
-				<template v-if="detail.user_info.attention_status == 1" >
-					<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">已关注</view>
-				</template>
-				<template v-else>
-					<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">+关注</view>
-				</template>
-				
-			</view>
-			<view class="user-state">
-				<view class="play-num">
-					<image src="../../static/bf.png" mode="" class="pic"></image>
-					<view class="text">{{detail.read_num}}次</view>
-				</view>
-				<view class="timer">
-					<image src="../../static/shijian.png" mode="" class="pic"></image>
-					<view class="text">{{detail.duration}}'</view>
-				</view>
-				<view class="time">
-					{{detail.createtime}}
-				</view>
-			</view>
-		</view>
-		<view class="content">
-			<view class="content-title">
-				评论({{list.length}})
-			</view>
-			<view class="comment-list">
-				<view v-for="(item,index) in list" :key="index" class="comment-item"  >
-					<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" class="portrait-style" hover-class="none">
-						<image :src="item.avatar" mode="" class="portrait" ></image>
-					</navigator>
-					<view class="comment-info">
-						<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" hover-class="none">
-							<view class="name">{{item.name}}</view>
-							<view class="msg">{{item.content}}</view>
-						</navigator>
-						<view class="state">
-							<view class="time">昨天 12:15</view>
-							<view class="icon half">
-								<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}</view>
-							<view class="icon" @click="like(item.comment_id,index,item)">
-								<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
-						</view>
-					</view>
-				</view>
-				 <view :hidden="loadingHidden">
-					<uni-load-more status="loading"></uni-load-more>
-				</view>
-			</view>
-		</view>
-		<!-- 底部 -->
-		<view class="button-cont" v-show="!hidden">
-			<view class="control-box">
-				<view class="box-ico box-ico1">
-					<image src="../../static/tiwen.png" mode=""></image>
-					提问
-				</view>
-				<view class="box-ico" @click="pop">
-					<image src="../../static/pinglun.png" mode="" />
-					评论
-				</view>
-				<view class="box-ico box-ico2">
-					<image src="../../static/zan.png" mode="" />
-					点赞
-				</view>
-			</view>
-		</view>
-		<!-- 阴影层 -->
-		<view class="shadow-area" v-if="hidden" @click="hide"></view>
-		<!-- 输入框 -->
-		<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
-			<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
-			 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
-			<view class="btn-group">
-				 <view class="textarea-num">{{getWordNumber}}</view>
-				 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
-			 </view>
-		</view>
+	   <template v-if="!whiteScreen">
+	   		<view class="comments-header">
+	   		<view class="flex">
+	   			<view class="user-info" v-if="detail.user_info">
+	   				<image :src="detail.user_info.avatar" mode="" class="pic"></image>
+	   				<view class="">
+	   					<view class="user-name">{{detail.user_info.avatar.name}}</view>
+	   					<view class="content">
+	   						{{detail.title}}
+	   					</view>
+	   				</view>
+	   			</view>
+	   			<template v-if="detail.user_info.attention_status == 1" >
+	   				<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">已关注</view>
+	   			</template>
+	   			<template v-else>
+	   				<view class="already-concern" @click="dealConcern(detail.user_id,detail.user_info.attention_status)">+关注</view>
+	   			</template>
+	   			
+	   		</view>
+	   		<view class="user-state">
+	   			<view class="play-num">
+	   				<image src="../../static/bf.png" mode="" class="pic"></image>
+	   				<view class="text">{{detail.read_num}}次</view>
+	   			</view>
+	   			<view class="timer">
+	   				<image src="../../static/shijian.png" mode="" class="pic"></image>
+	   				<view class="text">{{detail.duration}}'</view>
+	   			</view>
+	   			<view class="time">
+	   				{{detail.createtime}}
+	   			</view>
+	   		</view>
+	   	</view>
+	   	<view class="content">
+	   		<view class="content-title">
+	   			评论({{list.length}})
+	   		</view>
+	   		<view class="comment-list">
+	   			<view v-for="(item,index) in list" :key="index" class="comment-item"  >
+	   				<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" class="portrait-style" hover-class="none">
+	   					<image :src="item.avatar" mode="" class="portrait" ></image>
+	   				</navigator>
+	   				<view class="comment-info">
+	   					<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" hover-class="none">
+	   						<view class="name">{{item.name}}</view>
+	   						<view class="msg">{{item.content}}</view>
+	   					</navigator> 
+	   					<view class="state">
+	   						<view class="time">{{item.createtime}}</view>
+	   						<view class="icon half">
+	   							<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}</view>
+	   						<view class="icon" @click="like(item.comment_id,index,item)">
+	   							<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
+	   					</view>
+	   				</view>
+	   			</view>
+	   			 <view :hidden="loadingHidden">
+	   				<uni-load-more status="loading"></uni-load-more>
+	   			</view>
+	   		</view>
+	   	</view>
+	   	<!-- 底部 -->
+	   	<view class="button-cont" v-show="!hidden">
+	   		<view class="control-box">
+	   			<view class="box-ico box-ico1">
+	   				<image src="../../static/tiwen.png" mode=""></image>
+	   				提问
+	   			</view>
+	   			<view class="box-ico" @click="pop">
+	   				<image src="../../static/pinglun.png" mode="" />
+	   				评论
+	   			</view>
+	   			<view class="box-ico box-ico2">
+	   				<image src="../../static/zan.png" mode="" />
+	   				点赞
+	   			</view>
+	   		</view>
+	   	</view>
+	   	<!-- 阴影层 -->
+	   	<view class="shadow-area" v-if="hidden" @click="hide"></view>
+	   	<!-- 输入框 -->
+	   	<view class="area" v-if="hidden" :style="{bottom: bottom+'px'}">
+	   		<textarea v-model="msgContent" placeholder="写评论" class="write" :adjust-position="false" fixed :maxlength="-1" focus
+	   		 @focus="focus" @blur="blur" auto-height :show-confirm-bar="false" />
+	   		<view class="btn-group">
+	   			 <view class="textarea-num">{{getWordNumber}}</view>
+	   			 <button type="primary" hover-class="none" :disabled="isDisabled" @click="send">发送</button>
+	   		 </view>
+	   	</view>
+	   </template>
 	</view>
 </template>
 
@@ -107,7 +109,8 @@
 			   hasmore: true,
 			   curpage: 1,
 			   pagesize: 6,
-			   token: uni.getStorageSync('token')
+			   token: uni.getStorageSync('token'),
+			   whiteScreen: true
 			}
 		},
 		onLoad(option) {
@@ -151,14 +154,15 @@
 		  blur(e) {
 			  this.bottom = 0
 		  },
-		  getCommentList() {
+		  getCommentList(onlyOne = false) {
 			  let data = {};
 			  data["token"] = this.token
 			  data["radio_id"] = this.radioId;
 			  data['curpage'] = this.curpage;
 			  data['pagesize'] = this.pagesize
 			  this.loadingHidden = true;
-			  this.api.commentList(data).then(res => {
+			  this.api.commentList(data,onlyOne).then(res => {
+				  this.whiteScreen = false
 				  this.detail = res.datas;
 			  	 if (this.curpage == 1) this.list = []
 			  	 this.list = [...this.list,...res.datas.comment_list.data]
@@ -209,7 +213,7 @@
 				this.loadingHidden = true
 				return;
 			}
-			this.getCommentList()
+			this.getCommentList(true)
 		}
 	}
 </script>
