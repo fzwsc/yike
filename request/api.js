@@ -94,8 +94,8 @@ export default{
 		return network.get('/ygb/user/student_info',data)
 	},
 	// 我的积分
-	scoreList(data) {
-		return network.post('/ygb/user/get_scorelist',data)
+	scoreList(data,onlyOne) {
+		return network.post('/ygb/user/get_scorelist',data,onlyOne)
 	},
 	// 我的点赞
 	myLikeList(data) {

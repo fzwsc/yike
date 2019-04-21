@@ -125,9 +125,18 @@ export default {
 			this.yapi.addYunCont(this.contJson).then(res=>{
 				if(res.code==200){
 					uni.switchTab({
-						url:'/pages/broadcast/broadcast'
+						url:'/pages/broadcast/broadcast',
+						 success: function (e) {
+
+				         var page = getCurrentPages().pop();
+                          console.log(page);
+				         if (page == undefined || page == null) return;
+
+				              page.onShow();
+
+				         }
 					})
-					return
+					// return
 				}else{
 					uni.showToast({
 						icon:"none",

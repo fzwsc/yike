@@ -1,6 +1,11 @@
 import {API_URL} from './base'
-function requestGet(url,data) {
+function requestGet(url,data,onlyOne = false) {
+		if(!onlyOne) uni.showLoading({
+		title:'加载中',
+		mask: true
+	})
   return new Promise((resolve, reject) => {
+	
     uni.request({
       url: API_URL + url,
       data: data,
@@ -9,6 +14,7 @@ function requestGet(url,data) {
         'content-type': 'application/x-www-form-urlencoded',
       },
       success: function(res){
+				 	if(!onlyOne) uni.hideLoading()
          if (res.data.code == 200) {
           resolve(res.data);
         }else if(res.data.code == -1){
@@ -27,7 +33,11 @@ function requestGet(url,data) {
     })
   })
 }
-function requestPost(url,data) {
+function requestPost(url,data,onlyOne = false) {
+		if(!onlyOne) uni.showLoading({
+		title:'加载中',
+		mask: true
+	})
   return new Promise((resolve, reject) => {
     uni.request({
       url: API_URL + url,
@@ -37,6 +47,7 @@ function requestPost(url,data) {
         'content-type': 'application/x-www-form-urlencoded',
       },
       success: function(res){
+				 	if(!onlyOne) uni.hideLoading()
         //注意：可以对参数解密等处理
         if (res.data.code == 200) {
           resolve(res.data);

@@ -45,20 +45,20 @@
 				hasmore: true,
 				curpage: 1,
 				pagesize: 11,
-				token: uni.getStorageSync("token")
+				token: uni.getStorageSync("token"),
 			};
 		},
 		onLoad() {
 			this.getScoreList()
 		},
 		methods: {
-			getScoreList() {
+			getScoreList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.scoreList(data).then(res => {
+				this.api.scoreList(data,onlyOne).then(res => {
 					 this.userInfo = res.datas.data.user_info
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data.scorelist]
@@ -72,10 +72,10 @@
 		onReachBottom() {
 			if(this.hasmore) this.hidden = false
 			else{
-				this.hidden = true
+				this.hidden = true 
 				return;
 			}
-			this.getScoreList()
+			this.getScoreList(true)
 		},
 		components: {
 			uniLoadMore

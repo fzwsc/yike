@@ -1,66 +1,68 @@
 <template>
 	<view class="person">
-		<view class="set-space">
-			<view class="my-info">
-				<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="pic-con" hover-class="none">
-					<image :src="userInfo.avatar" mode="" class="pic"></image>
-				</navigator>
-				<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="info-desc" hover-class="none">
-					<view class="nickname">{{userInfo.realname}} <image :src="userInfo.gender == 0 ? '../../static/nan.png' : '../../static/nv.png'" mode="" class="sex"></image></view>
-					<view class="scholl-name">
-						{{userInfo.schoolname}}
-					</view>
-				</navigator>
-				<navigator url="../myfans/myfans" class="btn-fans" hover-class="none" v-if="userInfo.role_type == 2">
-					粉丝({{userInfo.total_fans_num > 99 ? '99+':userInfo.total_fans_num }})
-				</navigator>
-			</view>
-		</view>
-		<view class="follow-con">
-			<view class="text">我的关注</view>
-			<view class="follow-area">
-				<view class="follow-list">
-					<navigator :url="'../persondetail/persondetail?role='+userInfo.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
-						<image :src="item.avatar" mode="" class="pic"></image>
-						<view class="user-name">{{item.realname}}</view>
+		<template v-if="!whiteScreen">
+			<view class="set-space">
+				<view class="my-info">
+					<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="pic-con" hover-class="none">
+						<image :src="userInfo.avatar" mode="" class="pic"></image>
+					</navigator>
+					<navigator :url="'../personinfo/personinfo?role='+userInfo.role_type" class="info-desc" hover-class="none">
+						<view class="nickname">{{userInfo.realname}} <image :src="userInfo.gender == 0 ? '../../static/nan.png' : '../../static/nv.png'" mode="" class="sex"></image></view>
+						<view class="scholl-name">
+							{{userInfo.schoolname}}
+						</view>
+					</navigator>
+					<navigator url="../myfans/myfans" class="btn-fans" hover-class="none" v-if="userInfo.role_type == 2">
+						粉丝({{userInfo.total_fans_num > 99 ? '99+':userInfo.total_fans_num }})
 					</navigator>
 				</view>
-				<navigator url="../myconcern/myconcern" class="more" hover-class="none">更多</navigator>
 			</view>
-		</view>
-		<view class="type-list">
-			<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
-				<image src="../../static/jife.png" mode="" class="pic"></image>
-				<view class="text">我的积分</view>
-				<view class="arrow"></view>
-			</navigator>
-			<navigator url="../mypraise/mypraise" class="type-item" hover-class="none">
-				<image src="../../static/dianzan.png" mode="" class="pic"></image>
-				<view class="text">我的点赞</view>
-				<view class="arrow"></view>
-			</navigator>
-			<navigator url="../mycomments/mycomments" class="type-item" hover-class="none">
-				<image src="../../static/my-pinglun.png" mode="" class="pic"></image>
-				<view class="text">我的评论</view>
-				<view class="arrow"></view>
-			</navigator>
-			<navigator url="../listen/listen" class="type-item" hover-class="none">
-				<image src="../../static/shouting.png" mode="" class="pic"></image>
-				<view class="text">最近收听</view>
-				<view class="arrow"></view>
-			</navigator>
-			<view class="type-item">
-				<image src="../../static/shezhi.png" mode="" class="pic"></image>
-				<view class="text">设置</view>
-				<view class="arrow"></view>
+			<view class="follow-con">
+				<view class="text">我的关注</view>
+				<view class="follow-area">
+					<view class="follow-list">
+						<navigator :url="'../persondetail/persondetail?role='+userInfo.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
+							<image :src="item.avatar" mode="" class="pic"></image>
+							<view class="user-name">{{item.realname}}</view>
+						</navigator>
+					</view>
+					<navigator url="../myconcern/myconcern" class="more" hover-class="none">更多</navigator>
+				</view>
 			</view>
-			<!-- <navigator url="../setting/setting" class="type-item" hover-class="none">
-				<image src="../../static/shezhi.png" mode="" class="pic"></image>
-				<view class="text">设置</view>
-				<view class="arrow"></view>
-			</navigator> -->
-		</view>
-
+			<view class="type-list">
+				<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
+					<image src="../../static/jife.png" mode="" class="pic"></image>
+					<view class="text">我的积分</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../mypraise/mypraise" class="type-item" hover-class="none">
+					<image src="../../static/dianzan.png" mode="" class="pic"></image>
+					<view class="text">我的点赞</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../mycomments/mycomments" class="type-item" hover-class="none">
+					<image src="../../static/my-pinglun.png" mode="" class="pic"></image>
+					<view class="text">我的评论</view>
+					<view class="arrow"></view>
+				</navigator>
+				<navigator url="../listen/listen" class="type-item" hover-class="none">
+					<image src="../../static/shouting.png" mode="" class="pic"></image>
+					<view class="text">最近收听</view>
+					<view class="arrow"></view>
+				</navigator>
+				<view class="type-item">
+					<image src="../../static/shezhi.png" mode="" class="pic"></image>
+					<view class="text">设置</view>
+					<view class="arrow"></view>
+				</view>
+				<!-- <navigator url="../setting/setting" class="type-item" hover-class="none">
+					<image src="../../static/shezhi.png" mode="" class="pic"></image>
+					<view class="text">设置</view>
+					<view class="arrow"></view>
+				</navigator> -->
+			</view>
+			
+		</template>
 	</view>
 </template>
 
@@ -70,7 +72,8 @@
 			return {
 				token: uni.getStorageSync("token"),
 				userInfo: {},
-				concernList: []
+				concernList: [],
+				whiteScreen: true
 			}
 		},
 		onShow() {
@@ -85,6 +88,7 @@
 // 					mask: true
 // 				});
 				this.api.myInfo(data).then(res => {
+					this.whiteScreen = false
 					this.userInfo = res.datas.user
 					this.concernList = res.datas.fans_list
 				})

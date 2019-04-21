@@ -110,8 +110,7 @@
 			dealConcern(item,index) {
 				let data = {},status
 				data['token'] = this.token
-				if (!this.active) data['user_id'] = item.be_user_id
-				else data['user_id'] = item.user_id
+			    data['user_id'] = item.be_user_id
 				if (item.status == 1) status = 2
 				else status = 1
 				data['attention_status'] = status

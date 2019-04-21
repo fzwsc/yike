@@ -9,7 +9,7 @@
 			</view>
 			<view class="gong-hao">
 				<view>工号</view>
-				<input type="number" v-model="usn"  placeholder="请输入工号" />
+				<input type="text" v-model="usn"  placeholder="请输入工号" />
 			</view>
 			<view class="gong-hao">
 				<view>密码</view>

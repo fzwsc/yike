@@ -1,105 +1,110 @@
 <template>
 	<view class="play-audio">
-		<!-- 头部播放区 -->
-		<view class="head-box">
-			<view class="name-img">
-				<view class="user-box">
-					<image :src="area.user_info.avatar" mode=""></image>
-					<view class="text-info">
-						<text>{{area.user_info.name}}</text>
-						<text>{{area.user_info.attention_num}}人关注</text>
-					</view>
-				</view>
-				<template v-if="area.attention_status == 1">
-					<view class="concern-btn"  @click="dealConcern(area.user_id,area.user_info.attention_status)">
-						已关注
-					</view>
-				</template>
-				<template v-else>
-					<view class="concern-btn" @click="dealConcern(area.user_id,area.user_info.attention_status)">
-						未关注
-					</view>
-				</template>
-
-			</view>
-			<view class="audio-title">
-				{{area.title}}
-			</view>
-			<view class="audio" v-if="audio.length > 0">
-				<imt-audio :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
-				 @next="now = now === audio.length - 1 ? 0 : now + 1" @getaudio="getAudioContext" @end='finish'></imt-audio>
-			</view>
-		</view>
-		<!-- 题目回区域 -->
-		<view class="ti-cont" v-if="radioItems.length > 0">
-			<view class="title">问题：</view>
-			<view class="ti-cont-line">{{radioItems[0].descript}}</view>
-			<view class="answer-box">
-				<view class="answer" @click="reply(radioItems,1)">
-				    <image :src=" right == 1 ? '../../static/dui.png' : error == 1 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
-					<view class="text">{{radioItems[0].option1}}</view>
-				</view>
-				<view class="answer" @click="reply(radioItems,2)">
-				    <image :src=" right == 2 ? '../../static/dui.png' : error == 2 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
-					<view class="text">{{radioItems[0].option2}}</view>
-				</view>
-				<view class="answer" v-if="radioItems[0].option3" @click="reply(radioItems,3)">
-				    <image :src=" right == 3 ? '../../static/dui.png' : error == 3 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic"></image> 
-					<view class="text">{{radioItems[0].option3}}</view>
-				</view>
-				<view class="answer" v-if="radioItems[0].option4" @click="reply(radioItems,4)">
-				    <image :src=" right == 4 ? '../../static/dui.png' : error == 4 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image>
-					<view class="text">{{radioItems[0].option4}}</view>
-				</view>
-			</view>
-		</view>
-		<!-- <view class="fixed-answer"></view> -->
-		<!-- 评论区 -->
-		<view class="comment-box">
-			<text class="comment-line">评论区</text>
-			<template v-if="area.comment_list.length > 0">
-				<view class="line" v-for="(item,index) in area.comment_list" :key="index" @click="like(item.comment_id,index,item)">
-					<view class="line-in-box">
-						<view class="coment-box-in">
-							<view class="user-box comment-box-user">
-								<image :src="item.avatar" mode=""></image>
-								<view class="text-info">
-									<text>{{item.name}}</text>
-									<text>{{item.createtime}}</text>
-								</view>
-							</view>
-							<view class="nei-ron">{{item.content}}</view>
-							<view class="zan-comment">
-								<view>
-									<image src="../../static/pinglun.png" mode="" @click="comment()"></image>{{item.reply_num}}
-								</view>
-								<view>
-									<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode=""></image>{{item.like_num}}
-								</view>
-							</view>
-						</view>
-
-					</view>
-				</view>
-			</template>
-		</view>
-		<!-- 底部 -->
-		<view class="button-cont">
-			<view class="control-box">
-				<view class="box-ico box-ico1">
-					<image src="../../static/tiwen.png" mode=""></image>
-					提问
-				</view>
-				<navigator :url="'../commentdetail/commentdetail?radioId='+area.id" class="box-ico" hover-class="none">
-					<image src="../../static/pinglun.png" mode="" />
-					{{area.comment_num ? area.comment_num : 0}}
-				</navigator>
-				<view class="box-ico box-ico2" @click="likeYgb(area.id)">
-					<image :src="area.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" />
-					{{area.like_num ? area.like_num : 0}}
-				</view>
-			</view>
-		</view>
+	     <template v-if="!whiteScreen">
+	     	<!-- 头部播放区 -->
+	     	<view class="head-box">
+	     		<view class="name-img">
+	     			<view class="user-box">
+	     				<image :src="area.user_info.avatar" mode=""></image>
+	     				<view class="text-info">
+	     					<text>{{area.user_info.name}}</text>
+	     					<text>{{area.user_info.attention_num}}人关注</text>
+	     				</view>
+	     			</view>
+	     			<template v-if="area.user_info.attention_status == 1">
+	     				<view class="concern-btn"  @click="dealConcern(area.user_id,area.user_info.attention_status)">
+	     					已关注
+	     				</view>
+	     			</template>
+	     			<template v-else>
+	     				<view class="concern-btn" @click="dealConcern(area.user_id,area.user_info.attention_status)">
+	     					+关注
+	     				</view>
+	     			</template>
+	     	
+	     		</view>
+	     		<view class="audio-title">
+	     			{{area.title}}
+	     		</view>
+	     		<view class="audio" v-if="audio.length > 0">
+	     			<imt-audio :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
+	     			 @next="now = now === audio.length - 1 ? 0 : now + 1" @getaudio="getAudioContext" @end='finish'></imt-audio>
+	     		</view>
+	     	</view>
+	     	<!-- 题目回区域 -->
+	     	<view class="ti-cont" v-if="radioItems.length > 0">
+	     		<view class="title">问题：</view>
+	     		<view class="ti-cont-line">{{radioItems[0].descript}}</view>
+	     		<view class="answer-box">
+	     			<view class="answer" @click="reply(radioItems,1)">
+	     			    <image :src=" right == 1 ? '../../static/dui.png' : error == 1 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
+	     				<view class="text">{{radioItems[0].option1}}</view>
+	     			</view>
+	     			<view class="answer" @click="reply(radioItems,2)">
+	     			    <image :src=" right == 2 ? '../../static/dui.png' : error == 2 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image> 
+	     				<view class="text">{{radioItems[0].option2}}</view>
+	     			</view>
+	     			<view class="answer" v-if="radioItems[0].option3" @click="reply(radioItems,3)">
+	     			    <image :src=" right == 3 ? '../../static/dui.png' : error == 3 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic"></image> 
+	     				<view class="text">{{radioItems[0].option3}}</view>
+	     			</view>
+	     			<view class="answer" v-if="radioItems[0].option4" @click="reply(radioItems,4)">
+	     			    <image :src=" right == 4 ? '../../static/dui.png' : error == 4 ? '../../static/cuo.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image>
+	     				<view class="text">{{radioItems[0].option4}}</view>
+	     			</view>
+	     		</view>
+	     	</view>
+	     	<!-- <view class="fixed-answer"></view> -->
+	     	<!-- 评论区 -->
+	     	<view class="comment-box">
+	     		<text class="comment-line">评论区</text>
+	     		<template v-if="area.comment_list.length > 0">
+	     			<view class="line" v-for="(item,index) in area.comment_list" :key="index" @click="like(item.comment_id,index,item)">
+	     				<view class="line-in-box">
+	     					<view class="coment-box-in">
+	     						<view class="user-box comment-box-user">
+	     							<image :src="item.avatar" mode=""></image>
+	     							<view class="text-info">
+	     								<text>{{item.name}}</text>
+	     								<text>{{item.createtime}}</text>
+	     							</view>
+	     						</view>
+	     						<view class="nei-ron">{{item.content}}</view>
+	     						<view class="zan-comment">
+	     							<view>
+	     								<image src="../../static/pinglun.png" mode="" @click="comment()"></image>{{item.reply_num}}
+	     							</view>
+	     							<view>
+	     								<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode=""></image>{{item.like_num}}
+	     							</view>
+	     						</view>
+	     					</view>
+	     	
+	     				</view>
+	     			</view>
+	     		</template>
+	     	</view>
+	     	<!-- 底部 -->
+	     	<view class="button-cont">
+	     		<view class="control-box">
+	     			<view class="box-ico box-ico1">
+	     				<image src="../../static/tiwen.png" mode=""></image>
+	     				提问
+	     			</view>
+	     			<navigator :url="'../commentdetail/commentdetail?radioId='+area.id" class="box-ico" hover-class="none">
+	     				<image src="../../static/pinglun.png" mode="" />
+	     				{{area.comment_num ? area.comment_num : 0}}
+	     			</navigator>
+	     			<view class="box-ico box-ico2" @click="likeYgb(area.id)">
+	     				<image :src="area.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" />
+	     				{{area.like_num ? area.like_num : 0}}
+	     			</view>
+	     		</view>
+	     	</view>
+	     </template>
+	   <!-- <view class="screen" v-el="whiteScreen">
+	    	
+	    </view> -->
 	</view>
 </template>
 
@@ -116,8 +121,8 @@
 				now: 0,
 				radioItems: [],
 				right: 0,   // 正确
-				error: 0   // 错误
-				
+				error: 0,  // 错误
+				whiteScreen: true // 先白屏展示
 			};
 		},
 		onLoad: function() {
@@ -147,6 +152,7 @@
 				});
 				this.api.playArea(data).then(res => {
 					uni.hideLoading()
+					this.whiteScreen = false
 					this.area = res.datas
 					let audioJson = {
 						// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
