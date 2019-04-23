@@ -13,7 +13,7 @@ export default{
 		return network.post('/ygb/like/belike_list',data,onlyOne)
 	},
 	// 获取消息评论列表
-	recedList(datda,onlyOne) {
+	recedList(data,onlyOne) {
 		return network.post('/ygb/comment/get_reced_list',data,onlyOne)
 	},
 	// 获取消息回复列表

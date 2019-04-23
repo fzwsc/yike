@@ -4,8 +4,12 @@
 			<image :src="item.avatar" mode="" class="pic"></image>
 			<view class="notice-con">
 				<view class="title">我发表了一个动态</view>
-				<navigator url="../playarea/playarea" class="link" hover-class="none" open-type="switchTab">{{item.message_title}}</navigator>
+				<navigator :url="'../yundetails/yundetails?id='+item.radio_id" class="link" hover-class="none" open-type="switchTab">{{item.radio_title}}</navigator>
 			</view>
+		</view>
+		<view class="empty-data" v-if="list.length <= 0">
+			<image src="../../static/noData.png" mode="" class="pic"></image>
+			<view class="text">暂无数据~</view>
 		</view>
 	</view>
 </template>
@@ -39,7 +43,7 @@
 				data['curpage'] = this.curpage;
 				data['pagesize'] = this.pagesize
 				this.hidden = true;
-				this.api.userMessageList(data,onlyOne).then(res => {
+				this.api.messageList(data,onlyOne).then(res => {
 					 if (this.curpage == 1) this.list = []
 					 this.list = [...this.list,...res.datas.data]
 					 this.hasmore = res.datas.has_more

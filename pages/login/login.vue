@@ -60,54 +60,67 @@ export default {
 			})
 		},
 		chooseSchool() {
+			if (this.schoolList.length == 1) return
 			this.showPicker = !this.showPicker
 		},
 		getSchoolList() {
 			let data = {}
 			this.api.schoolList(data).then(res => {
 				this.schoolList = res.datas
+				if (res.datas.length > 1)  return;
+				this.selectSchool.id = this.schoolList[0].id
+				this.selectSchool.name = this.schoolList[0].name
 			})
 		},
 		userinfo(e) {
-// 			if(this.selectSchool.id) {
-// 				if (this.usn && this.psw ) {
-// 					let data = {};
-// 				 data['schoolId'] = this.selectSchool.id
-// 					data['account'] = this.usn
-// 					data['password'] = this.psw
-// 					data['code'] = this.code;
-// 					data["rawData"] = e.detail.rawData;
-// 					data["signature"] = e.detail.signature;
-// 					data["encryptedData"] = e.detail.encryptedData;
-// 					data["iv"] = e.detail.iv;
-// 					this.api.Login(data).then(res => {
-// 						uni.setStorageSync("token",res.datas.token)
-// 						uni.setStorageSync("userId",res.datas.user_id)
-// 					 uni.setStorageSync("role",res.datas.role_type)
-// 						uni.switchTab({
-// 							url: '../broadcast/broadcast',
-// 						});
-// 						
-// 					})
-// 				}else {
-// 					uni.showToast({
-// 						title: '工号或密码不能为空',
-// 						icon: 'none'
-// 					})
-// 				}
-// 			}else {
-// 				    uni.showToast({
-// 						title: '学校必须选择',
-// 						icon: 'none'
-// 					})
-// 			}
+			if(this.selectSchool.id) {
+				if (this.usn && this.psw ) {
+					let data = {};
+				    data['schoolId'] = this.selectSchool.id
+					data['account'] = this.usn
+					data['password'] = this.psw
+					data['code'] = this.code;
+					data["rawData"] = e.detail.rawData;
+					data["signature"] = e.detail.signature;
+					data["encryptedData"] = e.detail.encryptedData;
+					data["iv"] = e.detail.iv;
+					this.api.Login(data).then(res => {
+						uni.setStorageSync("token",res.datas.token)
+						uni.setStorageSync("userId",res.datas.user_id)
+					 uni.setStorageSync("role",res.datas.role_type)
+						uni.switchTab({
+							url: '../broadcast/broadcast',
+						});
+						
+					})
+				}else {
+					uni.showToast({
+						title: '工号或密码不能为空',
+						icon: 'none'
+					})
+				}
+			}else {
+				    uni.showToast({
+						title: '学校必须选择',
+						icon: 'none'
+					})
+			}
 
-			uni.setStorageSync("token",'7ff0068c-3ce8-4cc1-a4b8-1a2de8a3b992')
-			uni.setStorageSync("role",2)
-			uni.setStorageSync("userId",'8')
-			uni.switchTab({
-				url: '../broadcast/broadcast'
-			});
+			// 老师
+// 			uni.setStorageSync("token",'7ff0068c-3ce8-4cc1-a4b8-1a2de8a3b992')
+// 			uni.setStorageSync("role",2)
+// 			uni.setStorageSync("userId",'8')
+// 			uni.switchTab({
+// 				url: '../broadcast/broadcast'
+// 			});
+           // 学生
+// 		   uni.setStorageSync("token",'96392646-09f2-41b2-ba5b-419e3c60b220')
+// 		   uni.setStorageSync("role",1)
+// 		   uni.setStorageSync("userId",'29')
+// 		   			uni.switchTab({
+// 		   		    url: '../broadcast/broadcast'
+//                     })
+           
 		},
 		onConfirm(e) {
 			// console.log(e);

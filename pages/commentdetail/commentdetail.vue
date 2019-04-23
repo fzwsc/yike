@@ -35,7 +35,7 @@
 	   		</view>
 	   	</view>
 	   	<view class="content">
-	   		<view class="content-title">
+	   		<view class="content-title" v-if="list.length > 0">
 	   			评论({{list.length}})
 	   		</view>
 	   		<view class="comment-list">
@@ -50,13 +50,18 @@
 	   					</navigator> 
 	   					<view class="state">
 	   						<view class="time">{{item.createtime}}</view>
-	   						<view class="icon half">
-	   							<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}</view>
+	   						<navigator :url="'../commentrely/commentrely?commentId='+item.comment_id+'&radioId='+radioId" hover-class="none" class="icon half">
+	   							<image src="../../static/pinglun.png" mode="" class="pic" />{{item.reply_num}}
+						    </navigator>
 	   						<view class="icon" @click="like(item.comment_id,index,item)">
-	   							<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
+	   						<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
 	   					</view>
 	   				</view>
 	   			</view>
+				 <view class="empty-data"  v-if="list.length <= 0">
+				 	<image src="../../static/noData.png" mode="" style="margin:300upx auto 50upx;" class="pic"></image>
+				 	<view class="text">暂无数据~</view>
+				 </view>
 	   			 <view :hidden="loadingHidden">
 	   				<uni-load-more status="loading"></uni-load-more>
 	   			</view>
@@ -115,6 +120,12 @@
 		},
 		onLoad(option) {
 			this.radioId = option.radioId
+			this.getCommentList()
+		},
+		onShow() {
+			if (this.list.length == 0) return 
+			this.curpage = 1
+			this.list = []
 			this.getCommentList()
 		},
 		computed: {

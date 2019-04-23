@@ -7,7 +7,7 @@
 		<view class="concern-list">
 			<view class="set-space">
 				<view class="concern-item" v-for="(item,index) in list" :key="index">
-					<navigator url="../persondetail/persondetail" class="concern-l" hover-class="none">
+					<navigator :url="'../persondetail/persondetail?userId='+item.be_user_id+'&role='+item.role_type" class="concern-l" hover-class="none">
 						<view class="info-area">
 							<image :src="item.avatar" mode="" class="pic"></image>
 							<view class="user-name">{{item.realname}}</view>

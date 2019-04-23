@@ -52,10 +52,7 @@
 									学校：{{teacher.schoolname}}
 								</view>
 								<view class="scholl-item">
-									学院：{{teacher.collegename}}
-								</view>
-								<view class="scholl-item">
-									部门：{{teacher.department}}
+									组织(学院/行政部门)：{{teacher.collegename}}
 								</view>
 							</view>
 						</template>
@@ -92,10 +89,7 @@
 							学校：{{student.schoolname}}
 						</view>
 						<view class="scholl-item">
-							学院：{{student.college}}
-						</view>
-						<view class="scholl-item">
-							院系：{{student.collegename}}
+							组织(学院)：{{student.collegename}}
 						</view>
 						<view class="scholl-item">
 							专业：{{student.profession}}

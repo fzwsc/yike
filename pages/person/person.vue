@@ -17,7 +17,7 @@
 					</navigator>
 				</view>
 			</view>
-			<view class="follow-con">
+			<view class="follow-con" v-if="concernList.length > 0">
 				<view class="text">我的关注</view>
 				<view class="follow-area">
 					<view class="follow-list">
@@ -55,6 +55,7 @@
 					<view class="text">设置</view>
 					<view class="arrow"></view>
 				</view> -->
+				
 				<navigator url="../setting/setting" class="type-item" hover-class="none">
 					<image src="../../static/shezhi.png" mode="" class="pic"></image>
 					<view class="text">设置</view>

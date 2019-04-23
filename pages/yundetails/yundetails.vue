@@ -217,6 +217,7 @@ export default {
 <style>
 	view{
 		line-height: 1.6;
+		
 	}
 page {
 	height: 100%;

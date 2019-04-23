@@ -13,7 +13,7 @@
 				<view class="text">性别：</view>
 			   <view class="response">{{info.gender == 0 ? '男' : '女'}}</view>
 			</view>
-			<view class="info-item">
+			<view class="info-item" v-if="info.birthday">
 				<view class="text">出生日期：</view>
 			     <view class="response">{{info.birthday}}</view>
 			</view>
@@ -22,24 +22,23 @@
 			    <view class="response">{{info.schoolname}}</view>
 			</view>
 			
-			<view class="info-item" v-if="isTeacher">
+			<template v-if="isTeacher">
 				<view class="info-item">
-					<view class="text">院系：</view>
+					<view class="text">组织(学院/行政部门)：</view>
 				    <view class="response">{{info.collegename}}</view>
 				</view>
-				<view class="text">部门：</view>
-			     <view class="response">{{info.department}}</view>
-			</view>
+				
+			</template>
 			<template v-if="!isTeacher">
-				<view class="info-item">
+<!-- 				<view class="info-item" v-if="info.college">
 					<view class="text">学院：</view>
 				    <view class="response">{{info.college}}</view>
-				</view>
-				<view class="info-item">
-					<view class="text">院系：</view>
+				</view> -->
+				<view class="info-item" v-if="info.collegename">
+					<view class="text">组织(学院)：</view>
 				    <view class="response">{{info.collegename}}</view>
 				</view>
-				<view class="info-item">
+				<view class="info-item" v-if="info.profession">
 					<view class="text">专业：</view>
 				    <view class="response">{{info.profession}}</view>
 				</view>
@@ -47,7 +46,7 @@
 					<view class="text">年级：</view>
 				    <view class="response">{{info.enteryear}}</view>
 				</view>
-				<view class="info-item">
+				<view class="info-item" v-if="info.classname">
 					<view class="text">班级：</view>
 				    <view class="response">{{info.classname}}</view>
 				</view>
