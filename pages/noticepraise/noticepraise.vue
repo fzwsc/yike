@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view class="notice-rely">
-				<image src="../../static/dianzanle.png" mode="" class="pic"></image>了这条评论
+				<image src="../../static/dianzanle.png" mode="" class="pic"></image>了这条{{item.comment ? '评论': '动态'}}
 			</view>
 			<view class="notice-con">
 				<view class="comments-item" v-if="item.radio_info">
@@ -32,7 +32,7 @@
 						</view>
 						<view class="timer">
 							<image src="../../static/shijian.png" mode="" class="pic"></image>
-							<view class="text">{{item.radio_info.duration}}</view>
+							<view class="text">{{item.radio_info.duration_time}}</view>
 						</view>
 						<view class="time">
 							{{item.radio_info.createtime}}

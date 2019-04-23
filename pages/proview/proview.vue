@@ -79,44 +79,16 @@ export default {
 			now: 0,
 			radioItems: [
 			
-			]
+			],
+			token: uni.getStorageSync('token')
 		};
 	},
 		onLoad(options) {
-			let _this = this
-			// this.contJson = uni.getStorage('objcont')
-		    uni.getStorage({
-		    	key:'objcont',success:function(res){
-					_this.contJson = res.data
-					var obj = {}
-					 _this.radioItems = new Array(_this.contJson.option1,_this.contJson.option2,_this.contJson.option3,_this.contJson.option4)
-				}
-		    })
+			console.log(options);
 			
-	
-// 	          try {
-// 				  const value = wx.getStorageSync('key')
-// 				  if (value) {
-// 					// Do something with return value
-// 				  }
-// 				} catch (e) {
-// 				  // Do something when catch error
-// 				}
-		
-	
-			
-		
-// 			this.radioItems.add()
-// 			for(var i=1;i<=4;i++){
-// 				var obj = {}
-// 				obj.name = this.contJson.option+i
-// 				this.radioItems.push()
-// 				
-// 			}
-			
-		
-			console.log(_this.contJson)
-			console.log(_this.radioItems)
+			this.contJson = JSON.parse(options.json)
+		    this.radioItems = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4)
+			console.log(this.contJson)
 			
 		},
 	onReachBottom() {
@@ -135,23 +107,28 @@ export default {
 		},
 		
 		upFile(){
-			this.contJson.token = uni.getStorageSync('token');
-			console.log(this.contJson)
+			 this.contJson['token'] = this.token
+			 // data['token'] = this.token
+			// console.log(this.contJson)
 			this.yapi.addYunCont(this.contJson).then(res=>{
-				if(res.code==200){
+				// if(res.code==200){
 					uni.reLaunch({
-						
-						url:'/pages/broadcast/broadcast'
+						url:'../broadcast/broadcast'
 					})
-					return
-				}else{
-					uni.showToast({
-						icon:"none",
-						title:'上传失败,请重试'
-					})
-				}
-			}).catch(err=>{
-				
+				// }else{
+				// 	uni.showToast({
+				// 		icon:"none",
+				// 		title:'上传失败,请重试'
+				// 	})
+				// }
+					// uni.reLaunch({
+					// 	url:'../broadcast/broadcast'
+					// })
+					// uni.navigateBack({
+					// 	delta: 2
+					// })
+				  }).catch(err=>{
+					
 			})
 		}
 // 		radioChange(e) {

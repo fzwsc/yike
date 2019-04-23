@@ -2,7 +2,7 @@
 	<view class="notice">
 		<template v-if="role == 1">
 			 <view class="type-list">
-				<view class="type-item" >
+				<view class="type-item" @click="open">
 					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
 					<view class="text">问答</view>
 					<view class="arrow"></view>
@@ -21,7 +21,7 @@
 		</template>
 		<template v-else>
 			 <view class="type-list">
-				<view class="type-item" >
+				<view class="type-item"  @click="open">
 					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
 					<view class="text">提问</view>
 					<view class="arrow"></view>
@@ -83,9 +83,17 @@
 			};
 		},
 		onShow() {
+			this.list = []
+			this.curpage = 1
 			this.getMessageList()
 		},
 		methods: {
+			open() {
+				uni.showToast({
+					title: '敬请期待',
+					icon: 'none'
+				})
+			},
 			msg(id,name) {
 				let data = {}
 				data['token'] = this.token

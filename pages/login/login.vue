@@ -8,8 +8,8 @@
 				<view class="schoole-name"><text>{{selectSchool.name}}</text><image src="../../static/shangla.png" mode=""></image></view>
 			</view>
 			<view class="gong-hao">
-				<view>工号</view>
-				<input type="text" v-model="usn"  placeholder="请输入工号" />
+				<view>账号</view>
+				<input type="text" v-model="usn"  placeholder="请输入账号" />
 			</view>
 			<view class="gong-hao">
 				<view>密码</view>
@@ -32,7 +32,8 @@ export default {
 	data() {
 		return {
 			code: '',
-			usn: 'S009',
+			usn: 'S006',
+			// usn: 'B0020',
 			psw: '123456',
 			schoolList: [],
 			hidden: true,
@@ -60,19 +61,30 @@ export default {
 			})
 		},
 		chooseSchool() {
+			if (this.schoolList.length == 0 || this.schoolList.length == 1) return
 			this.showPicker = !this.showPicker
 		},
 		getSchoolList() {
 			let data = {}
 			this.api.schoolList(data).then(res => {
+				if (res.datas.length == 0) {
+					uni.showToast({
+						title: '请到后台添加学校',
+						icon: 'none'
+					});
+					return
+				}
 				this.schoolList = res.datas
+				if (res.datas.length > 1)  return;
+				this.selectSchool.id = this.schoolList[0].id
+				this.selectSchool.name = this.schoolList[0].name
 			})
 		},
 		userinfo(e) {
 			if(this.selectSchool.id) {
 				if (this.usn && this.psw ) {
 					let data = {};
-				 data['schoolId'] = this.selectSchool.id
+				    data['schoolId'] = this.selectSchool.id
 					data['account'] = this.usn
 					data['password'] = this.psw
 					data['code'] = this.code;
@@ -83,7 +95,7 @@ export default {
 					this.api.Login(data).then(res => {
 						uni.setStorageSync("token",res.datas.token)
 						uni.setStorageSync("userId",res.datas.user_id)
-					 uni.setStorageSync("role",res.datas.role_type)
+					    uni.setStorageSync("role",res.datas.role_type)
 						uni.switchTab({
 							url: '../broadcast/broadcast',
 						});
@@ -91,7 +103,7 @@ export default {
 					})
 				}else {
 					uni.showToast({
-						title: '工号或密码不能为空',
+						title: '账号或密码不能为空',
 						icon: 'none'
 					})
 				}
@@ -102,15 +114,24 @@ export default {
 					})
 			}
 
-// 			uni.setStorageSync("token",'5c5f605a-4d90-4bd8-87f3-e5dabeb773ae')
-// 			uni.setStorageSync("role",1)
-// 			uni.setStorageSync("userId",'7')
+			// 老师
+// 			uni.setStorageSync("token",'7ff0068c-3ce8-4cc1-a4b8-1a2de8a3b992')
+// 			uni.setStorageSync("role",2)
+// 			uni.setStorageSync("userId",'8')
 // 			uni.switchTab({
-// 				url: '../broadcast/broadcast',
+// 				url: '../broadcast/broadcast'
 // 			});
+           // 学生
+// 		   uni.setStorageSync("token",'96392646-09f2-41b2-ba5b-419e3c60b220')
+// 		   uni.setStorageSync("role",1)
+// 		   uni.setStorageSync("userId",'29')
+// 		   			uni.switchTab({
+// 		   		    url: '../broadcast/broadcast'
+//                     })
+           
 		},
 		onConfirm(e) {
-			console.log(e);
+			// console.log(e);
 			this.selectSchool = e;
 			this.showPicker = !this.showPicker
 		},

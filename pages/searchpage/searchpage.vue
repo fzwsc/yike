@@ -5,11 +5,11 @@
 		<!-- 数据界面 -->
 		<view class="cont-box">
 			<view class="tab-box">
-				<view :class="[{'active':index==itemIndex},'tan-nav']" @click="chose(index)" v-for="(item,index) in tabList" :key='item.toString'>{{item}}</view>
+				<view :class="[{'active':index==itemIndex},'tan-nav']" @click="chose(index)" v-for="(item,index) in tabList" :key='index'>{{item}}</view>
 			</view>
 			<view class="yun-box">
 				<!-- 云广播 -->
-				<view class="yun-cont" v-for="item in contData" :key='item.toString' v-if="show">
+				<navigator :url="'../yundetails/yundetails?id='+item.radio_id" class="yun-cont" v-for="(item,index) in contData" :key='index' v-if="show"  hover-class="none">
 					<image :src="item.avatar" mode="" class="user-img"></image>
 					<view class="user-box">
 						<view class="name">
@@ -22,13 +22,13 @@
 					<view class="yun-nei-ro">
 						{{item.title}}
 					</view>
-				</view>
+				</navigator>
 				<!-- 老师 -->
-				<view class="teacher-cont" v-for="item in maincont" :key='item.toString' v-if="!show">
-					<view class="left-box">
+				<view class="teacher-cont" v-for="(item,index) in maincont" :key='index' v-if="!show" hover-class="none">
+					<navigator :url="'../persondetail/persondetail?role=2&userId='+item.id" class="left-box">
 						<view class="user"><image :src="item.avatar" mode=""></image>{{item.name}}</view>
 						<view class="courtyard">{{item.collegename}}</view>
-					</view>
+					</navigator>
 					<view class="right-box">
 					<template>
 						<!-- 1已关注2未关注 -->
@@ -37,7 +37,7 @@
 					<template>
 						<view class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
 					</template>
-						<view class="courtyard">教授课程：毛概</view>
+						<!-- <view class="courtyard">教授课程：毛概</view> -->
 					</view>
 				</view>
 			</view>
@@ -63,7 +63,8 @@
 				contDataTeach:[],
 				maincont:[],
 				show:true,
-				noData:false
+				noData:false,
+				token: uni.getStorageSync('token')
 			};
 		},
 		methods:{
@@ -76,7 +77,7 @@
 			par['token'] = uni.getStorageSync('token')
 			par['words'] = e
 			this.yapi.search(par).then(res=>{
-				 if(res.datas.radio_list==0){
+				 if(res.datas.radio_list.length==0){
 					    this.noData = true
 				}
 				this.contData = res.datas.radio_list
@@ -88,20 +89,34 @@
 		  },
 		  chose(index){
 			  this.itemIndex = index
+			  this.noData =  false
 			  if(this.itemIndex==0){
 				  this.maincont = this.contData
 				  this.show =true
-				  if(this.contData==0){
+				  if(this.contData.length==0){
 					  this.noData = true
 				  }
 			  }else{
 				  this.maincont = this.contDataTeach
 				  this.show =false
-				  if(this.contDataTeach==0){
+				  if(this.contDataTeach.length==0){
 				  		this.noData = true
 				  }
 				  
 			  }
+		  },
+		  follow(item,index) {
+			  let data = {},status
+			  data['token'] = this.token
+			  data['user_id'] = item.id
+			  if (item['attention_status'] == 1) status = 2
+			  else status = 1
+			  data['attention_status'] = status
+			  this.api.addAttention(data).then(res => {
+			  	if (item['attention_status'] == 1) item['attention_status'] = 2
+			  	else item['attention_status'] = 1
+			  })
+			  // console.log(item);
 		  }
 		},
 		components:{
@@ -142,6 +157,7 @@
 	.teacher-cont .no-follow{
 		font-size: 24upx;
 		padding:7rpx 13rpx;
+		text-align: center;
 		border:1rpx solid #cccccc;
 		border-radius:10rpx;
 		color:#666666;

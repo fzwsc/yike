@@ -17,11 +17,11 @@
 					</navigator>
 				</view>
 			</view>
-			<view class="follow-con">
+			<view class="follow-con" v-if="concernList.length > 0">
 				<view class="text">我的关注</view>
 				<view class="follow-area">
 					<view class="follow-list">
-						<navigator :url="'../persondetail/persondetail?role='+userInfo.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
+						<navigator :url="'../persondetail/persondetail?role='+item.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
 							<image :src="item.avatar" mode="" class="pic"></image>
 							<view class="user-name">{{item.realname}}</view>
 						</navigator>
@@ -50,16 +50,17 @@
 					<view class="text">最近收听</view>
 					<view class="arrow"></view>
 				</navigator>
-				<view class="type-item">
+		<!-- 		<view class="type-item">
 					<image src="../../static/shezhi.png" mode="" class="pic"></image>
 					<view class="text">设置</view>
 					<view class="arrow"></view>
-				</view>
-				<!-- <navigator url="../setting/setting" class="type-item" hover-class="none">
+				</view> -->
+				
+				<navigator url="../setting/setting" class="type-item" hover-class="none">
 					<image src="../../static/shezhi.png" mode="" class="pic"></image>
 					<view class="text">设置</view>
 					<view class="arrow"></view>
-				</navigator> -->
+				</navigator>
 			</view>
 			
 		</template>

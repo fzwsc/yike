@@ -10,9 +10,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="log-out">
+		<navigator url="../login/login" open-type="reLaunch" class="log-out">
 			退出登录
-		</view>
+		</navigator>
 	</view>
 </template>
 

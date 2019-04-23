@@ -1,18 +1,23 @@
 <template>
 	<view class="comment-rely">
 		<template v-if="!whiteScreen">
-			<view class="rely-item" v-for="(item,index) in list " :key="index">
-				<image :src="item.avatar" mode="" class="portrait"></image>
-				<view class="rely-info">
-					<view class="name">{{item.name}}</view>
-					<view class="msg">{{item.content}}</view>
-					<view class="time">{{item.createtime}}</view>
+				<view class="rely-item" v-for="(item,index) in list " :key="index">
+					<image :src="item.avatar" mode="" class="portrait"></image>
+					<view class="rely-info">
+						<view class="name">{{item.name}}</view>
+						<view class="msg">{{item.content}}</view>
+						<view class="time">{{item.createtime}}</view>
+					</view>
 				</view>
-			</view>
-			<view :hidden="loadingHidden">
-				<uni-load-more status="loading"></uni-load-more>
-			</view>
-			<view class="footer-area" v-if="!hidden" @click="pop">
+				<view :hidden="loadingHidden">
+					<uni-load-more status="loading"></uni-load-more>
+				</view>
+				<view class="empty-data"  v-if="list.length <= 0">
+					<image src="../../static/noData.png" mode="" class="pic"></image>
+					<view class="text">暂无数据~</view>
+				</view>
+
+		    <view class="footer-area" v-if="!hidden" @click="pop">
 				<view class="input-area" ></view>
 				<view class="text">发布</view>
 			</view>
