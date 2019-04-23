@@ -17,7 +17,7 @@
 const innerAudioContext = uni.createInnerAudioContext();
 
 innerAudioContext.autoplay = true;
-import pro from '../../components/pro/pro.vue'
+// import pro from '../../components/pro/pro.vue'
 
 export default {
     data() {
@@ -98,9 +98,9 @@ export default {
       return Math.min(1, this.endT / this.startT);
     }
   },
-	components:{
-       pro
-	}
+	// components:{
+ //       pro
+	// }
 }
 </script>
 

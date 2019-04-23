@@ -190,6 +190,15 @@
 			},
 			// 答题
 			reply(item,index) {
+				if (this.radioItems.length > 0) {
+					if (this.radioItems[0].is_answer) {
+						uni.showToast({
+							title: '您已答过此题',
+							icon: 'none'
+						})
+						return
+					}
+				}
 				if (!this.isFinish) {
 					uni.showToast({
 						title:'录音听完才可以答题',

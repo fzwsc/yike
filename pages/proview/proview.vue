@@ -55,26 +55,6 @@ export default {
 		return {
 			contJson:{},
 			audio: [
-				{
-					src: 'http://mouyizhan.com/1.mp3',
-					duration: 212
-				},
-				{
-					src: 'http://mouyizhan.com/2.mp3',
-					duration: 189
-				},
-				{
-					src: 'http://mouyizhan.com/3.mp3',
-					duration: 214
-				},
-				{
-					src: 'http://mouyizhan.com/4.mp3',
-					duration: 205
-				},
-				{
-					src: 'http://mouyizhan.com/5.mp3',
-					duration: 228
-				}
 			],
 			now: 0,
 			radioItems: [
@@ -88,6 +68,7 @@ export default {
 			
 			this.contJson = JSON.parse(options.json)
 		    this.radioItems = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4)
+			this.getAudioDuration()
 			console.log(this.contJson)
 			
 		},
@@ -105,7 +86,17 @@ export default {
 			})
 			
 		},
-		
+		getAudioDuration() {
+			let data = {}
+			data['token'] = this.token
+			this.yapi.getDuration(data).then(res => {
+				// let json = {
+				// 	src: 
+				// 	duration: 
+				// }
+				console.log(res);
+			})
+		},
 		upFile(){
 			 this.contJson['token'] = this.token
 			 // data['token'] = this.token

@@ -45,7 +45,11 @@ export default{
 	// 答题
 	subAnser(data){
 		return network.post("/ygb/topic/answer_subject",data)
-	}
+	},
+	// 获取时长
+	getDuration(data){
+		return network.post("/ygb/topic/get_audio_duration",data)
+	},
 	
 	
 }
