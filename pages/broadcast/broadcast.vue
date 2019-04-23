@@ -36,7 +36,7 @@
 					</view>
 					<view>
 						<image src="../../static/shijian.png" mode=""></image>
-						{{item.duration}}
+						{{item.duration_time}}
 					</view>
 				</view>
 				<view class="control-box">
@@ -105,11 +105,8 @@ export default {
 		};
 	},
 	onShow() {
-// 		uni.setStorageSync("token",'4755b095-380b-4b0e-8f76-02edb8e389bb')
-// 		uni.setStorageSync("role",2)
-// 		uni.setStorageSync("userId",'16')
 	   this.getTab()
-	   console.log('onLoad')
+	   console.log('onshow')
 	   this.activeIndex = 0
 	},
 	methods: {

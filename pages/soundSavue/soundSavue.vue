@@ -102,7 +102,8 @@ export default {
 			contJson: {},
 			showPicker2:false,
 			showPicker:false,
-			duration:''
+			duration:'',
+			token: uni.getStorageSync('token')
 		};
 	},
 	onLoad(options) {
@@ -133,7 +134,7 @@ export default {
 		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
 		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
 		let Data = {};
-		Data.token = uni.getStorageSync('token');
+		Data.token = this.token;
 		this.yapi
 			.getAddYunCont(Data)
 			.then(res => {
@@ -195,16 +196,22 @@ export default {
 // 					key:'objcont',
 // 					data:this.contJson
 // 				})
-				uni.setStorage({
-						key: 'objcont',
-						data: this.contJson,
-						success: function () {
-								uni.navigateTo({
-									url: '../proview/proview',
-								});
-							console.log('success');
-						}
-					});
+				// uni.setStorage({
+				// 		key: 'objcont',
+				// 		data: this.contJson,
+				// 		success: function () {
+				// 				uni.navigateTo({
+				// 					url: '../proview/proview',
+				// 				});
+				// 			console.log('success');
+				// 		}
+				// 	});
+				uni.navigateTo({
+					url: '../proview/proview?json='+JSON.stringify(this.contJson),
+				});
+				// uni.redirectTo({
+				// 	url: '../proview/proview?json='+JSON.stringify(this.contJson),
+				// });
 			}
 		},
 		showSinglePicker() {

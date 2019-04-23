@@ -21,7 +21,7 @@
 				<view class="text">我的关注</view>
 				<view class="follow-area">
 					<view class="follow-list">
-						<navigator :url="'../persondetail/persondetail?role='+userInfo.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
+						<navigator :url="'../persondetail/persondetail?role='+item.role_type+'&userId='+item.user_id" class="follow-item" hover-class="none" v-for="(item,index) in concernList" :key="index">
 							<image :src="item.avatar" mode="" class="pic"></image>
 							<view class="user-name">{{item.realname}}</view>
 						</navigator>

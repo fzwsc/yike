@@ -20,7 +20,10 @@
 			   uni.setStorageSync("flag",false)
 			}else {
 				uni.navigateTo({
-					url:'../playaudio/playaudio'
+					url:'../playaudio/playaudio',
+					    animationType: 'pop-out',
+                        animationDuration: 0
+					 
 				})
 			}
 		}
@@ -28,5 +31,7 @@
 </script>
 
 <style>
-
+/* 	Page {
+	   background: transparent; 
+	} */
 </style>

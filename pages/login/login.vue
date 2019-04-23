@@ -8,8 +8,8 @@
 				<view class="schoole-name"><text>{{selectSchool.name}}</text><image src="../../static/shangla.png" mode=""></image></view>
 			</view>
 			<view class="gong-hao">
-				<view>工号</view>
-				<input type="text" v-model="usn"  placeholder="请输入工号" />
+				<view>账号</view>
+				<input type="text" v-model="usn"  placeholder="请输入账号" />
 			</view>
 			<view class="gong-hao">
 				<view>密码</view>
@@ -32,7 +32,8 @@ export default {
 	data() {
 		return {
 			code: '',
-			usn: 'S009',
+			usn: 'S006',
+			// usn: 'B0020',
 			psw: '123456',
 			schoolList: [],
 			hidden: true,
@@ -60,12 +61,19 @@ export default {
 			})
 		},
 		chooseSchool() {
-			if (this.schoolList.length == 1) return
+			if (this.schoolList.length == 0 || this.schoolList.length == 1) return
 			this.showPicker = !this.showPicker
 		},
 		getSchoolList() {
 			let data = {}
 			this.api.schoolList(data).then(res => {
+				if (res.datas.length == 0) {
+					uni.showToast({
+						title: '请到后台添加学校',
+						icon: 'none'
+					});
+					return
+				}
 				this.schoolList = res.datas
 				if (res.datas.length > 1)  return;
 				this.selectSchool.id = this.schoolList[0].id
@@ -87,7 +95,7 @@ export default {
 					this.api.Login(data).then(res => {
 						uni.setStorageSync("token",res.datas.token)
 						uni.setStorageSync("userId",res.datas.user_id)
-					 uni.setStorageSync("role",res.datas.role_type)
+					    uni.setStorageSync("role",res.datas.role_type)
 						uni.switchTab({
 							url: '../broadcast/broadcast',
 						});
@@ -95,7 +103,7 @@ export default {
 					})
 				}else {
 					uni.showToast({
-						title: '工号或密码不能为空',
+						title: '账号或密码不能为空',
 						icon: 'none'
 					})
 				}

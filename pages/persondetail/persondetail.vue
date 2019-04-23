@@ -24,14 +24,14 @@
 					<view class="flex">
 						<view class="info">
 							<view class="name">{{student.realname}}</view>
-							<view class="concern">{{student.total_fans_num}}人关注</view>
+							<!-- <view class="concern" v-if="student.total_fans_num > 0">{{student.total_fans_num}}人关注</view> -->
 						</view>
-						<view class="already-concern" v-if="student.attention_status == 1" @click="dealConcern(student)">
+						<!-- <view class="already-concern" v-if="student.attention_status == 1" @click="dealConcern(student)">
 							 已关注
 						</view>
 						<view class="already-concern" v-else @click="dealConcern(student)">
 							 +关注
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</template>
@@ -68,10 +68,10 @@
 											</view>
 											<view class="timer">
 												<image src="../../static/shijian.png" mode="" class="pic"></image>
-												<view class="text">{{item.duration}}</view>
+												<view class="text">{{item.duration_time}}</view>
 											</view>
 											<view class="time">
-												{{item.createtime}}
+												{{item.radio_time}}
 											</view>
 										</view>
 									</view>

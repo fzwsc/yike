@@ -4,7 +4,7 @@
 			<image :src="item.avatar" mode="" class="pic"></image>
 			<view class="notice-con">
 				<view class="title">我发表了一个动态</view>
-				<navigator :url="'../yundetails/yundetails?id='+item.radio_id" class="link" hover-class="none" open-type="switchTab">{{item.radio_title}}</navigator>
+				<navigator :url="'../yundetails/yundetails?id='+item.radio_id" class="link" hover-class="none">{{item.radio_title}}</navigator>
 			</view>
 		</view>
 		<view class="empty-data" v-if="list.length <= 0">

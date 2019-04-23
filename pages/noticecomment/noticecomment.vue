@@ -18,7 +18,7 @@
 		  			</view>
 		  			<view class="timer">
 		  				<image src="../../static/shijian.png" mode="" class="pic"></image>
-		  				<view class="text">{{item.duration}}</view>
+		  				<view class="text">{{item.duration_time}}</view>
 		  			</view>
 		  			<view class="time">
 		  				{{item.createtime}}

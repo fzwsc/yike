@@ -203,7 +203,7 @@
 		 },
 		 dealConcern(id,sta) {
 		 	let data = {},status
-		 	data['token'] = this.token
+		 	 data['token'] = this.token
 		 	data['user_id'] = id
 			console.log(sta);
 		 	if (sta == 1) status = 2

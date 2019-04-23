@@ -64,7 +64,10 @@ export default{
 	messageList(data,onlyOne) {
 		return network.post('/ygb/message/get_message_list',data,onlyOne)
 	},
-	
+	// 收听云广播
+	listenAudo(data,onlyOne = true){
+		return network.post("/ygb/topic/listen_radio",data,onlyOne)
+	},
 	// 播放区
 	playArea(data) {
 		return network.get('/ygb/index/play_area',data)

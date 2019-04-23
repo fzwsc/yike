@@ -162,14 +162,12 @@
 			getAudioResource() {
 				let data = {};
 				data['token'] = this.token
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				});
+				data['radio_id'] = this.audioId;
 				this.api.playArea(data).then(res => {
-					uni.hideLoading()
 					this.whiteScreen = false
+					
 					this.area = res.datas
+					if (!res.datas.subject_list) return
 					let audioJson = {
 						src: res.datas.radio,
 						duration: res.datas.duration
@@ -212,7 +210,8 @@
 						this.right = index
 					}
 					uni.showToast({
-						title: res.datas.score
+						title: res.msg,
+						icon: 'none'
 					})
 				})
 			},

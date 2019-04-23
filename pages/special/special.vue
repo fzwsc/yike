@@ -15,8 +15,11 @@
 								<text>{{item.createtime}}</text>
 							</view>
 						</view>
-						<view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
-						<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view>
+						<template v-if="item.attention_status != 0">
+							<view class="follow" v-if="item.attention_status == 1" @click="follow(item)"><text>已关注</text></view>
+							<view class="no-follow" v-else @click="follow(item)"><text>+关注</text></view>
+						</template>
+						
 					</view>
 					<view class="ques-cont"><text>{{item.title}}</text></view>
 				</view>
@@ -27,7 +30,7 @@
 					</view>
 					<view>
 						<image src="../../static/shijian.png" mode=""></image>
-						{{item.duration}}
+						{{item.duration_time}}
 					</view>
 				</view>
 				<view class="control-box">
@@ -110,7 +113,7 @@ export default {
 			isFollow: true,
 			isShowMark: false,
 			boxList:[],
-		     dataConfig:{
+		    dataConfig:{
 				 token:uni.getStorageSync('token')
 			 },
 			 hidden: true,
@@ -196,11 +199,18 @@ export default {
 			}).catch(()=>{
 			})
 		},
-		follow() {
-			this.isFollow = false;
-		},
-		noFllow() {
-			this.isFollow = true;
+		follow(item) {
+			let data = {},status
+			data['token'] = this.dataConfig.token
+			data['user_id'] = item.user_id
+			if (item.attention_status == 1) status = 2
+			else status = 1
+			data['attention_status'] = status
+			this.api.addAttention(data).then(res => {
+				if (item.attention_status == 1) item.attention_status = 2
+				else item.attention_status = 1
+			})
+			// this.isFollow = false;
 		},
 		search() {
 			console.log("0000000000000000")
