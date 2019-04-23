@@ -42,18 +42,19 @@
 			<view class="ti-cont-line">{{area.subject_list[0].descript}}</view>
 			<view class="answer-box">
 				<view class="answer">
-					<radio-group class="radio-group-rad" @change="radioChange">
-						<label class="" v-for="(item, index) in radioItems" :key="index">
-							<view class="box-grop" v-show="!(item==null)">
+					<view class="radio-group-rad" @change="radioChange">
+						<view class="" v-for="(item, index) in radioItems" :key="index">
+							<view class="box-grop" v-show="!(item==null)"  @click="subAnswer(index,area.subject_list[0])">
 								<view class="ridio-by" >
-									<radio :id="item" :value="item" :checked="item.checked"></radio>
-									</view>
+									  <image class="choseImg" src="../../static/xuanxiang.png" v-if="!(area.subject_list[0].is_answer)"></image>
+									  <image v-if="(area.subject_list[0].is_answer)" class="choseImg" :src="index+1==area.subject_list[0].right_option?isRight?'../../static/dui.png':'../../static/cuo.png':'../../static/xuanxiang.png'"></image>
+								</view>
 								<view class="cont-box">
 									<text>{{ item }}</text>
 								</view>
 							</view>
-						</label>
-					</radio-group>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -117,14 +118,17 @@ export default {
 			radioItems: [],
 			listenStatus:1.,
 			audioId:'',
-			again:true
+			again:true,
+			isRight:false,
+			jsonDatas:{"code":200,"msg":"success","datas":{"id":2,"schoolId":100,"user_id":8,"topic_id":null,"title":"这是第二条云广播","radio":"http:\/\/res.yikevr.com\/ygb\/user\/16\/201904211512534vu5.mp3","duration":24,"like_num":3,"read_num":4,"comment_num":2,"is_hot":1,"is_recommend":1,"status":"1","createtime":1555831022,"like_status":1,"user_info":{"name":"王一贝","avatar":"https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/y5eITvERZus0PlibDqbm8s9fb8kKUgl0cow5rCGXiat2xfPXXHE0Is6whgQvic1aGt48u86fRTvXm0scqicHUicWvicA\/132","attention_num":7,"attention_status":2},"subject_list":[{"id":2,"descript":"如果你选A就是正确答案？","option1":"错","option2":"对","option3":null,"option4":null,"right_option":"2","is_answer":false,"answer_info":{"sub_option":"","is_right":1}}],"comment_list":[{"comment_id":1,"user_id":8,"avatar":"https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/y5eITvERZus0PlibDqbm8s9fb8kKUgl0cow5rCGXiat2xfPXXHE0Is6whgQvic1aGt48u86fRTvXm0scqicHUicWvicA\/132","name":"王一贝","createtime":"2019-04-21 15:22","content":"好的","like_num":3,"reply_num":0,"like_status":1},{"comment_id":2,"user_id":16,"avatar":"https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/Q0j4TwGTfTIYjZrIdoYib2R3pSxv5ThWqx4SKNRd9JFia2g5Eey4IVN5YHlvX3EdZZsPaJiaQPxeEMW2B66Na19pw\/132","name":"王贝贝","createtime":"2019-04-21 15:34","content":"我","like_num":3,"reply_num":0,"like_status":1}],"radio_time":""}}
+			//isDaGo:false,//判断是否答过
 		};
 	},
 	onLoad:function(option){
 		console.log(option)
 		this.audioId = option.id
 		this.getAudioResource()
-		this.listenRadio()
+		this.listenRadio();
 	},
 	onReachBottom() {
 		this.hidden = false;
@@ -134,6 +138,40 @@ export default {
 		}, 3000);
 	},
 	methods: {
+		// 答题
+		subAnswer(index,item){
+			if(this.area.subject_list[0].is_answer){
+				uni.showToast({
+					title:'您已经答过了',
+					icon:'none'
+				})
+				return
+			}
+			// this.area.subject_list[0].is_answer
+			console.log(this.area.subject_list[0])
+			let par ={}
+			par.token = this.token
+			par.subject_id = item.id
+			par.sub_option =  index+1;
+			console.log(par)
+			this.yapi.subAnser(par).then(res=>{
+					this.area.subject_list[0].is_answer = true
+					this.area.subject_list[0].right_option = res.datas.right_option
+					if(res.datas.is_right==2){
+						this.isRight = true;
+					   uni.showToast({
+							title:res.msg,
+							icon:'none'
+						})
+					}else{
+							this.isRight = false
+					}
+					
+				
+			}).catch(err=>{
+				
+			})
+		},
 		// 收听云广播
 		listenRadio(){
 			let par={}
@@ -198,8 +236,11 @@ export default {
 			data['token'] = this.token
 			data['radio_id'] = this.audioId;
 			this.yapi.getYunDetils(data).then(res => {
+// 				var  res = this.jsonDatas;
+				console.log(res)
 				this.radioItems = new Array(res.datas.subject_list[0].option1,res.datas.subject_list[0].option2,res.datas.subject_list[0].option3,res.datas.subject_list[0].option4)
 				this.area = res.datas
+				console.log(this.area)
 				let audioJson = {
 					// src: 'http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
 					src: res.datas.radio,//http://src.fzwsc.com/ygb/user/4/20190419145128oplq.mp3',
@@ -214,7 +255,6 @@ export default {
 	},
 	onUnload() {
 		if (this.audioContext) this.audioContext.destroy();
-		uni.setStorageSync('flag',true)
 	},
 	components: {
 		imtAudio
@@ -320,11 +360,16 @@ page {
 }
 .box-grop {
 	position: relative;
+	margin: 33upx 0;
 }
 .ridio-by {
 	position: absolute;
 	/* left: 30upx; */
 	top: 0upx;
+}
+.ridio-by image{
+	height: 42upx;
+	width: 42upx;
 }
 .cont-box {
 	margin-left: 60upx;

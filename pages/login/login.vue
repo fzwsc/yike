@@ -32,8 +32,8 @@ export default {
 	data() {
 		return {
 			code: '',
-			usn: '',
-			psw: '',
+			usn: 'S009',
+			psw: '123456',
 			schoolList: [],
 			hidden: true,
 			defaultIndex: [0],
