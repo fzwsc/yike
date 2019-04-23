@@ -41,6 +41,10 @@ export default{
 	// 收听云广播
 	listenAudo(data){
 		return network.post("/ygb/topic/listen_radio",data)
+	},
+	// 答题
+	subAnser(data){
+		return network.post("/ygb/topic/answer_subject",data)
 	}
 	
 	

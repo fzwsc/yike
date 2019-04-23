@@ -1,8 +1,9 @@
 <template>
 	<view>
 		<view class="tab-box">
-			<view @click="choseTab(index,item)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(item, index) in tabList" :key="index">{{ item.name }}</view>
+			<view @click="choseTab(index,items)" :class="[{ 'active': activeIndex == index }, 'chose-tab']" v-for="(items, index) in tabList" :key="index">{{ items.name }}</view>
 			<view class="img-add" @click="addMark()" v-if="!(role==1)"><image class="add-img" src="../../static/jiahao.png" mode=""></image></view>
+			<view class="img-add"  v-if="(role==1)"><image class="add-img" src="../../static/hss.png" @click="gotoSearch()" mode=""></image></view>
 		</view>
 		<!-- 内容 -->
 		<view class="cont-box">
@@ -51,7 +52,8 @@
 						<image src="../../static/zan.png" mode="" />
 						{{item.like_num}}
 					</view>
-					<view class="box-ico box-ico2" v-else >
+					
+					<view class="box-ico box-ico2" @click="isLike(index)" v-if="item.like_status==1" >
 						<image src="../../static/dianzan.png" mode="" />
 						{{item.like_num}}
 					</view>
@@ -71,18 +73,20 @@
 				</view>
 				<view class="luy" @click="soundAudio()">
 					<image src="../../static/luyin.png" mode=""></image>
-					录音
+					动态
 				</view>
 			</view>
 		</view>
 		  <view :hidden="hidden">
 			<uni-load-more status="loading"></uni-load-more>
 		</view>
+		<min-modal ref="modal"></min-modal>
 	</view>
 </template>
 
 <script>
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+import minModal from '@/components/min-modal/min-modal.vue'
 export default {
 	data() {
 		return {
@@ -101,6 +105,9 @@ export default {
 		};
 	},
 	onShow() {
+// 		uni.setStorageSync("token",'4755b095-380b-4b0e-8f76-02edb8e389bb')
+// 		uni.setStorageSync("role",2)
+// 		uni.setStorageSync("userId",'16')
 	   this.getTab()
 	   console.log('onLoad')
 	   this.activeIndex = 0
@@ -114,6 +121,15 @@ export default {
 				
 			});
 		},
+		isLike(index){
+			if (this.getHoneList[index].like_status == 1) {
+				uni.showToast({
+				   title: '已赞',
+				   icon: 'none'
+				})
+				return 
+			}
+		},
 		// 点赞
 		like(item,index){
 			let par  = {}
@@ -122,7 +138,8 @@ export default {
 			this.yapi.addLike(par).then(res=>{
 				if(res.code==200){
 					this.getHoneList[index].like_status=1
-					this.getHoneList[index].like_num+1
+					this.getHoneList[index].like_num= this.getHoneList[index].like_num+1
+				
 				}
 				
 			}).catch(err=>{
@@ -168,6 +185,7 @@ export default {
 			console.log(item)
 			this.activeIndex = index;
 			this.curpage =1
+			this.hasmore = true
 		    this.getNetData(index,item)
 			
 		},
@@ -210,19 +228,51 @@ export default {
 		},
 		noFllow() {
 			this.isFollow = true;
+		
 		},
+		
 		search() {
 			console.log('0000000000000000');
 		},
 		
 		// 录音
 		soundAudio() {
-			uni.navigateTo({
-				// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
-				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-				// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+this.token+'&userid='+this.userid)
-				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+this.token+'&userid='+this.userid)
-			});
+			let _this = this
+			uni.getSystemInfo({
+				  success:function(res){
+				
+					if(res.platform == "devtools"){
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
+					}else if(res.platform == "ios"){
+						  console.log('iosiosiosiosios')
+					              uni.navigateTo({
+					            					url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')
+					            			});
+// 			             _this.$refs.modal.handleShow({
+// 							title: '温馨提示',
+// 							// 有content选项时solt插槽将失效
+// 							content: 'ios暂时无法录音,请到pc进行操作录音',
+// 							
+// 							success: (res) => {
+// 							  console.log(res)
+// 							 
+// 							}
+// 						  })
+					}else if(res.platform == "android"){
+						console.log("啊啊啊啊")
+			            uni.navigateTo({
+							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
+						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')
+						});
+					}
+				  }
+				})
+			
 		},
 		hidenMark() {
 			this.isShowMark = false;
@@ -239,7 +289,7 @@ export default {
 		}
 		this.getNetData(this.activeIndex,this.tabList[this.activeIndex])
 	},
-	components: { uniLoadMore }
+	components: { uniLoadMore,minModal }
 };
 </script>
 

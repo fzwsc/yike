@@ -11,6 +11,7 @@
 			<view class="title-line" @click="showSinglePicker()">
 				<text class="title">专题：</text>
 				<view>{{ pickerText }}</view>
+				<image src="../../static/dow.png" mode="" class="down-class"></image>
 			</view>
 			<view class="title-line">
 				<text class="title">问题：</text>
@@ -35,6 +36,7 @@
 			<view class="title-line title-line-input" @click="showSinglePicker2()">
 				<text class="title">正确答案：</text>
 				<view>{{ pickerText2 }}</view>
+				<image src="../../static/dow.png" mode="" class="down-class"></image>
 			</view>
 
 			<button class="preview" @click="proview()">预览</button>
@@ -81,14 +83,13 @@ export default {
 			},
 			showWeb: true,
 			tipBox: 'true',
-			title: '主页导航文字',
 			showBack: true,
 			backBtnClass: 'uni-icon  color-text  uni-icon-back',
 			containerStyle: 'background:#F74C44',
 			titleStyle: 'font-size:15px;color:#ffffff',
 			url: '',
 			getMessage: '',
-			Answer: [{ name: '答案A',id:1 }, { name: '答案B',id:2 }, { name: '答案C',id:3 }, { name: '答案D',id:4 }],
+			Answer:[{ name: '答案A',id:1 }, { name: '答案B',id:2 }, { name: '答案C',id:3 }, { name: '答案D',id:4 }],
 			optionList: [],
 			themeColor: '#007AFF',
 			pickerText: '',
@@ -108,7 +109,7 @@ export default {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
 		// console.log(decodeURIComponent(options.url));
 		// uni.getStorageSync('userId')
-		var fileName = options.id
+		var fileName = options.id+'.mp3'
 		var url =`http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		console.log(options.id)
@@ -204,9 +205,6 @@ export default {
 							console.log('success');
 						}
 					});
-				
-			
-					
 			}
 		},
 		showSinglePicker() {
@@ -218,7 +216,8 @@ export default {
 		},
 		showSinglePicker2() {
 			console.log('999999999')
-			this.pickerValueArray2 = this.Answer; //this.Answer;
+			 //this.Answer;
+			this.pickerValueArray2 = this.Answer;
 			this.deepLength = 1;
 			this.pickerValueDefault2 = [0];
 			// this.$refs.mpvuePicker2.show();
@@ -226,8 +225,8 @@ export default {
 		},
 		onConfirm(e) {
 			this.pickerText = e.name; //JSON.stringify(e)['label'];
-			// this.contJson.radioName = e.id;
-			this.contJson.radioName = e.name;
+			this.contJson.topic_id = e.id;
+			// this.contJson.radioName = e.name;
 			this.showPicker = !this.showPicker
 		},
 		onConfirm2(e) {
@@ -252,6 +251,9 @@ export default {
 // 			}
 // 		}
 	},
+	watch:{
+		
+	},
 	components: {
 		mpvuePicker,
 		customHeader
@@ -260,6 +262,10 @@ export default {
 </script>
 
 <style>
+	.down-class{
+		height: 27upx;
+		width: 15upx;
+	}
 .box-cont-tip-show {
 	display: none;
 }
