@@ -157,6 +157,10 @@
             "path" : "pages/yundetails/yundetails",
             "style" : {}
         }
+        ,{
+            "path" : "pages/startAudio/startAudio",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",

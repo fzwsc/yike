@@ -91,7 +91,7 @@ export default {
 	data() {
 		return {
 			tabList: [],
-			activeIndex: 0,
+			activeIndex: 1,
 			isFollow: true,
 			isShowMark: false,
 			getHoneList:[],
@@ -104,13 +104,13 @@ export default {
 			pagesize: 10,
 		};
 	},
-	onShow() {
+	onLoad() {
 // 		uni.setStorageSync("token",'4755b095-380b-4b0e-8f76-02edb8e389bb')
 // 		uni.setStorageSync("role",2)
 // 		uni.setStorageSync("userId",'16')
 	   this.getTab()
 	   console.log('onLoad')
-	   this.activeIndex = 0
+	   this.activeIndex = 1
 	},
 	methods: {
 		// 评论
@@ -190,6 +190,7 @@ export default {
 			
 		},
 		getNetData(index,item){
+			console.log(item.id)
 			let pram = {}
 			pram.type = item.id;
 			pram.curpage = this.curpage;
@@ -246,25 +247,15 @@ export default {
 					}else if(res.platform == "ios"){
 						  console.log('iosiosiosiosios')
 					              uni.navigateTo({
-					            				url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
-					            			});
-// 			             _this.$refs.modal.handleShow({
-// 							title: '温馨提示',
-// 							// 有content选项时solt插槽将失效
-// 							content: 'ios暂时无法录音,请到pc进行操作录音',
-// 							
-// 							success: (res) => {
-// 							  console.log(res)
-// 							 
-// 							}
-// 						  })
+									url:'../startAudio/startAudio'
+								});
 					}else if(res.platform == "android"){
 						console.log("啊啊啊啊")
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+						   	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')

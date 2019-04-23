@@ -92,7 +92,7 @@ export default {
 			Answer:[{ name: '答案A',id:1 }, { name: '答案B',id:2 }, { name: '答案C',id:3 }, { name: '答案D',id:4 }],
 			optionList: [],
 			themeColor: '#007AFF',
-			pickerText: '',
+			pickerText: "请选择",
 			pickerText2: '',
 			deepLength: 1,
 			pickerValueDefault: [0],
@@ -107,28 +107,11 @@ export default {
 	},
 	onLoad(options) {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
-		// console.log(decodeURIComponent(options.url));
-		// uni.getStorageSync('userId')
-		var fileName = options.id+'.mp3'
+		var fileName = options.id
 		var url =`http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		console.log(options.id)
-		console.log(url)
-		
-// 		    const audio = uni.createInnerAudioContext();
-// 			// audio.autoplay = true;
-// 			audio.src = url
-// 			 audio.onCanplay(()=> {
-// 			  // 必须。可以当做是初始化时长
-// 			   audio.duration;
-// 			  // 必须。不然也获取不到时长
-// 			  setTimeout(() => {
-// 				this.duration = audio.duration;
-// 				console.log(audio.duration); // 401.475918
-// 			  }, 1000)
-// 			  })
-		
-	
+		console.log(url)	
 		console.log(this.duration)
 		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
 		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
@@ -145,7 +128,6 @@ export default {
 					this.optionList[i]['id'] = this.optionList[i].id;
 				}
 				
-				// this.pickerText = this.optionList[0].label
 				console.log(this.optionList);
 				// console.log(this.pickerSingleArray);
 			})
@@ -160,52 +142,62 @@ export default {
 		},
 		// 预览
 		proview() {
-			if (this.contJson.title == undefined) {
-				uni.showToast({
-					icon:'none',
-					title: '云广播标题不能为空'
+			uni.setStorage({
+					key: 'objcont',
+					data: this.contJson,
+					success: function () {
+							uni.navigateTo({
+								url: '../proview/proview',
+							});
+						console.log('success');
+					}
 				});
-			} 
-			else if(this.contJson.descript == undefined){
-				uni.showToast({
-					icon:'none',
-					title: '题目不能为空'
-				});
-			}
-			else if(this.contJson.option1 == undefined){
-				uni.showToast({
-					icon:'none',
-					title: '选项A不能为空'
-				});
-			}
-			else if(this.contJson.option2 == undefined){
-					uni.showToast({
-					icon:'none',
-					title: '选项B不能为空'
-				});
-			}
-			else if(this.contJson.right_option == undefined){
-					uni.showToast({
-					icon:'none',
-					title: '正确选项不能为空'
-				});
-			}
-			else{
+// 			if (this.contJson.title == undefined) {
+// 				uni.showToast({
+// 					icon:'none',
+// 					title: '云广播标题不能为空'
+// 				});
+// 			} 
+// 			else if(this.contJson.descript == undefined){
+// 				uni.showToast({
+// 					icon:'none',
+// 					title: '题目不能为空'
+// 				});
+// 			}
+// 			else if(this.contJson.option1 == undefined){
+// 				uni.showToast({
+// 					icon:'none',
+// 					title: '选项A不能为空'
+// 				});
+// 			}
+// 			else if(this.contJson.option2 == undefined){
+// 					uni.showToast({
+// 					icon:'none',
+// 					title: '选项B不能为空'
+// 				});
+// 			}
+// 			else if(this.contJson.right_option == undefined){
+// 					uni.showToast({
+// 					icon:'none',
+// 					title: '正确选项不能为空'
+// 				});
+// 			}
+// 			else{
 // 				uni.setStorage({
 // 					key:'objcont',
 // 					data:this.contJson
 // 				})
-				uni.setStorage({
-						key: 'objcont',
-						data: this.contJson,
-						success: function () {
-								uni.navigateTo({
-									url: '../proview/proview',
-								});
-							console.log('success');
-						}
-					});
-			}
+// 				uni.setStorage({
+// 						key: 'objcont',
+// 						data: this.contJson,
+// 						success: function () {
+// 								uni.navigateTo({
+// 									url: '../proview/proview',
+// 								});
+// 							console.log('success');
+// 						}
+// 					});
+			// }
 		},
 		showSinglePicker() {
 			this.pickerValueArray = this.optionList; //this.pickerSingleArray;
