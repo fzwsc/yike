@@ -63,7 +63,7 @@
 	     	 	<view class="comment-box">
 	     	 		<text class="comment-line">评论区</text>
 	     	 		<template v-if="area.comment_list.length > 0">
-	     	 			<view class="line" v-for="(item,index) in area.comment_list" :key="index" @click="like(item.comment_id,index,item)">
+	     	 			<view class="line" v-for="(item,index) in area.comment_list" :key="index" >
 	     	 				<view class="line-in-box">
 	     	 					<view class="coment-box-in">
 	     	 						<view class="user-box comment-box-user">
@@ -78,7 +78,7 @@
 	     	 							<view>
 	     	 								<image src="../../static/pinglun.png" mode="" @click="comment()"></image>{{item.reply_num}}
 	     	 							</view>
-	     	 							<view>
+	     	 							<view class="end" @click="like(item.comment_id,index,item)">
 	     	 								<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode=""></image>{{item.like_num}}
 	     	 							</view>
 	     	 						</view>
@@ -543,8 +543,12 @@
 		font-size: 20upx;
 		display: flex;
 		align-items: center;
+		flex: 1;
 	}
-
+      .comment-box .zan-comment view.end {
+     	display: flex;
+     	justify-content: flex-end;
+     }
 	.comment-box .zan-comment image {
 		margin-right: 14upx;
 		height: 31upx;
