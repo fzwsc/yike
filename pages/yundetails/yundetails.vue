@@ -116,13 +116,15 @@ export default {
 			now: 0,
 			radioItems: [],
 			listenStatus:1.,
-			audioId:''
+			audioId:'',
+			again:true
 		};
 	},
 	onLoad:function(option){
 		console.log(option)
 		this.audioId = option.id
 		this.getAudioResource()
+		this.listenRadio()
 	},
 	onReachBottom() {
 		this.hidden = false;
@@ -183,7 +185,13 @@ export default {
 		finish(end) {
 			this.isFinish = true;
 			this.listenStatus = 2
-			this.listenRadio();
+			if(this.again){
+				this.listenRadio();
+			}else{
+				
+			}
+			
+			
 		},
 		getAudioResource(id) {
 			let data = {};

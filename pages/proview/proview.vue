@@ -14,13 +14,13 @@
 				<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view> -->
 			</view>
 			<view class="audio">
-			<!-- 	<imt-audio
+				<imt-audio
 					continue
 					:src="contJson.mp3Url"
 					:duration="contJson.title	"
 					@prev="now = now === 0 ? audio.length - 1 : now - 1"
 					@next="now = now === audio.length - 1 ? 0 : now + 1"
-				></imt-audio> -->
+				></imt-audio>
 			</view>
 		</view>
 		<view class="ti-cont">
