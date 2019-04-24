@@ -322,6 +322,9 @@ view {
 	display: flex;
 	align-items: center;
 }
+.title-line  input{
+	flex: 1;
+}
 .title-line {
 	border-bottom: #eeeeee solid 1px;
 	margin: 0 33upx;
