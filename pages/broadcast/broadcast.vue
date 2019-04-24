@@ -9,7 +9,7 @@
 		<view class="cont-box">
 			<view class="user-info" v-for="(item,index) in getHoneList" :key="index">
 				<view @click="detiles(item)">
-					<view class="name-img" @click.stop>
+					<view class="name-img" >
 						<view class="user-box">
 							<image :src="item.avatar" mode=""></image>
 							<view class="text-info">
@@ -19,10 +19,10 @@
 						</view>
 						<template>
 							<!-- 1已关注2未关注 -->
-								<view class="follow" v-if="item.attention_status==1" @click="follow(item,index)"><text>已关注</text></view>
+								<view @click.stop class="follow" v-if="item.attention_status==0?'false':item.attention_status==1?'true':'false'" @click="follow(item,index)"><text>已关注</text></view>
 						</template>
 						<template>
-							<view class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
+							<view @click.stop class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
 						</template>
 					
 						
@@ -107,7 +107,6 @@ export default {
 	onLoad() {
 	   this.getTab()
 	   console.log('onshow')
-	   this.activeIndex = 1
 	},
 	methods: {
 		// 评论
@@ -174,20 +173,19 @@ export default {
 			data.token = this.token;
 			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
-				this.choseTab(this.activeIndex,res.datas[0])
+				this.choseTab(this.activeIndex,this.tabList[1]);//第一次进入
 			}).catch(()=>{
 			})
 		},
 		choseTab(index,item) {
-			console.log(item)
-			this.activeIndex = index;
+			this.activeIndex = index
 			this.curpage =1
 			this.hasmore = true
 		    this.getNetData(index,item)
 			
 		},
 		getNetData(index,item){
-			console.log(item.id)
+			console.log(item)
 			let pram = {}
 			pram.type = item.id;
 			pram.curpage = this.curpage;
@@ -244,15 +242,15 @@ export default {
 					}else if(res.platform == "ios"){
 						  console.log('iosiosiosiosios')
 					              uni.navigateTo({
-									url:'../startAudio/startAudio'
+									url:'../startAudio/startAudio?userid='+_this.userid
 								});
 					}else if(res.platform == "android"){
 						console.log("啊啊啊啊")
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-						   	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')

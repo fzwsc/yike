@@ -10,8 +10,8 @@
 			</view>
 			<view class="title-line" @click="showSinglePicker()">
 				<text class="title">专题：</text>
-				<view>{{ pickerText }}</view>
-				<image src="../../static/dow.png" mode="" class="down-class"></image>
+				<view class="down-class">{{ pickerText }}</view>
+				<image src="../../static/dow.png" mode="" class="down-class-img"></image>
 			</view>
 			<view class="title-line">
 				<text class="title">问题：</text>
@@ -35,15 +35,15 @@
 			</view>
 			<view class="title-line title-line-input" @click="showSinglePicker2()">
 				<text class="title">正确答案：</text>
-				<view>{{ pickerText2 }}</view>
-				<image src="../../static/dow.png" mode="" class="down-class"></image>
+				<view class="down-class">{{ pickerText2 }}</view>
+				<image src="../../static/dow.png" mode="" class="down-class-img"></image>
 			</view>
 
 			<button class="preview" @click="proview()">预览</button>
 			<mpvue-picker
 				:themeColor="themeColor"
 				ref="mpvuePicker"
-				:showPicker=showPicker
+				:showPicker="showPicker"
 				:deepLength="deepLength"
 				:pickerValueDefault="pickerValueDefault"
 				@onConfirm="onConfirm"
@@ -89,10 +89,10 @@ export default {
 			titleStyle: 'font-size:15px;color:#ffffff',
 			url: '',
 			getMessage: '',
-			Answer:[{ name: '答案A',id:1 }, { name: '答案B',id:2 }, { name: '答案C',id:3 }, { name: '答案D',id:4 }],
+			Answer: [{ name: '', id: 1 }, { name: '', id: 2 }, { name: '', id: 3 }, { name: '', id: 4 }],
 			optionList: [],
 			themeColor: '#007AFF',
-			pickerText: "请选择",
+			pickerText: '请选择',
 			pickerText2: '',
 			deepLength: 1,
 			pickerValueDefault: [0],
@@ -100,19 +100,20 @@ export default {
 			pickerValueArray: [],
 			pickerValueArray2: [],
 			contJson: {},
-			showPicker2:false,
-			showPicker:false,
-			duration:''
+			showPicker2: false,
+			showPicker: false,
+			duration: ''
 		};
 	},
 	onLoad(options) {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
-		var fileName = options.id
-		var url =`http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
+		var fileName = options.id;
+		
+		var url = `http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}`;
 		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
-		console.log(options.id)
-		console.log(url)	
-		console.log(this.duration)
+		console.log(options.id);
+		console.log(url);
+		console.log(this.duration);
 		this.contJson['radio'] = fileName; //赋值web页面穿过来的音频文件名
 		this.contJson['mp3Url'] = url; //赋值web页面穿过来的音频文件名
 		let Data = {};
@@ -120,14 +121,13 @@ export default {
 		this.yapi
 			.getAddYunCont(Data)
 			.then(res => {
-			
 				this.contJson.userInfo = res.datas.user_info;
-					this.optionList = res.datas.topic_list;
+				this.optionList = res.datas.topic_list;
 				for (var i = 0; i < this.optionList.length; i++) {
 					this.optionList[i]['name'] = this.optionList[i].title;
 					this.optionList[i]['id'] = this.optionList[i].id;
 				}
-				
+
 				console.log(this.optionList);
 				// console.log(this.pickerSingleArray);
 			})
@@ -142,108 +142,135 @@ export default {
 		},
 		// 预览
 		proview() {
-			uni.setStorage({
+			if (this.contJson.title == undefined) {
+				uni.showToast({
+					icon: 'none',
+					title: '云广播标题不能为空'
+				});
+			} else if (this.contJson.descript == undefined) {
+				uni.showToast({
+					icon: 'none',
+					title: '题目不能为空'
+				});
+			} else if (!this.contJson.option1) {
+				uni.showToast({
+					icon: 'none',
+					title: '选项A不能为空'
+				});
+			} else if (!this.contJson.option2) {
+				uni.showToast({
+					icon: 'none',
+					title: '选项B不能为空'
+				});
+			} else if (!this.contJson.right_option) {
+				uni.showToast({
+					icon: 'none',
+					title: '正确选项不能为空'
+				});
+			} else {
+// 				uni.setStorage({
+// 					key: 'objcont',
+// 					data: this.contJson
+// 				});
+				uni.setStorage({
 					key: 'objcont',
 					data: this.contJson,
-					success: function () {
-							uni.navigateTo({
-								url: '../proview/proview',
-							});
+					success: function() {
+						uni.navigateTo({
+							url: '../proview/proview'
+						});
 						console.log('success');
 					}
 				});
-// 			if (this.contJson.title == undefined) {
-// 				uni.showToast({
-// 					icon:'none',
-// 					title: '云广播标题不能为空'
-// 				});
-// 			} 
-// 			else if(this.contJson.descript == undefined){
-// 				uni.showToast({
-// 					icon:'none',
-// 					title: '题目不能为空'
-// 				});
-// 			}
-// 			else if(this.contJson.option1 == undefined){
-// 				uni.showToast({
-// 					icon:'none',
-// 					title: '选项A不能为空'
-// 				});
-// 			}
-// 			else if(this.contJson.option2 == undefined){
-// 					uni.showToast({
-// 					icon:'none',
-// 					title: '选项B不能为空'
-// 				});
-// 			}
-// 			else if(this.contJson.right_option == undefined){
-// 					uni.showToast({
-// 					icon:'none',
-// 					title: '正确选项不能为空'
-// 				});
-// 			}
-// 			else{
-// 				uni.setStorage({
-// 					key:'objcont',
-// 					data:this.contJson
-// 				})
-// 				uni.setStorage({
-// 						key: 'objcont',
-// 						data: this.contJson,
-// 						success: function () {
-// 								uni.navigateTo({
-// 									url: '../proview/proview',
-// 								});
-// 							console.log('success');
-// 						}
-// 					});
-			// }
+			}
 		},
 		showSinglePicker() {
 			this.pickerValueArray = this.optionList; //this.pickerSingleArray;
+			console.log()
+			if(this.pickerValueArray.length==0){
+				return
+				
+			}
 			this.deepLength = 1;
 			this.pickerValueDefault = [0];
 			// this.$refs.mpvuePicker.show();
-			this.showPicker = !this.showPicker
+			this.showPicker = !this.showPicker;
 		},
 		showSinglePicker2() {
-			console.log('999999999')
-			 //this.Answer;
+			console.log('999999999');
+			//this.Answer;
 			this.pickerValueArray2 = this.Answer;
 			this.deepLength = 1;
 			this.pickerValueDefault2 = [0];
 			// this.$refs.mpvuePicker2.show();
-			this.showPicker2 = !this.showPicker2
+			this.showPicker2 = !this.showPicker2;
 		},
 		onConfirm(e) {
 			this.pickerText = e.name; //JSON.stringify(e)['label'];
 			this.contJson.topic_id = e.id;
 			// this.contJson.radioName = e.name;
-			this.showPicker = !this.showPicker
+			this.showPicker = !this.showPicker;
 		},
 		onConfirm2(e) {
 			this.pickerText2 = e.name; //JSON.stringify(e)['label'];
+			if(!(e.name)){
+				uni.showToast({
+					icon: 'none',
+					title: '该选项无法选择'
+				});
+				return
+			}
 			this.contJson.right_option = e.id;
-			this.showPicker2 = !this.showPicker2
+			this.showPicker2 = !this.showPicker2;
 		},
 		onCancel(e) {
 			console.log(e);
-				this.showPicker2 = false
-				this.showPicker = false
-		},
+			this.showPicker2 = false;
+			this.showPicker = false;
+		}
 		// 		onBackPress() {
 		// 			if (this.$refs.mpvuePicker.showPicker) {
 		// 				this.$refs.mpvuePicker.pickerCancel();
 		// 				return true;
 		// 			}
 		// 		},
-// 		onUnload() {
-// 			if (this.$refs.mpvuePicker.showPicker) {
-// 				this.$refs.mpvuePicker.pickerCancel();
-// 			}
-// 		}
+		// 		onUnload() {
+		// 			if (this.$refs.mpvuePicker.showPicker) {
+		// 				this.$refs.mpvuePicker.pickerCancel();
+		// 			}
+		// 		}
 	},
-	watch:{
+	watch: {
+		"contJson.option1": function (val, oldVal) {
+			console.log(val)
+			console.log(oldVal)
+			  if(!val){
+				  this.Answer[0].name ="";
+			  }else{
+				  this.Answer[0].name ="答案A";  
+			  }
+		  },
+		  "contJson.option2": function (val, oldVal) {
+		  	  if(!val){
+		  	  	  this.Answer[1].name ="";
+		  	  }else{
+				    this.Answer[1].name ="答案B";
+			  }
+		    },
+			 "contJson.option3": function (val, oldVal) {
+				  if(!val){
+				  	  this.Answer[2].name ="";
+				  }else{
+					    this.Answer[2].name ="答案C";  
+				  }
+			  },
+			   "contJson.option4": function (val, oldVal) {
+			  	  if(!val){
+			  	  	  this.Answer[3].name ="";
+			  	  }else{
+					    this.Answer[3].name ="答案D";  
+				  }
+			    }
 		
 	},
 	components: {
@@ -254,10 +281,14 @@ export default {
 </script>
 
 <style>
-	.down-class{
-		height: 27upx;
+	.down-class-img{
+			height: 27upx;
 		width: 15upx;
 	}
+.down-class {
+   flex: 1;
+	
+}
 .box-cont-tip-show {
 	display: none;
 }

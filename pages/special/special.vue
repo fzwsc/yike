@@ -149,7 +149,9 @@ export default {
 			par.radio_id = item.radio_id
 			this.yapi.addLike(par).then(res=>{
 				if(res.code==200){
+					// this.boxList[index].like_status=1
 					this.boxList[index].like_status=1
+					this.boxList[index].like_num= this.boxList[index].like_num+1
 				}
 				
 			}).catch(err=>{

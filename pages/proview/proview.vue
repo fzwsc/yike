@@ -3,7 +3,7 @@
 		<!-- 头部播放区 -->
 		<view class="head-box"  :key="item.tostring">
 			<view class="name-img">
-				<view class="user-box">
+				<view class="user-box" v-if="contJson.userInfo">
 					<image :src="contJson.userInfo.avatar" mode=""></image>
 					<view class="text-info">
 						<text>{{contJson.userInfo.realname}}</text>
@@ -13,15 +13,10 @@
 				<!-- <view class="follow" v-show="isFollow" @click="follow()"><text>已关注</text></view>
 				<view class="no-follow" v-show="!isFollow" @click="noFllow()"><text>+关注</text></view> -->
 			</view>
-			<view class="audio">
-				<imt-audio
-					continue
-					:src="contJson.mp3Url"
-					:duration="contJson.title	"
-					@prev="now = now === 0 ? audio.length - 1 : now - 1"
-					@next="now = now === audio.length - 1 ? 0 : now + 1"
-				></imt-audio>
-			</view>
+				<view class="audio" v-if="audio.length > 0">
+	     	 			<imt-audio ref="imt" :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
+	     	 			 @next="now = now === audio.length - 1 ? 0 : now + 1" ></imt-audio>
+	     	 		</view>
 		</view>
 		<view class="ti-cont">
 			<view class="title">问题：</view>
@@ -30,10 +25,11 @@
 				<view class="answer">
 					<radio-group class="radio-group-rad" >
 						<label class="" v-for="(items, index) in radioItems" :key="index">
-							<view class="box-grop">
-								<view class="ridio-by"><radio  :checked="(index+1)==contJson.right_option" disabled></radio></view>
-								<view class="cont-box">
-									<text>{{ items }}----{{index==item.right_option}}---{{index}}--=={{contJson.right_option}}</text>
+							<view class="box-grop" v-if='radioItems'>
+								<!-- <view class="ridio-by"><radio  :checked="(index+1)==contJson.right_option" disabled></radio></view> -->
+								<view class="cont-box" v-if='items'>
+									<image :src="(index+1)==contJson.right_option?'../../static/dui.png' :'../../static/xuanxiang.png'" mode="" class="pic" ></image>
+									<text>{{ items }}</text>
 								</view>
 							</view>
 						</label>
@@ -55,26 +51,6 @@ export default {
 		return {
 			contJson:{},
 			audio: [
-				{
-					src: 'http://mouyizhan.com/1.mp3',
-					duration: 212
-				},
-				{
-					src: 'http://mouyizhan.com/2.mp3',
-					duration: 189
-				},
-				{
-					src: 'http://mouyizhan.com/3.mp3',
-					duration: 214
-				},
-				{
-					src: 'http://mouyizhan.com/4.mp3',
-					duration: 205
-				},
-				{
-					src: 'http://mouyizhan.com/5.mp3',
-					duration: 228
-				}
 			],
 			now: 0,
 			radioItems: [
@@ -85,10 +61,11 @@ export default {
 	},
 		onLoad(options) {
 			console.log(options);
-			
-			this.contJson = JSON.parse(options.json)
-		    this.radioItems = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4)
-			console.log(this.contJson)
+			// this.contJson =''// uni.setStorage('objcont');
+			// var radioItemsArr = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4);
+			// this.radioItems = radioItemsArr
+		this.getData()
+		this.getAudioDuration()
 			
 		},
 	onReachBottom() {
@@ -99,14 +76,43 @@ export default {
 		}, 3000);
 	},
 	methods: {
+		getData(){
+			 uni.getStorage({
+				  key: 'objcont',
+					success: res => {
+						console.log(res)
+						this.contJson = res.data
+						var radioItemsArr = new Array(this.contJson.option1,this.contJson.option2,this.contJson.option3,this.contJson.option4);
+						this.radioItems = radioItemsArr
+					}
+			})
+		
+		},
 		againEdit() {
 			uni.navigateBack({
 				
 			})
-			
 		},
 		
+	getAudioDuration() {
+			let data = {}
+			data['token'] = this.token
+			this.yapi.getDuration(data).then(res => {
+				let json = {
+					src: this.contJson.mp3Url,
+					duration: res.datas
+				}
+				this.audio.push(json)
+				console.log(res);
+			})
+		},
 		upFile(){
+			  uni.showModal({
+				 title:"确认提交么?",
+			  	success() {
+			  		
+			  	}
+			  })
 			 this.contJson['token'] = this.token
 			 // data['token'] = this.token
 			// console.log(this.contJson)
@@ -150,6 +156,11 @@ export default {
 </script>
 
 <style>
+	.cont-box .pic{
+		margin-right: 10upx;
+		height: 42upx;
+		width: 42upx;
+	}
 	view{
 		line-height: 1.5;
 	}
@@ -231,7 +242,8 @@ page {
 	top: 0upx;
 }
 .cont-box {
-	margin-left: 60upx;
+	display: flex;
+	align-items: center;
 }
 .bt-grop {
 	display: flex;
@@ -243,7 +255,8 @@ page {
 .bt-grop .again-edit {
 	width: 230upx;
 	height: 88upx;
-	border: 2upx solid rgba(153, 153, 153, 1);
+	line-height: 88upx;
+	border: 1upx solid rgba(153, 153, 153, 1);
 	border-radius: 44upx;
 	color: #666666;
 	background: #ffffff;
@@ -252,8 +265,10 @@ page {
 	width: 230upx;
 	height: 88upx;
 	line-height: 88upx;
+	line-height: 88upx;
 	border-radius: 44upx;
 	background: #f74c44;
+     border: 1upx solid #f74c44;
 	color: #ffffff;
 }
 </style>
