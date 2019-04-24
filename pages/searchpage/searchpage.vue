@@ -24,7 +24,7 @@
 					</view>
 				</navigator>
 				<!-- 老师 -->
-				<view class="teacher-cont" v-for="(item,index) in maincont" :key='index' v-if="!show" hover-class="none">
+				<view class="teacher-cont" v-for="(item,index) in contDataTeach" :key='index' v-if="!show" hover-class="none">
 					<navigator :url="'../persondetail/persondetail?role=2&userId='+item.id" class="left-box">
 						<view class="user"><image :src="item.avatar" mode=""></image>{{item.name}}</view>
 						<view class="courtyard">{{item.collegename}}</view>
@@ -63,7 +63,7 @@
 				contDataTeach:[],
 				maincont:[],
 				show:true,
-				noData:false,
+				noData:true,
 				token: uni.getStorageSync('token')
 			};
 		},
@@ -71,15 +71,29 @@
 		 search(e, val) {
             console.log(e, val);
 			if(e==''){
-				this.noData = false
+				this.contData = []
+				this.contDataTeach = []
+				this.noData = true
+				return
 			}
+			if (this.itemIndex == 0) {
+				 if(this.contData.length==0)  this.noData = true
+				
+			}else {
+				 if(this.contDataTeach.length==0) this.noData = true
+			}
+			
 			let par = {}
 			par['token'] = uni.getStorageSync('token')
 			par['words'] = e
 			this.yapi.search(par).then(res=>{
-				 if(res.datas.radio_list.length==0){
-					    this.noData = true
+				if (this.itemIndex == 0) {
+					 if(this.contData.length > 0)  this.noData = false
+					
+				}else {
+					 if(this.contDataTeach.length > 0) this.noData = false
 				}
+				
 				this.contData = res.datas.radio_list
 				this.contDataTeach = res.datas.teacher_list
 			}).catch(err=>{
@@ -91,13 +105,11 @@
 			  this.itemIndex = index
 			  this.noData =  false
 			  if(this.itemIndex==0){
-				  this.maincont = this.contData
 				  this.show =true
 				  if(this.contData.length==0){
 					  this.noData = true
 				  }
 			  }else{
-				  this.maincont = this.contDataTeach
 				  this.show =false
 				  if(this.contDataTeach.length==0){
 				  		this.noData = true
