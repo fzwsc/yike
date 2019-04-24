@@ -24,10 +24,10 @@
 				{{time}}
 			</view>
 		</view> -->
-<!--        <button @tap="startRecord">开始录音</button>
+       <button @tap="startRecord">开始录音</button>
         <button @tap="endRecord">停止录音</button>
         <button @tap="playVoice">播放录音</button>
-        <button @tap="up">试听</button> -->
+        <button @tap="up">试听</button>
     </view>
 </template>
 
@@ -146,9 +146,7 @@ export default {
             }
         },
 		up(){
-			   uni.showToast({
-				title:"iiiiiii",
-			})
+			
 			let _this = this
 // 			const tempFilePaths = res.tempFilePaths
 // 			console.log(res)
@@ -162,9 +160,9 @@ export default {
 				"first_status":_this.tip
 			  },
 			  success(res) {
-				    uni.showToast({
-				    	title:"iiiiiii",
-				    })
+				     uni.showToast({
+				  	title:"complete",
+				  })
 				   	 uni.reLaunch({
 					// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),

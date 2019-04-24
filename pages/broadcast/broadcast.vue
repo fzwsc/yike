@@ -17,11 +17,11 @@
 								<text>{{item.createtime}}</text>
 							</view>
 						</view>
-						<template>
+						<template v-if="!(item.attention_status==0) || floow">
 							<!-- 1已关注2未关注 -->
-								<view @click.stop class="follow" v-if="item.attention_status==0?'false':item.attention_status==1?'true':'false'" @click="follow(item,index)"><text>已关注</text></view>
+								<view @click.stop class="follow" v-if="item.attention_status==1" @click="follow(item,index)"><text>已关注</text></view>
 						</template>
-						<template>
+						<template v-if="!(item.attention_status==0) || floow">
 							<view @click.stop class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
 						</template>
 					
@@ -102,9 +102,13 @@ export default {
 			hasmore: true,
 			curpage: 1,
 			pagesize: 10,
+			floow:false
 		};
 	},
-	onLoad() {
+	onLoad(option) {
+		if(option.tip){
+			this.activeIndex = option.tip
+		}
 	   this.getTab()
 	   console.log('onshow')
 	},
@@ -173,7 +177,7 @@ export default {
 			data.token = this.token;
 			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
-				this.choseTab(this.activeIndex,this.tabList[1]);//第一次进入
+				this.choseTab(this.activeIndex,this.tabList[this.activeIndex]);//第一次进入
 			}).catch(()=>{
 			})
 		},
@@ -182,6 +186,11 @@ export default {
 			this.curpage =1
 			this.hasmore = true
 		    this.getNetData(index,item)
+			if(index==0){
+				this.floow = true
+			}else{
+				this.floow = false
+			}
 			
 		},
 		getNetData(index,item){

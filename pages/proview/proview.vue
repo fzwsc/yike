@@ -107,35 +107,44 @@ export default {
 			})
 		},
 		upFile(){
-			  uni.showModal({
-				 title:"确认提交么?",
-			  	success() {
-			  		
-			  	}
-			  })
-			 this.contJson['token'] = this.token
-			 // data['token'] = this.token
-			// console.log(this.contJson)
-			this.yapi.addYunCont(this.contJson).then(res=>{
-				// if(res.code==200){
-					uni.reLaunch({
-						url:'../broadcast/broadcast'
-					})
-				// }else{
-				// 	uni.showToast({
-				// 		icon:"none",
-				// 		title:'上传失败,请重试'
-				// 	})
-				// }
-					// uni.reLaunch({
-					// 	url:'../broadcast/broadcast'
-					// })
-					// uni.navigateBack({
-					// 	delta: 2
-					// })
-				  }).catch(err=>{
-					
-			})
+			
+			
+			let _this = this
+			uni.showModal({
+				title: '提示',
+				content: '确认提交么',
+				success: function (res) {
+					if (res.confirm) {
+						console.log('用户点击确定');
+							 _this.contJson['token'] = _this.token
+						 // data['token'] = this.token
+						// console.log(this.contJson)
+						_this.yapi.addYunCont(_this.contJson).then(res=>{
+							// if(res.code==200){
+								uni.reLaunch({
+									url:'../broadcast/broadcast?tip=4'
+								})
+							// }else{
+							// 	uni.showToast({
+							// 		icon:"none",
+							// 		title:'上传失败,请重试'
+							// 	})
+							// }
+								// uni.reLaunch({
+								// 	url:'../broadcast/broadcast'
+								// })
+								// uni.navigateBack({
+								// 	delta: 2
+								// })
+							  }).catch(err=>{
+								
+						})
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+		
+				}
+		})
 		}
 // 		radioChange(e) {
 // 			var checked = e.target.value;
