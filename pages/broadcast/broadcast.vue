@@ -105,11 +105,16 @@ export default {
 			floow:false
 		};
 	},
+	onShow(){
+		// this.getTab()
+	},
 	onLoad(option) {
 		if(option.tip){
-			this.activeIndex = option.tip
+			this.activeIndex = option.tip;
+				this.getTab()
+		}else{
+			this.getTab()
 		}
-	   this.getTab()
 	   console.log('onshow')
 	},
 	methods: {
@@ -169,7 +174,9 @@ export default {
 		},
 		gotoSearch() {
 			uni.navigateTo({
-				url: '../searchpage/searchpage'
+				url: '../searchpage/searchpage',
+				// url: '../proview/proview',
+				
 			});
 		},
 		getTab(){
@@ -177,15 +184,17 @@ export default {
 			data.token = this.token;
 			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
-				this.choseTab(this.activeIndex,this.tabList[this.activeIndex]);//第一次进入
+				console.log(res.datas)
+				this.choseTab(this.activeIndex,res.datas[this.activeIndex]);//第一次进入
 			}).catch(()=>{
 			})
 		},
 		choseTab(index,item) {
+			let typs = item;
 			this.activeIndex = index
 			this.curpage =1
 			this.hasmore = true
-		    this.getNetData(index,item)
+		    this.getNetData(index,typs)
 			if(index==0){
 				this.floow = true
 			}else{
@@ -236,9 +245,6 @@ export default {
 		
 		},
 		
-		search() {
-			console.log('0000000000000000');
-		},
 		
 		// 录音
 		soundAudio() {
@@ -249,12 +255,16 @@ export default {
 					if(res.platform == "devtools"){
 							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 					}else if(res.platform == "ios"){
+						uni.showToast({
+							icon: 'none',
+							title: '开发中,尽请期待...'
+						});
+						return
 						  console.log('iosiosiosiosios')
 					              uni.navigateTo({
 									url:'../startAudio/startAudio?userid='+_this.userid
 								});
 					}else if(res.platform == "android"){
-						console.log("啊啊啊啊0000")
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),

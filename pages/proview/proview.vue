@@ -107,7 +107,9 @@ export default {
 			})
 		},
 		upFile(){
-			
+			// 	uni.reLaunch({
+			// 	url:'../broadcast/broadcast?tip=3'
+			// })
 			
 			let _this = this
 			uni.showModal({
@@ -144,19 +146,8 @@ export default {
 					}
 		
 				}
-		})
+			})
 		}
-// 		radioChange(e) {
-// 			var checked = e.target.value;
-// 			var changed = {};
-// 			for (var i = 0; i < this.radioItems.length; i++) {
-// 				if (checked.indexOf(this.radioItems[i].name) !== -1) {
-// 					changed['radioItems[' + i + '].checked'] = true;
-// 				} else {
-// 					changed['radioItems[' + i + '].checked'] = false;
-// 				}
-// 			}
-// 		}
 	},
 	components: {
 		imtAudio

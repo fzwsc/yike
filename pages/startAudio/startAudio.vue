@@ -1,7 +1,10 @@
 <template>
     <view>
 		<view>
-				<cmd-progress :width="180" :stroke-color="color" type="circle" :time='time' :percent="percent"></cmd-progress>
+		   <cmd-progress :width="180" :stroke-color="color" type="circle" :time='time' :percent="percent"></cmd-progress>
+		</view>
+		<view>
+			
 		</view>
         <button @tap="startRecord">开始录音</button>
         <button @tap="endRecord">停止录音</button>
@@ -20,7 +23,12 @@ export default {
     data(){
 		
 		return{
-			voicePath: ''
+			voicePath: '',
+			time: 0,
+			maxTime: 600,  // 最大秒数
+			percent: 0,
+			timer: null,
+			color: '#f5f5f5'
 		}
         
     },
@@ -32,6 +40,22 @@ export default {
         });
     },
     methods: {
+		start() {
+				this.color = '#F74C44'
+				this.startAudio()
+			},
+			stop() {
+				clearInterval(this.timer)
+			},
+			startAudio() {
+				 this.timer = setInterval(() => {
+					   this.time ++ 
+						this.getPercent()
+					},1000)
+			},
+			getPercent() {
+				this.percent = this.time / this.maxTime * 100
+			},
         startRecord() {
             console.log('开始录音');
 
@@ -52,8 +76,6 @@ export default {
    		up(){
    			
    			let _this = this
-   // 			const tempFilePaths = res.tempFilePaths
-   // 			console.log(res)
    			console.log(_this.voicePath)
    			wx.uploadFile({
    			  url: 'https://ygb.yikevr.com/ygb/topic/audio_merge_ios', // 仅为示例，非真实的接口地址
@@ -69,13 +91,11 @@ export default {
    				  })
    				   	 uni.reLaunch({
    					// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
-   					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
    				   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
    				   	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
    					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
    					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
-   					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
-   					// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')
+   				
    				});
    				  console.log(res)
    				// do something
@@ -96,7 +116,7 @@ export default {
 
 	}
 	,components:{
-		cmdProgress
+		cmdProgress 
 	}
 }
 </script>
