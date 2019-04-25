@@ -18,21 +18,8 @@
           <!-- 绘制圈 end -->
           <!-- 状态文本 start -->
           <block v-if="showInfo">
-            <text class="cmd-progress-text" :title="setFormat">
-              <block v-if="status != 'success' && status != 'exception' && setProgress < 100">{{setFormat}}</block>
-              <!-- #ifdef H5 -->
-              <svg v-if="status == 'exception'" viewBox="64 64 896 896" data-icon="close" width="1em" height="1em" fill="currentColor"
-                aria-hidden="true">
-                <path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"></path>
-              </svg>
-              <svg v-if="status == 'success' || setProgress == 100" viewBox="64 64 896 896" data-icon="check" width="1em"
-                height="1em" fill="currentColor" aria-hidden="true" :style="{'color': strokeColor ? strokeColor : ''}">
-                <path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path>
-              </svg>
-              <!-- #endif -->
-              <!-- #ifndef H5 -->
-              <text v-if="status == 'exception' || status == 'success' || setProgress == 100" :style="setCircleIcon"></text>
-              <!-- #endif -->
+            <text class="cmd-progress-text">
+               {{setTime}}
             </text>
           </block>
           <!-- 状态文本 end -->
@@ -50,18 +37,18 @@
       </view>
       <!-- 进度条 end -->
       <!-- 进度条是否显示信息 start -->
-      <block v-if="showInfo">
+       <block v-if="showInfo">
         <text class="cmd-progress-text" :title="setFormat">
           <block v-if="status != 'success' && status != 'exception' && setProgress < 100">{{setFormat}}</block>
           <!-- #ifdef H5 -->
-          <svg v-if="status == 'exception'" viewBox="64 64 896 896" data-icon="close-circle" width="1em" height="1em"
+        <svg v-if="status == 'exception'" viewBox="64 64 896 896" data-icon="close-circle" width="1em" height="1em"
             fill="currentColor" aria-hidden="true">
             <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 0 1-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z"></path>
           </svg>
           <svg v-if="status == 'success' || setProgress == 100" viewBox="64 64 896 896" data-icon="check-circle" width="1em"
             height="1em" fill="currentColor" aria-hidden="true" :style="{'color': strokeColor ? strokeColor : ''}">
             <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm193.5 301.7l-210.6 292a31.8 31.8 0 0 1-51.7 0L318.5 484.9c-3.8-5.3 0-12.7 6.5-12.7h46.9c10.2 0 19.9 4.9 25.9 13.3l71.2 98.8 157.2-218c6-8.3 15.6-13.3 25.9-13.3H699c6.5 0 10.3 7.4 6.5 12.7z"></path>
-          </svg>
+          </svg> 
           <!-- #endif -->
           <!-- #ifndef H5 -->
           <text v-if="status == 'exception' || status == 'success' || setProgress == 100" :style="setLineStatusIcon"></text>
@@ -94,6 +81,13 @@
         type: Number,
         default: 0
       },
+			/**
+			 *  timer
+			 */
+			time: {
+				type: Number,
+				default: 0
+			},
       /**
        * 已完成的分段百分，仅支持类型line
        */
@@ -184,6 +178,33 @@
         }
         return percent;
       },
+		  /**
+			 * 设置显示的时间值
+			 */
+			setTime() {
+				let value = this.time
+				 if (value >= 600) {
+					return "10:00";
+				}
+				var second = parseInt(value); // 秒
+				var minute = 0;
+				var theTime1 = 0; //  秒
+				if (value >= 10) {
+					if (value > 60) {
+						minute = Math.floor(value / 60);
+						theTime1 = parseInt(second % 60);
+						if (theTime1 < 10) {
+							console.log(theTime1);
+							return "0" + minute + ":" + "0" + theTime1;
+						}
+						return "0" + minute + ":" + theTime1;
+					}
+					return "0" + minute + ":" + second;
+				}
+
+				return "0" + minute + ":" + "0" + second;
+
+			},
       /**
        * 进度圈svg大小
        */
@@ -284,7 +305,8 @@
         }
         // 完成进度
         if (this.status == 'success' || this.setProgress >= 100) {
-          currentColor = this.strokeColor || '#52c41a'
+          // currentColor = this.strokeColor || '#52c41a'
+					currentColor = this.strokeColor
           svgToBase =
             `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='64 64 896 896' data-icon='check' width='1em' height='1em' fill='${currentColor}' aria-hidden='true'%3E %3Cpath d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'%3E%3C/path%3E %3C/svg%3E`;
         }
@@ -384,9 +406,11 @@
   /**
    * 进度条样式变量，部分写在computed里的自行查找修改
    */
-  $success-color:#52c41a;
+  // $success-color:#52c41a;
+	$success-color:#999999;
   $exception-color:#ff5500;
-  $normal-color:#108ee9;
+  // $normal-color:#108ee9;
+	$normal-color:#999999;
   $error-color:#f5222d;
   $font-size-base: 28upx;
   $text-color-secondary: rgba(0, 0, 0, 0.45);
@@ -404,7 +428,11 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    display: inline-block;
+    // display: inline-block;
+		display: flex;
+		justify-content: center;
+		align-items: center
+		
 
     &-line {
       width: 100%;
@@ -532,6 +560,7 @@
       margin: 0;
       color: $progress-text-color;
       white-space: normal;
+			font-size: 90upx
     }
 
     &-circle &-status-exception {

@@ -38,7 +38,6 @@
 				<view class="down-class">{{ pickerText2 }}</view>
 				<image src="../../static/dow.png" mode="" class="down-class-img"></image>
 			</view>
-
 			<button class="preview" @click="proview()">预览</button>
 			<mpvue-picker
 				:themeColor="themeColor"
@@ -99,7 +98,12 @@ export default {
 			pickerValueDefault2: [0],
 			pickerValueArray: [],
 			pickerValueArray2: [],
-			contJson: {},
+			contJson: {
+				option1:'',
+				option2:'',
+				option3:'',
+				option4:''
+			},
 			showPicker2: false,
 			showPicker: false,
 			duration: ''
@@ -241,7 +245,7 @@ export default {
 		// 		}
 	},
 	watch: {
-		"contJson.option1": function (val, oldVal) {
+		'contJson.option1': function (val, oldVal) {
 			console.log(val)
 			console.log(oldVal)
 			  if(!val){

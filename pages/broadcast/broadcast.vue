@@ -17,11 +17,11 @@
 								<text>{{item.createtime}}</text>
 							</view>
 						</view>
-						<template v-if="!(item.attention_status==0) || floow">
+						<template >
 							<!-- 1已关注2未关注 -->
 								<view @click.stop class="follow" v-if="item.attention_status==1" @click="follow(item,index)"><text>已关注</text></view>
 						</template>
-						<template v-if="!(item.attention_status==0) || floow">
+						<template >
 							<view @click.stop class="no-follow" v-if="item.attention_status==2" @click="follow(item,index)"><text>+关注</text></view>
 						</template>
 					
@@ -254,12 +254,12 @@ export default {
 									url:'../startAudio/startAudio?userid='+_this.userid
 								});
 					}else if(res.platform == "android"){
-						console.log("啊啊啊啊")
+						console.log("啊啊啊啊0000")
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
-						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+						   	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')

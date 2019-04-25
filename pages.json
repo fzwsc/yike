@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/soundSavue/soundSavue",
+			"style": {
+				"navigationBarTitleText": "录音保存"
+			}
+		},
+		{
 			"path": "pages/startAudio/startAudio",
 			"style": {
 				"navigationBarTitleText": "录音"
@@ -97,12 +103,7 @@
 			"style": {
 				"navigationBarTitleText": "录音"
 			}
-		}, {
-			"path": "pages/soundSavue/soundSavue",
-			"style": {
-				"navigationBarTitleText": "录音保存"
-			}
-		}, {
+		},  {
 			"path": "pages/proview/proview",
 			"style": {
 				"navigationBarTitleText": "预览"
