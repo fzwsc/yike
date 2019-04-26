@@ -124,7 +124,7 @@ export default {
 						_this.yapi.addYunCont(_this.contJson).then(res=>{
 							// if(res.code==200){
 								uni.reLaunch({
-									url:'../broadcast/broadcast?tip=4'
+									url:'../broadcast/broadcast?tip=3'
 								})
 							// }else{
 							// 	uni.showToast({

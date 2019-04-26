@@ -50,6 +50,9 @@ export default{
 	getDuration(data){
 		return network.post("/ygb/topic/get_audio_duration",data)
 	},
+	getOssdata(){
+		return network.get('/ygb/Topic/get_oss_signature',data)
+	}
 	
 	
 }

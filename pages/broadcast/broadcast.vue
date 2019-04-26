@@ -260,10 +260,10 @@ export default {
 							title: '开发中,尽请期待...'
 						});
 						return
-						  console.log('iosiosiosiosios')
-					              uni.navigateTo({
-									url:'../startAudio/startAudio?userid='+_this.userid
-								});
+						  // console.log('iosiosiosiosios')
+					   //            uni.navigateTo({
+								// 	url:'../startAudio/startAudio?userid='+_this.userid
+								// });
 					}else if(res.platform == "android"){
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
