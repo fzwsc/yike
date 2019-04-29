@@ -1,5 +1,6 @@
 <template>
     <view>
+		<custom-header :title="title" :backBtnClass="backBtnClass" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header>
 		<view class="timer-box">
 		   <cmd-progress :width="180" :stroke-color="color" type="circle" :time='time' :percent="percent"></cmd-progress>
 		</view>
@@ -31,22 +32,23 @@
 				</view>
 			</view>
 		</view>
-       <button @tap="startRecord">开始录音</button>
+     <!--  <button @tap="startRecord">开始录音</button>
         <button @tap="endRecord">停止录音</button>
 		<button @tap="pauseVoice">暂停录音</button>
 		<button @tap="resumeVoice">继续录音</button>
         <button @tap="playVoice">播放录音</button>
-		<button @tap="up" type="primary">上传</button>
+		<button @tap="up" type="primary">上传</button> -->
     </view>
 </template>
 
 <script>
 	import {API_URL} from '../../request/base.js'
 	import cmdProgress  from '../../components/cmd-progress/cmd-progress.vue'
+	import customHeader from "../../components/custom-header/custom-header"
 	const recorderManager = uni.getRecorderManager();
 	const innerAudioContext = uni.createInnerAudioContext();
 	innerAudioContext.autoplay = true;
-	 import {OSS} from "../../sdk/aliyun-oss-sdk.min.js"
+
 
 export default {
     data(){
@@ -62,89 +64,129 @@ export default {
 			token:uni.getStorageSync('token'),
 			tipIos:1,
 			agean:0, //继续录制的时间.记录上一次时间,
-			
+			userId:uni.getStorageSync('userId'),
 			accessid:'',
 			policy:"",
 			host:'',
 			signature:'',
 			expire:'',
 			callback:'',
-			dir:''
+			dir:'',
+			isPageUp:true,
+			goon:2,
 			
-			
+				title: '录音',
+				showBack: true,
+				backBtnClass: 'uni-icon uni-icon-back',
+				containerStyle:'background:#F74C44',
+				titleStyle: 'font-size:15px;color:#ffffff'
 			
 		}
         
     },
     onLoad(option) {
+		console.log(option)
         let _this =this
 		if(option.tip){
 			_this.tipIos = option.tip
 			console.log("不为空tip"+option.tip)
 		}
+		if(option.goon){
+			_this.goon = option.goon;
+			_this.startRecord()
+			if(_this.goon==1){
+				
+			}else{
+				_this.pauseVoice()
+			}
+		}
 		console.log(_this.tipIos+'-------')
 		// 验证oss
-		_this.getOssCode()
 		_this.getAgainTime()
+
         recorderManager.onStop( (res) =>{
             console.log('recorder stop' + JSON.stringify(res));
 			console.log("回调..................")
-			 // let _this =this
             _this.voicePath = res.tempFilePath;
 			console.log(_this.voicePath)
 			console.log('---------'+_this.tipIos+'-------')
-			uni.showLoading({})
+	        //文件上传
 			wx.uploadFile({
-				url:'',
-				filePath:res.tempFilePath,
-				name:"file",
-				formData:{
-					policy:_this.policy,
-					OSSAccessKeyId:_this.accessid,
-					signature:_this.signature
-					
-				},success(res) {
-				    console.log(res)	
-				},
-		         fail(err) {
-		         	console.log(err)
-		         }
-				
+			  url: API_URL+'/ygb/topic/audio_merge_ios', // 仅为示例，非真实的接口地址
+			  filePath: res.tempFilePath,
+			  name: 'audio_file',
+			  formData: {
+				"token": _this.token,
+				"first_status":_this.tipIos
+			  },success(res) {
+				  if(_this.isPageUp){
+					   uni.reLaunch({
+					     	 url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
+					     	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
+					  	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
+					  });
+				  }else{
+					  let par = {}
+					  par.token = _this.token
+					  _this.yapi.getOssdata(par).then(res=>{
+					  	console.log(res)
+					  	// _this.accessid = res.datas.accessid;
+					  	// _this.host = res.datas.host;
+					  	// _this.policy = res.datas.policy;
+					  	// _this.signature = res.datas.signature;
+					  	// _this.expire = res.datas.expire;
+					  	// _this.callback = res.datas.callback;
+					  	// _this.dir = res.datas.dir;
+					          // 上传到oss
+							  let fileName = _this.voicePath.replace('wxfile://', '')
+							  let dateTime = _this.dateFormat(new Date(), "yyyyMMddhhmmss"); // 当前时间
+							  let randomStr = _this.randomString(4); //  4位随机字符串
+							  let filePathMian = res.datas.dir+_this.userId+'/'+dateTime+randomStr+'.mp3'
+					  		wx.uploadFile({
+					  		url:res.datas.host,
+					  		filePath:_this.voicePath,
+					  		name:"file",
+					  		formData:{
+								'success_action_status': '200',
+					  			policy:res.datas.policy,
+					  			OSSAccessKeyId:res.datas.accessid,
+					  			signature:res.datas.signature,
+					  			key:filePathMian
+					  		},success(res) {
+					  		    console.log(res)	
+					  		    console.log("成功oss~~~~");
+								uni.navigateTo({
+									url:`../soundSavue/soundSavue?id=${dateTime}${randomStr}.mp3`
+								})
+					  		},
+					  	     fail(err) {
+					  	     	console.log(err)
+					  	     }
+					  	})
+					  }).catch(err=>{
+					  })
+				  }
+			  },fail:(res)=>{  
+			             uni.showToast({
+			           	title:"失败",
+			           })
+			       },  
+			       complete:(res)=>{  
+					   uni.hideLoading()
+			          //  uni.showToast({
+			          // 	title:"complete",
+			          // })
+			       }  
 			})
-			
-			// wx.uploadFile({
-			//   url: API_URL+'/ygb/topic/audio_merge_ios', // 仅为示例，非真实的接口地址
-			//   filePath: res.tempFilePath,
-			//   name: 'audio_file',
-			//   formData: {
-			// 	"token": _this.token,
-			// 	"first_status":_this.tipIos
-			//   },success(res) {
-			// 	     uni.showToast({
-			// 	  	title:"complete",
-			// 	  })
-			// 	  uni.hideLoading()
-			// 	   	 uni.reLaunch({
-			// 	   	 url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
-			// 	   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
-			// 		// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
-			// 	});
-			// 	  console.log(res)
-			//   },fail:(res)=>{  
-			//              uni.showToast({
-			//            	title:"失败",
-			//            })
-			//        },  
-			//        complete:(res)=>{  
-			// 		   uni.hideLoading()
-			//            uni.showToast({
-			//           	title:"complete",
-			//           })
-			//        }  
-			// })
         });
     },
     methods: {
+		backClick() {
+			uni.switchTab({
+				url:'../broadcast/broadcast'
+			})
+			
+		},
 		//暂停录音
 		pauseVoice(){
 			this.isPay = false;
@@ -177,11 +219,13 @@ export default {
 				this.percent = this.time / this.maxTime * 100
 			},
         startRecord() {
+			 clearInterval(this.timer)
             console.log('开始录音');
 			this.start()
             this.isShow = false
             recorderManager.start({
-				duration:600000
+				duration:600000,
+				format:'mp3'
 			});
         },
         endRecord() {
@@ -196,17 +240,21 @@ export default {
                 innerAudioContext.play();
             }
         },
+		// 试听上传
    		 up(){
+		 clearInterval(this.timer)
    		   this.endRecord()
    		},
-		//保存
+		//保存录音
 		save(){
+			let _this  =this
+			_this.isPageUp =false;
 			uni.showModal({
 				title:'提示',
 				content:"确认提交录音么?",
 				success() {
-					
-					
+					clearInterval(_this.timer)
+				    _this.endRecord()
 				}
 			})
 		},
@@ -227,27 +275,92 @@ export default {
 				})
 			}
 		},
-		getOssCode(){
-			this.yapi.getOssdata({token:uni.getStorageSync('token')}).then(res=>{
-				this.accessid = res.datas.accessid;
-				this.host = res.datas.host;
-				this.policy = res.datas.policy;
-				this.signature = res.datas.signature;
-				this.expire = res.datas.expire;
-				this.callback = res.datas.callback;
-				this.dir = res.datas.dir;
-			}).catch(err=>{
-				
-			})
-		},
+	randomString(num) {
+      let chars = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z"
+      ];
+      let res = "";
+      for (let i = 0; i < num; i++) {
+        var id = Math.ceil(Math.random() * 35);
+        res += chars[id];
+      }
+      return res;
+    },
+    dateFormat(dateObj, format) {
+      let date = {
+        "M+": dateObj.getMonth() + 1,
+        "d+": dateObj.getDate(),
+        "h+": dateObj.getHours(),
+        "m+": dateObj.getMinutes(),
+        "s+": dateObj.getSeconds(),
+        "q+": Math.floor((dateObj.getMonth() + 3) / 3),
+        "S+": dateObj.getMilliseconds()
+      };
+      if (/(y+)/i.test(format)) {
+        format = format.replace(
+          RegExp.$1,
+          (dateObj.getFullYear() + "").substr(4 - RegExp.$1.length)
+        );
+      }
+      for (let k in date) {
+        if (new RegExp("(" + k + ")").test(format)) {
+          format = format.replace(
+            RegExp.$1,
+            RegExp.$1.length === 1
+              ? date[k]
+              : ("00" + date[k]).substr(("" + date[k]).length)
+          );
+        }
+      }
+      return format;
+    },
+	
 	}
 	,components:{
-		cmdProgress 
+		cmdProgress,customHeader
 	}
 }
 </script>
 
 <style>
+	.uni-icon-back{
+		color: #FFFFFF;
+	}
 	.contr-box{
 		margin-top: 230upx;
 	}

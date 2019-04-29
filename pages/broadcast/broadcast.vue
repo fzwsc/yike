@@ -65,7 +65,7 @@
 			</view>
 		</view>
 		<!-- mark -->
-		<view class="mark" v-show="isShowMark" @click="hidenMark($event)">
+		<view class="mark" v-show="isShowMark"  @click="hidenMark($event)">    <!-- @click="hidenMark($event)" -->
 			<view class="list">
 				<view class="luy ss" @click="gotoSearch()">
 					<image src="../../static/sousuo.png" mode=""></image>
@@ -249,21 +249,23 @@ export default {
 		// 录音
 		soundAudio() {
 			let _this = this
+			//    uni.navigateTo({
+			// 	url:'../startAudio/startAudio?userid='+_this.userid+"&keyy=9999"
+			// });
 			uni.getSystemInfo({
 				  success:function(res){
-				
 					if(res.platform == "devtools"){
 							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 					}else if(res.platform == "ios"){
-						uni.showToast({
-							icon: 'none',
-							title: '开发中,尽请期待...'
-						});
-						return
+						// uni.showToast({
+						// 	icon: 'none',
+						// 	title: '开发中,尽请期待...'
+						// });
+						// return
 						  // console.log('iosiosiosiosios')
-					   //            uni.navigateTo({
-								// 	url:'../startAudio/startAudio?userid='+_this.userid
-								// });
+						  uni.navigateTo({
+							url:'../startAudio/startAudio?userid='+_this.userid
+						});
 					}else if(res.platform == "android"){
 			            uni.navigateTo({
 							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),

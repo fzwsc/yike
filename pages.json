@@ -1,6 +1,7 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		
+	
 		{
 			"path": "pages/login/login",
 			"style": {
@@ -13,8 +14,13 @@
 				"navigationBarTitleText": "录音保存"
 			}
 		},
-		
-
+		{	
+			"path": "pages/startAudio/startAudio",
+			"style": {
+				"navigationBarTitleText": "录音",
+				"navigationStyle":"custom" 
+			}
+		},
 		{
 			"path": "pages/broadcast/broadcast",
 			"style": {
@@ -22,12 +28,6 @@
 			}
 		},
 
-{
-			"path": "pages/startAudio/startAudio",
-			"style": {
-				"navigationBarTitleText": "录音"
-			}
-		},
 		{
 			"path": "pages/index/index",
 			"style": {

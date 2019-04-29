@@ -48,10 +48,14 @@ export default{
 	},
 	// 获取时长
 	getDuration(data){
-		return network.post("/ygb/topic/get_audio_duration",data)
+		return network.get("/ygb/topic/get_audio_duration",data)
 	},
-	getOssdata(){
+	getOssdata(data){
 		return network.get('/ygb/Topic/get_oss_signature',data)
+	},
+	// 获取音频文件流
+	getMusicFile(data){
+		return network.post('/ygb/topic/get_audio_stream',data)
 	}
 	
 	
