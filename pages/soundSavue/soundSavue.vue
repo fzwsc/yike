@@ -146,27 +146,27 @@ export default {
 		},
 		// 预览
 		proview() {
-			if (this.contJson.title == undefined) {
+			if (this.contJson.title == undefined || this.contJson.title=='') {
 				uni.showToast({
 					icon: 'none',
 					title: '云广播标题不能为空'
 				});
-			} else if (this.contJson.descript == undefined) {
+			} else if (this.contJson.descript == undefined || this.contJson.descript=='') {
 				uni.showToast({
 					icon: 'none',
 					title: '题目不能为空'
 				});
-			} else if (!this.contJson.option1) {
+			} else if (!this.contJson.option1 || this.contJson.option1=='') {
 				uni.showToast({
 					icon: 'none',
 					title: '选项A不能为空'
 				});
-			} else if (!this.contJson.option2) {
+			} else if (!this.contJson.option2 || this.contJson.option2=='') {
 				uni.showToast({
 					icon: 'none',
 					title: '选项B不能为空'
 				});
-			} else if (!this.contJson.right_option) {
+			} else if (!this.contJson.right_option || this.contJson.right_option=='') {
 				uni.showToast({
 					icon: 'none',
 					title: '正确选项不能为空'
