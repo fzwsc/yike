@@ -75,11 +75,11 @@ export default {
 			isPageUp:true,
 			goon:2,
 			
-				title: '录音',
-				showBack: true,
-				backBtnClass: 'uni-icon uni-icon-back',
-				containerStyle:'background:#F74C44',
-				titleStyle: 'font-size:15px;color:#ffffff'
+			title: '录音',
+			showBack: true,
+			backBtnClass: 'uni-icon uni-icon-back',
+			containerStyle:'background:#F74C44',
+			titleStyle: 'font-size:15px;color:#ffffff'
 			
 		}
         
@@ -92,18 +92,17 @@ export default {
 			console.log("不为空tip"+option.tip)
 		}
 		if(option.goon){
+			// _this.startRecord()
 			_this.goon = option.goon;
-			_this.startRecord()
 			if(_this.goon==1){
-				
-			}else{
-				_this.pauseVoice()
+				_this.isShow =true
+				_this.startRecord();
+				// _this.tipIos =2
+				console.log('继续录制------>---->'+option.goon)
 			}
 		}
-		console.log(_this.tipIos+'-------')
 		// 验证oss
 		_this.getAgainTime()
-
         recorderManager.onStop( (res) =>{
             console.log('recorder stop' + JSON.stringify(res));
 			console.log("回调..................")
@@ -120,7 +119,7 @@ export default {
 				"first_status":_this.tipIos
 			  },success(res) {
 				  if(_this.isPageUp){
-					   uni.reLaunch({
+					   uni.redirectTo({
 					     	 // url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
 					     	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
 					  	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
@@ -130,13 +129,6 @@ export default {
 					  par.token = _this.token
 					  _this.yapi.getOssdata(par).then(res=>{
 					  	console.log(res)
-					  	// _this.accessid = res.datas.accessid;
-					  	// _this.host = res.datas.host;
-					  	// _this.policy = res.datas.policy;
-					  	// _this.signature = res.datas.signature;
-					  	// _this.expire = res.datas.expire;
-					  	// _this.callback = res.datas.callback;
-					  	// _this.dir = res.datas.dir;
 					          // 上传到oss
 							  let fileName = _this.voicePath.replace('wxfile://', '')
 							  let dateTime = _this.dateFormat(new Date(), "yyyyMMddhhmmss"); // 当前时间
@@ -243,6 +235,7 @@ export default {
 		// 试听上传
    		 up(){
 		 clearInterval(this.timer)
+		   this.isPageUp =true;
    		   this.endRecord()
    		},
 		//保存录音
@@ -252,9 +245,21 @@ export default {
 			uni.showModal({
 				title:'提示',
 				content:"确认提交录音么?",
-				success() {
-					clearInterval(_this.timer)
-				    _this.endRecord()
+				success(res) {
+					if(res.confirm){
+						 _this.endRecord()
+						_this.isShow = true;
+						_this.tipIos = 1;
+						_this.time = 0;
+						_this.isPay = true;
+						_this.percent =0
+						// _this.isPageUp =true
+						clearInterval(_this.timer);
+					
+					}else{
+						
+					}
+				
 				}
 			})
 		},
