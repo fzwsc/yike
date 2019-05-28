@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<!-- <custom-header :title="title" :backBtnClass="backBtnClass" @click="backClick" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header> -->
+		<custom-header :title="title" :backBtnClass="backBtnClass" @click="backClick" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header>
 
 		<!-- <view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view></view> -->
 		<view class="mian-box">
@@ -77,6 +77,7 @@ import customHeader from '../../components/custom-header/custom-header.vue';
 export default {
 	data() {
 		return {
+			title:'录音保存',
 			webviewStyles: {
 				top: '44px'
 			},
@@ -142,7 +143,22 @@ export default {
 	},
 	methods: {
 		backClick() {
-			this.tipBox = false;
+				uni.showModal({
+				title:'提示',
+				content:"是否放弃该题目?",
+				success(res) {
+					if(res.confirm){
+						uni.reLaunch({
+							url:'../broadcast/broadcast'
+						})
+					         
+					
+					}else{
+						
+					}
+				
+				}
+			})
 		},
 		// 预览
 		proview() {

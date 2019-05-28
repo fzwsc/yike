@@ -15,7 +15,7 @@
 			</view>
 				<view class="audio" v-if="audio.length > 0">
 	     	 			<imt-audio ref="imt" :src="audio[now].src" :duration="audio[now].duration" @prev="now = now === 0 ? audio.length - 1 : now - 1"
-	     	 			 @next="now = now === audio.length - 1 ? 0 : now + 1" ></imt-audio>
+	     	 			 @next="now = now === audio.length - 1 ? 0 : now + 1" @getaudio="getAudioContext" ></imt-audio>
 	     	 		</view>
 		</view>
 		<view class="ti-cont">
@@ -49,6 +49,7 @@ import imtAudio from 'components/imt-audio/imt-audio';
 export default {
 	data() {
 		return {
+			audioContext:null,
 			contJson:{},
 			audio: [
 			],
@@ -76,6 +77,9 @@ export default {
 		}, 3000);
 	},
 	methods: {
+		getAudioContext(audio) {
+			this.audioContext = audio;
+		},
 		getData(){
 			 uni.getStorage({
 				  key: 'objcont',
@@ -122,6 +126,7 @@ export default {
 						 // data['token'] = this.token
 						// console.log(this.contJson)
 						_this.yapi.addYunCont(_this.contJson).then(res=>{
+							if (_this.audioContext) _this.audioContext.destroy();
 							// if(res.code==200){
 								uni.reLaunch({
 									url:'../broadcast/broadcast?tip=3'

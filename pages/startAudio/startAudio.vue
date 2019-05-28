@@ -26,10 +26,10 @@
 					<image class="img-log" src="../../static/st.png" mode=""></image>
 					<text  class="text-colr">继续录音</text>
 				</view>
-				<view class="bt-one" @tap="save">
+			<!-- 	<view class="bt-one" @tap="save">
 					<image class="img-log" src="../../static/baocun.png" mode=""></image>
 					<text  class="text-colr">保存</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
      <!--  <button @tap="startRecord">开始录音</button>
