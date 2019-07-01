@@ -1,6 +1,15 @@
 <template>
 	<view>
-		<custom-header :title="title" :backBtnClass="backBtnClass" @click="backClick" :showBack="showBack" :containerStyle="containerStyle" :titleStyle="titleStyle" @backTap="backClick" ref="backTap"></custom-header>
+		<custom-header
+			:title="title"
+			:backBtnClass="backBtnClass"
+			@click="backClick"
+			:showBack="showBack"
+			:containerStyle="containerStyle"
+			:titleStyle="titleStyle"
+			@backTap="backClick"
+			ref="backTap"
+		></custom-header>
 
 		<!-- <view hidden="true">	<web-view  :webview-styles="webviewStyles" :src="url" @message="getMessage"></web-view></view> -->
 		<view class="mian-box">
@@ -77,7 +86,7 @@ import customHeader from '../../components/custom-header/custom-header.vue';
 export default {
 	data() {
 		return {
-			title:'录音保存',
+			title: '录音保存',
 			webviewStyles: {
 				top: '44px'
 			},
@@ -99,21 +108,38 @@ export default {
 			pickerValueDefault2: [0],
 			pickerValueArray: [],
 			pickerValueArray2: [],
+			// contJson: {
+			// 	option1: '',
+			// 	option2: '',
+			// 	option3: '',
+			// 	option4: ''
+			// },
 			contJson: {
-				option1:'',
-				option2:'',
-				option3:'',
-				option4:''
+				mp3Url: '',//音乐地址
+				option1: '',
+				option2: '',
+				option3: '',
+				option4: '',
+				right_option: "",//你的正确答案
+				title: '',
+				descript:''
 			},
 			showPicker2: false,
 			showPicker: false,
-			duration: ''
+			duration: '',
+			token: uni.getStorageSync('token') ,
+			answerArr:["答案A","答案B","答案C","答案D"]
 		};
 	},
 	onLoad(options) {
 		console.log('赋值web页面穿过来的音频文件名' + options.id); //获取参数
 		var fileName = options.id;
-		
+		console.log(options);
+		if (options.idEditId >= 0) {
+			console.log(options.idEditId + '参数');
+			this.getEditData(options.idEditId);
+		}
+		console.log('继续--------');
 		var url = `http://ykvr.oss-cn-shanghai.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}`;
 		//`http://wsc-test.oss-cn-shenzhen.aliyuncs.com//ygb/user/${uni.getStorageSync('userId')}/${options.id}.mp3`
 		console.log(options.id);
@@ -130,7 +156,7 @@ export default {
 				this.optionList = res.datas.topic_list;
 				for (var i = 0; i < this.optionList.length; i++) {
 					this.optionList[i]['name'] = this.optionList[i].title;
-					this.optionList[i]['id'] = this.optionList[i].id;
+					// this.optionList[i]['id'] = this.optionList[i].id;
 				}
 
 				console.log(this.optionList);
@@ -142,56 +168,113 @@ export default {
 		// 		}
 	},
 	methods: {
-		backClick() {
-				uni.showModal({
-				title:'提示',
-				content:"是否放弃该题目?",
-				success(res) {
-					if(res.confirm){
-						uni.reLaunch({
-							url:'../broadcast/broadcast'
-						})
-					         
-					
-					}else{
-						
+		// 获取编辑的内容
+		getEditData(id) {
+		
+			let par = {};
+			par['token'] = this.token;
+			par['radio_id'] = id;
+			this.yapi
+				.getEditFrom(par)
+				.then(res => {
+					console.log(res.datas.title)
+					this.contJson.title = res.datas.title;
+						this.Answer[0].name = '';
+						this.Answer[1].name = '';
+						this.Answer[2].name = '';
+						this.Answer[3].name = '';
+						this.contJson.right_option = '';
+						this.contJson.descript ='';
+						console.log(res.datas.subject_list[0].option1);
+						console.log(!res.datas.subject_list[0].option1);
+					if(!(res.datas.subject_list[0].option1==null)){
+						this.contJson.option1 = res.datas.subject_list[0].option1;
+						this.Answer[0].name = '答案A'
 					}
-				
+					if(!(res.datas.subject_list[0].option2==null)){
+						this.contJson.option2 = res.datas.subject_list[0].option2;
+							this.Answer[1].name = '答案B'
+					}
+					if(!(res.datas.subject_list[0].option3==null)){
+						this.contJson.option3 = res.datas.subject_list[0].option3;
+							this.Answer[2].name = '答案C'
+					}
+					if(!(res.datas.subject_list[0].option4==null)){
+						this.contJson.option4 = res.datas.subject_list[0].option4;
+							this.Answer[3].name = '答案D'
+					}
+					this.pickerText2 = this.answerArr[res.datas.subject_list[0].right_option-1];
+					this.contJson.right_option = res.datas.subject_list[0].right_option
+					this.contJson.descript = res.datas.subject_list[0].descript;
+						let _this = this
+					for(let i=0;i<_this.optionList.length;i++){
+						if(_this.optionList[i].id == res.datas.topic_id){
+							_this.pickerText = _this.optionList[i].name
+							console.log(_this.optionList[i].name)
+						}else{
+							
+						}
+					}
+					
+// 					this.contJson.mp3Url = res.datas.radio;
+// 					this.contJson.option1 = res.datas.option1;
+// 					this.contJson.option2 = res.datas.option2;
+// 					this.contJson.title = res.datas.right_option;
+// 
+					console.log(res);
+				})
+				.catch(err => {});
+		},
+		backClick() {
+			uni.showModal({
+				title: '提示',
+				content: '是否放弃该题目?',
+				success(res) {
+					if (res.confirm) {
+						uni.reLaunch({
+							url: '../broadcast/broadcast'
+						});
+					} else {
+					}
 				}
-			})
+			});
 		},
 		// 预览
 		proview() {
-			if (this.contJson.title == undefined || this.contJson.title=='') {
+			console.log(!this.contJson.right_option);
+			console.log(this.contJson.right_option);
+			console.log(this.contJson.right_option == '');
+			if (this.contJson.title == '') {
 				uni.showToast({
 					icon: 'none',
 					title: '云广播标题不能为空'
 				});
-			} else if (this.contJson.descript == undefined || this.contJson.descript=='') {
+			} else if (this.contJson.descript == '') {
 				uni.showToast({
 					icon: 'none',
 					title: '题目不能为空'
 				});
-			} else if (!this.contJson.option1 || this.contJson.option1=='') {
+			} else if ( this.contJson.option1 == '') {
 				uni.showToast({
 					icon: 'none',
 					title: '选项A不能为空'
 				});
-			} else if (!this.contJson.option2 || this.contJson.option2=='') {
+			} else if ( this.contJson.option2 == '') {
 				uni.showToast({
 					icon: 'none',
 					title: '选项B不能为空'
 				});
-			} else if (!this.contJson.right_option || this.contJson.right_option=='') {
+			} else if ( this.contJson.right_option === '') {
 				uni.showToast({
 					icon: 'none',
 					title: '正确选项不能为空'
 				});
 			} else {
-// 				uni.setStorage({
-// 					key: 'objcont',
-// 					data: this.contJson
-// 				});
+				// 				uni.setStorage({
+				// 					key: 'objcont',
+				// 					data: this.contJson
+				// 				});
+				console.log(this.contJson);
 				uni.setStorage({
 					key: 'objcont',
 					data: this.contJson,
@@ -206,10 +289,9 @@ export default {
 		},
 		showSinglePicker() {
 			this.pickerValueArray = this.optionList; //this.pickerSingleArray;
-			console.log()
-			if(this.pickerValueArray.length==0){
-				return
-				
+			console.log();
+			if (this.pickerValueArray.length == 0) {
+				return;
 			}
 			this.deepLength = 1;
 			this.pickerValueDefault = [0];
@@ -233,12 +315,12 @@ export default {
 		},
 		onConfirm2(e) {
 			this.pickerText2 = e.name; //JSON.stringify(e)['label'];
-			if(!(e.name)){
+			if (!e.name) {
 				uni.showToast({
 					icon: 'none',
 					title: '该选项无法选择'
 				});
-				return
+				return;
 			}
 			this.contJson.right_option = e.id;
 			this.showPicker2 = !this.showPicker2;
@@ -261,37 +343,36 @@ export default {
 		// 		}
 	},
 	watch: {
-		'contJson.option1': function (val, oldVal) {
-			console.log(val)
-			console.log(oldVal)
-			  if(!val){
-				  this.Answer[0].name ="";
-			  }else{
-				  this.Answer[0].name ="答案A";  
-			  }
-		  },
-		  "contJson.option2": function (val, oldVal) {
-		  	  if(!val){
-		  	  	  this.Answer[1].name ="";
-		  	  }else{
-				    this.Answer[1].name ="答案B";
-			  }
-		    },
-			 "contJson.option3": function (val, oldVal) {
-				  if(!val){
-				  	  this.Answer[2].name ="";
-				  }else{
-					    this.Answer[2].name ="答案C";  
-				  }
-			  },
-			   "contJson.option4": function (val, oldVal) {
-			  	  if(!val){
-			  	  	  this.Answer[3].name ="";
-			  	  }else{
-					    this.Answer[3].name ="答案D";  
-				  }
-			    }
-		
+		'contJson.option1': function(val, oldVal) {
+			console.log(val);
+			console.log(oldVal);
+			if (!val) {
+				this.Answer[0].name = '';
+			} else {
+				this.Answer[0].name = '答案A';
+			}
+		},
+		'contJson.option2': function(val, oldVal) {
+			if (!val) {
+				this.Answer[1].name = '';
+			} else {
+				this.Answer[1].name = '答案B';
+			}
+		},
+		'contJson.option3': function(val, oldVal) {
+			if (!val) {
+				this.Answer[2].name = '';
+			} else {
+				this.Answer[2].name = '答案C';
+			}
+		},
+		'contJson.option4': function(val, oldVal) {
+			if (!val) {
+				this.Answer[3].name = '';
+			} else {
+				this.Answer[3].name = '答案D';
+			}
+		}
 	},
 	components: {
 		mpvuePicker,
@@ -301,13 +382,12 @@ export default {
 </script>
 
 <style>
-	.down-class-img{
-			height: 27upx;
-		width: 15upx;
-	}
+.down-class-img {
+	height: 27upx;
+	width: 15upx;
+}
 .down-class {
-   flex: 1;
-	
+	flex: 1;
 }
 .box-cont-tip-show {
 	display: none;
@@ -342,7 +422,7 @@ view {
 	display: flex;
 	align-items: center;
 }
-.title-line  input{
+.title-line input {
 	flex: 1;
 }
 .title-line {

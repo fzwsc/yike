@@ -5,14 +5,22 @@
 				<view class="text">
 					推送设置
 				</view>
+				
 				<view class="arrow">
 					
 				</view>
 			</view>
+			<view class="setting-item" @tap="unBind()">
+				<view class="text">
+					微信解绑
+				</view>
+				<view class="arrow">
+				</view>
+			</view>
 		</view>
-		<navigator url="../login/login" open-type="reLaunch" class="log-out">
+		<view @click="checkOut()" open-type="reLaunch" class="log-out">
 			退出登录
-		</navigator>
+		</view>
 	</view>
 </template>
 
@@ -20,8 +28,51 @@
 	export default {
 		data() {
 			return {
-				
+				token:uni.getStorageSync('token'),
 			};
+		},
+		methods:{
+			checkOut(){
+				 uni.removeStorage({
+					 key:'usn'
+				 })
+				  uni.removeStorage({
+					 key:'token'
+				 })
+				 uni.reLaunch({
+					url:'../login/login'
+				}) 
+			},
+			unBind(){
+				let _this = this
+				uni.showModal({
+					title:'提示!!',
+					content:"确定解除微信绑定么?",
+					success(res) {
+						if(res.confirm){
+							let par={}
+							par["token"] = _this.token
+						 _this.yapi.changePwdUnBind(par).then(res=>{
+							 if(res.code==200){
+								 uni.removeStorage({
+									 key:'usn'
+								 })
+								 uni.navigateTo({
+									url:'../login/login'
+								}) 
+							 }
+						 }).catch(err=>{
+							 
+						 })
+									
+						
+						}else{
+							
+						}
+					
+					}
+				})
+			}
 		},
 		onUnload() {
 			uni.setStorageSync("flag",true)

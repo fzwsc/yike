@@ -64,7 +64,7 @@ export default {
 			token:uni.getStorageSync('token'),
 			tipIos:1,
 			agean:0, //继续录制的时间.记录上一次时间,
-			userId:uni.getStorageSync('userId'),
+			userid:uni.getStorageSync('userId'),
 			accessid:'',
 			policy:"",
 			host:'',
@@ -74,7 +74,6 @@ export default {
 			dir:'',
 			isPageUp:true,
 			goon:2,
-			
 			title: '录音',
 			showBack: true,
 			backBtnClass: 'uni-icon uni-icon-back',
@@ -85,12 +84,12 @@ export default {
         
     },
     onLoad(option) {
-		console.log(option)
         let _this =this
 		if(option.tip){
 			_this.tipIos = option.tip
 			console.log("不为空tip"+option.tip)
 		}
+		console.log(option)
 		if(option.goon){
 			// _this.startRecord()
 			_this.goon = option.goon;
@@ -112,6 +111,7 @@ export default {
 	        //文件上传
 			wx.uploadFile({
 			  url: API_URL+'/ygb/topic/audio_merge_ios', // 仅为示例，非真实的接口地址
+			  // url: API_URL+'/ygb/topic/audio_merge', // 仅为示例，非真实的接口地址
 			  filePath: res.tempFilePath,
 			  name: 'audio_file',
 			  formData: {
@@ -121,7 +121,8 @@ export default {
 				  if(_this.isPageUp){
 					   uni.redirectTo({
 					     	 // url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
-					     	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
+					     	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
+					     	url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/iospage?token='+_this.token+'&userid='+_this.userid)
 					  	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
 					  });
 				  }else{

@@ -15,7 +15,7 @@
 				<view>密码</view>
 				<view class="password">
 					<input type="text" v-model="psw" placeholder="请输入密码" />
-					<!-- <text class="rz-mm" @click="rzMm">重置密码</text> -->
+					<text class="rz-mm" @click="rzMm">重置密码</text>
 				</view>
 			</view>
 			<button class="bt-login" open-type="getUserInfo" @getuserinfo="userinfo">
@@ -32,8 +32,10 @@ export default {
 	data() {
 		return {
 			code: '',
+			// usn: '',
+			// psw: '',
 			usn: 'L000121',
-			// usn: 'B0020',
+			// usn: 'L000111',
 			psw: '123456',
 			schoolList: [],
 			hidden: true,
@@ -52,9 +54,27 @@ export default {
 			this.code = res.code
 		  }
 		});
+		if(uni.getStorageSync('usn')){
+			this.againLogin()
+		}
 		this.getSchoolList()
 	},
 	methods:{
+		// 判断是否是二次等
+		againLogin(){
+			let par = {}
+			par['account'] =   uni.getStorageSync('usn')
+			this.yapi.autoLogin(par).then(res=>{
+				uni.setStorageSync("token",res.datas.token)
+			    uni.setStorageSync("userId",res.datas.user_id)
+					uni.switchTab({
+					url: '../broadcast/broadcast',
+				});
+				
+			}).catch(err=>{
+				
+			})
+		},
 		rzMm(){
 			uni.navigateTo({
 				url:'../resetmm/resetmm'
@@ -96,6 +116,11 @@ export default {
 						uni.setStorageSync("token",res.datas.token)
 						uni.setStorageSync("userId",res.datas.user_id)
 					    uni.setStorageSync("role",res.datas.role_type)
+						
+						  uni.setStorageSync("schoolId",this.selectSchool.id)
+						  uni.setStorageSync("usn",this.usn)
+						  uni.setStorageSync("psw",this.psw)
+						
 						uni.switchTab({
 							url: '../broadcast/broadcast',
 						});

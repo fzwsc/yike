@@ -6,7 +6,11 @@
 					<view class="rely-info">
 						<view class="name">{{item.name}}</view>
 						<view class="msg">{{item.content}}</view>
-						<view class="time">{{item.createtime}}</view>
+						<view class="cotrol-box">
+								<view class="time">{{item.createtime}}</view>
+									<view class="jubao" @click="jubao(item.comment_id)"><image src="../../static/jubao.png" mode=""></image>举报</view>
+						</view>
+					
 					</view>
 				</view>
 				<view :hidden="loadingHidden">
@@ -72,6 +76,12 @@
 			}
 		},
 		methods: {
+			jubao(id){
+				uni.navigateTo({
+					url: '../reporting/reporting?commentId='+id
+				});
+			},
+			
 			send() {
 				 let data = {}
 				data['token'] = this.token
@@ -134,6 +144,23 @@
 </script>
 
 <style>
+	.cotrol-box{
+		display: flex;
+		justify-content: space-between;
+	}
+   .cotrol-box image{
+	   width: 34upx;
+	   height: 34upx;
+	   margin-left: 10upx;
+   }
+   .jubao{
+	   vertical-align: center;
+	  color: #999999;
+	  font-size: 24upx;
+	  display:flex;
+	 align-items:center;
+
+   }
 	button {
 		margin-left: 16upx;
 		margin-right: 0;

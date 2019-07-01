@@ -109,6 +109,7 @@ export default {
 		// this.getTab()
 	},
 	onLoad(option) {
+		console.log("aaaaaa");
 		if(option.tip){
 			this.activeIndex = option.tip;
 				this.getTab()
@@ -252,10 +253,12 @@ export default {
 			//    uni.navigateTo({
 			// 	url:'../startAudio/startAudio?userid='+_this.userid+"&keyy=9999"
 			// });
+		    uni.setStorageSync("radio_id",0);
 			uni.getSystemInfo({
 				  success:function(res){
 					if(res.platform == "devtools"){
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)  //正式
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 					}else if(res.platform == "ios"){
 						// uni.showToast({
 						// 	icon: 'none',
@@ -267,14 +270,13 @@ export default {
 							url:'../startAudio/startAudio?userid='+_this.userid
 						});
 					}else if(res.platform == "android"){
+						console.log('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid );
 			            uni.navigateTo({
-							// url: '../soundSavue/soundSavue?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?id=8888'),
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/cataudio.html?id=8888'),
+					
 						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://www.weixinsxy.com/jssdk/')
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/Demo.html')
 						});
 					}
 				  }

@@ -9,6 +9,17 @@
 			}
 		},
 		{
+			"path": "pages/reporting/reporting",
+			"style": {
+				"navigationBarTitleText": "举报"
+			}
+		},
+		{
+			"path": "pages/mysubaudio/mysubaudio",
+			"style": {}
+		},
+
+		{
 			"path": "pages/soundSavue/soundSavue",
 			"style": {
 				"navigationBarTitleText": "录音保存",
@@ -160,6 +171,8 @@
 			"path": "pages/yundetails/yundetails",
 			"style": {}
 		}
+
+
 	],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",

@@ -30,6 +30,11 @@
 				</view>
 			</view>
 			<view class="type-list">
+				<navigator url="../mysubaudio/mysubaudio" class="type-item" hover-class="none">
+					<image src="../../static/audio.png" mode="" class="pic"></image>
+					<view class="text">我发布的云广播</view>
+					<view class="arrow"></view>
+				</navigator>
 				<navigator url="../mypoints/mypoints" class="type-item" hover-class="none">
 					<image src="../../static/jife.png" mode="" class="pic"></image>
 					<view class="text">我的积分</view>
@@ -71,13 +76,18 @@
 	export default {
 		data() {
 			return {
-				token: uni.getStorageSync("token"),
+				token: '',
 				userInfo: {},
 				concernList: [],
 				whiteScreen: true
 			}
 		},
 		onShow() {
+			this.token = uni.getStorageSync("token");
+			this.myInfo()
+		},
+		onLoad() {
+			this.token = uni.getStorageSync("token");
 			this.myInfo()
 		},
 		methods: {

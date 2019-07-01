@@ -123,10 +123,12 @@ export default {
 					if (res.confirm) {
 						console.log('用户点击确定');
 							 _this.contJson['token'] = _this.token
+							 _this.contJson['id'] = uni.getStorageSync("radio_id");
+							
 						 // data['token'] = this.token
 						// console.log(this.contJson)
 						_this.yapi.addYunCont(_this.contJson).then(res=>{
-							if (_this.audioContext) _this.audioContext.destroy();
+							if (_this.audioContext) _this.audioContext.destroy();	
 							// if(res.code==200){
 								uni.reLaunch({
 									url:'../broadcast/broadcast?tip=3'
