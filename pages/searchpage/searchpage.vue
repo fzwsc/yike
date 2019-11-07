@@ -76,26 +76,40 @@
 				this.noData = true
 				return
 			}
-			if (this.itemIndex == 0) {
-				 if(this.contData.length==0)  this.noData = true
-				
-			}else {
-				 if(this.contDataTeach.length==0) this.noData = true
-			}
+		   
+			
+			// if (this.itemIndex == 0) {
+			// 	 if(this.contData.length==0)  this.noData = true
+			// 	
+			// }else {
+			// 	 if(this.contDataTeach.length==0) this.noData = true
+			// }
 			
 			let par = {}
 			par['token'] = uni.getStorageSync('token')
 			par['words'] = e
 			this.yapi.search(par).then(res=>{
-				if (this.itemIndex == 0) {
-					 if(this.contData.length > 0)  this.noData = false
-					
-				}else {
-					 if(this.contDataTeach.length > 0) this.noData = false
-				}
-				
 				this.contData = res.datas.radio_list
 				this.contDataTeach = res.datas.teacher_list
+				if (this.itemIndex == 0) {
+					 if(this.contData.length > 0) {
+						 this.noData = false
+						 } 
+					 else{
+						this.noData = true 
+					 }
+					
+				}else {
+					 if(this.contDataTeach.length > 0) {
+						 this.noData = false
+						 }
+					 else{
+						 this.noData = true
+					 }
+				}
+				
+				// this.contData = res.datas.radio_list
+				// this.contDataTeach = res.datas.teacher_list
 			}).catch(err=>{
 				
 			})

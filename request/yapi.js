@@ -89,7 +89,15 @@ export default{
 	// 云广播审核
 	audioExamineurl(data){
 		return network.post("/ygb/topic/radio_audit",data)
-	} 
+	} ,
+	// 获取规则
+	getRoleCont(data){
+		return network.get("/ygb/user/get_score_conf",data)
+	},
+	// 获取学期
+	getSemester(data){
+		return network.post('/ygb/user/term_list',data)
+	}
 	
 
 }

@@ -34,11 +34,11 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico box-ico1" @click="questions">
+				<!-- 	<view class="box-ico box-ico1" @click="questions">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
-					</view>
-					<view class="box-ico" @click="comment(item)">
+					</view> -->
+					<view class="box-ico box-ico1" @click="comment(item)">
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>

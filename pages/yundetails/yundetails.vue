@@ -76,11 +76,12 @@
 	     	 						<view class="nei-ron">{{item.content}}</view>
 	     	 						<view class="zan-comment">
 	     	 							<view>
-	     	 								<image src="../../static/pinglun.png" mode="" @click="comment()"></image>{{item.reply_num}}
+	     	 								<image src="../../static/pinglun.png" mode="" @click="comment(item.comment_id)"></image>{{item.reply_num}}
 	     	 							</view>
 	     	 							<view class="end" @click="like(item.comment_id,index,item)">
 	     	 								<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode=""></image>{{item.like_num}}
 	     	 							</view>
+										<view class="jubao" @click="jubao(item.comment_id)"><image src="../../static/jubao.png" mode=""></image>举报</view>
 	     	 						</view>
 	     	 					</view>
 	     	 	
@@ -91,11 +92,11 @@
 	     	 	<!-- 底部 -->
 	     	 	<view class="button-cont">
 	     	 		<view class="control-box">
-	     	 			<view class="box-ico box-ico1">
+	     	 		<!-- 	<view class="box-ico box-ico1">
 	     	 				<image src="../../static/tiwen.png" mode=""></image>
 	     	 				提问
-	     	 			</view>
-	     	 			<navigator :url="'../commentdetail/commentdetail?radioId='+area.id" class="box-ico" hover-class="none">
+	     	 			</view> -->
+	     	 			<navigator :url="'../commentdetail/commentdetail?radioId='+area.id" class="box-ico box-ico1" hover-class="none">
 	     	 				<image src="../../static/pinglun.png" mode="" />
 	     	 				{{area.comment_num ? area.comment_num : 0}}
 	     	 			</navigator>
@@ -150,9 +151,14 @@
 			 }
 		},
 		methods: {
-			comment() {
+			jubao(id){
 				uni.navigateTo({
-					url: "../commentrely/commentrely"
+					url: '../reporting/reporting?commentId='+id
+				});
+			},
+			comment(comment_id) {
+				uni.navigateTo({
+					url: "../commentrely/commentrely?commentId="+comment_id+'&radioId='+this.audioId
 				})
 			},
 			// 获取音频实例
@@ -329,6 +335,9 @@
 </script>
 
 <style>
+	.jubao{
+		text-align: center;
+	}
 	view {
 		line-height: 1.6;
 	}
@@ -534,16 +543,16 @@
 		height: 90upx;
 		align-items: center;
 		color: #666666;
-		font-size: 15upx;
-		padding: 0 118upx;
+		font-size: 24upx;
+		padding: 0 100upx;
 
 	}
 
 	.comment-box .zan-comment view {
-		font-size: 20upx;
+		font-size: 24upx;
 		display: flex;
 		align-items: center;
-		flex: 1;
+		/* flex: 1; */
 	}
       .comment-box .zan-comment view.end {
      	display: flex;

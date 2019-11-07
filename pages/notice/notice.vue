@@ -2,11 +2,11 @@
 	<view class="notice">
 		<template v-if="role == 1">
 			<view class="type-list">
-				<view class="type-item" @click="open">
+			<!-- 	<view class="type-item" @click="open">
 					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
 					<view class="text">问答</view>
 					<view class="arrow"></view>
-				</view>
+				</view> -->
 				<navigator url="../noticeanswer/noticeanswer" class="type-item" hover-class="none">
 					<image src="../../static/msg-huifu.png" mode="" class="pic"></image>
 					<view class="text">回复</view>
@@ -21,11 +21,11 @@
 		</template>
 		<template v-else>
 			<view class="type-list">
-				<view class="type-item" @click="open">
+			<!-- 	<view class="type-item" @click="open">
 					<image src="../../static/msg-tiwen.png" mode="" class="pic"></image>
 					<view class="text">提问</view>
 					<view class="arrow"></view>
-				</view>
+				</view> -->
 				<navigator url="../noticecomment/noticecomment" class="type-item" hover-class="none">
 					<image src="../../static/msg-pinglun.png" mode="" class="pic"></image>
 					<view class="text">评论</view>

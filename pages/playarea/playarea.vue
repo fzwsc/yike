@@ -26,6 +26,7 @@
 			// 		 
 			// 	})
 			// }
+			console.log("playarea");
 			 uni.getStorage({
 			 	key: 'flag',
 				success(res) {
@@ -49,6 +50,14 @@
 						})
 										
 					}
+				},
+				fail(e) {
+					uni.navigateTo({
+						url:'../playaudio/playaudio',
+							animationType: 'pop-out',
+						 animationDuration: 0
+						 
+					})
 				}
 			 })
 		}

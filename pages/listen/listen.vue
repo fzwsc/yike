@@ -1,7 +1,7 @@
 <template>
 	<view class="my-comments">
 		<view class="comments-item" v-for="(item,index) in list" :key="index">
-			<view class="user-info">
+			<view class="user-info" @click="detiles(item)">
 				<image :src="item.avatar" mode="" class="pic"></image>
 				<view class="">
 					<view class="user-name">{{item.realname}}</view>
@@ -54,6 +54,12 @@
 			this.getHistoryList()
 		},
 		methods: {
+			detiles(item) {
+				uni.navigateTo({
+					url:'../yundetails/yundetails?id='+item.radio_id,
+					// url: '../soundRecording/soundRecording'
+				});
+				},
 			getHistoryList(onlyOne = false) {
 				let data = {};
 				data["token"] = this.token;

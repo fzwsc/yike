@@ -111,7 +111,9 @@ export default {
 					});
 				}
 	               this.list=[]
-					this.getMessageList();
+				   this.curpage =1
+					this.getMessageList(true);
+					console.log("刷新.......")
 				// item.audit_status = status
 			}).catch(err=>{
 				

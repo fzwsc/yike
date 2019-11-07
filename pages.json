@@ -173,7 +173,13 @@
 		}
 
 
-	],
+	    ,{
+            "path" : "pages/scorerule/scorerule",
+            "style" : {
+				"navigationBarTitleText": "积分规则说明"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",
 		"navigationBarBackgroundColor": "#F74C44",

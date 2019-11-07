@@ -135,7 +135,7 @@ export default {
 			} else if (this.towPwd == '') {
 				uni.showToast({
 					icon: 'none',
-					title: '在次输入密码不能为空!'
+					title: '再次输入密码不能为空!'
 				});
 				return;
 			} else if (!(this.fistPwd === this.towPwd)) {

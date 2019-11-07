@@ -40,11 +40,11 @@
 					</view>
 				</view>
 				<view class="control-box">
-					<view class="box-ico box-ico1" @click="questions">
+				<!-- 	<view class="box-ico box-ico1" @click="questions">
 						<image src="../../static/tiwen.png" mode=""></image>
 						提问
-					</view>
-					<view class="box-ico" @click="comment(item)">
+					</view> -->
+					<view class="box-ico box-ico1" @click="comment(item)">
 						<image src="../../static/pinglun.png" mode="" />
 						{{item.comment_num}}
 					</view>
@@ -107,6 +107,8 @@ export default {
 	},
 	onShow(){
 		// this.getTab()
+		this.role =  parseInt(uni.getStorageSync('role'));
+	   
 	},
 	onLoad(option) {
 		console.log("aaaaaa");
@@ -257,8 +259,8 @@ export default {
 			uni.getSystemInfo({
 				  success:function(res){
 					if(res.platform == "devtools"){
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)  //正式
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)  //正式
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 					}else if(res.platform == "ios"){
 						// uni.showToast({
 						// 	icon: 'none',
@@ -270,12 +272,12 @@ export default {
 							url:'../startAudio/startAudio?userid='+_this.userid
 						});
 					}else if(res.platform == "android"){
-						console.log('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid );
+						// console.log('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid );
 			            uni.navigateTo({
 					
 						   	// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
-							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
+							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://ygb.test.yikevr.com/h5/#/?token='+_this.token+'&userid='+_this.userid)
 							// url: '../soundRecording/soundRecording?url='+encodeURIComponent('https://xiangyuecn.github.io/Recorder/')
 						});
 					}
@@ -456,12 +458,13 @@ view {
 	text-align: center;
 	display: flex;
 	justify-content: center;
+	margin-left: 30upx;
 }
 .control-box .box-ico1 {
-	padding-left: 40upx;
+	padding-left: 78upx;
 }
 .control-box .box-ico2 {
-	padding-right: 40upx;
+	padding-right: 78upx;
 }
 .control-box .box-ico image {
 	margin-right: 5upx;

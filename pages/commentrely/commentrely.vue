@@ -8,7 +8,7 @@
 						<view class="msg">{{item.content}}</view>
 						<view class="cotrol-box">
 								<view class="time">{{item.createtime}}</view>
-									<view class="jubao" @click="jubao(item.comment_id)"><image src="../../static/jubao.png" mode=""></image>举报</view>
+								<view class="jubao" @click="jubao(item.comment_id)"><image src="../../static/jubao.png" mode=""></image>举报</view>
 						</view>
 					
 					</view>
@@ -62,6 +62,7 @@
 			}
 		},
 		onLoad(option) {
+			console.log(option)
 			this.radio_id = option.radioId
 			this.comment_id = option.commentId
 			this.getReplyList()
@@ -181,6 +182,9 @@
 	}
    view {
 	   line-height: 1;
+   }
+   .comment-rely{
+	   padding-bottom: 90upx;
    }
    .comment-rely .rely-item {
    	display: flex;

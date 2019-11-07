@@ -30,7 +30,7 @@
 				</view>
 			</view>
 			<view class="type-list">
-				<navigator url="../mysubaudio/mysubaudio" class="type-item" hover-class="none">
+				<navigator url="../mysubaudio/mysubaudio" class="type-item" hover-class="none" v-if="role==2">
 					<image src="../../static/audio.png" mode="" class="pic"></image>
 					<view class="text">我发布的云广播</view>
 					<view class="arrow"></view>
@@ -79,11 +79,13 @@
 				token: '',
 				userInfo: {},
 				concernList: [],
-				whiteScreen: true
+				whiteScreen: true,
+				role:uni.getStorageSync('role')//1 学生 2老师
 			}
 		},
 		onShow() {
 			this.token = uni.getStorageSync("token");
+			this.role = uni.getStorageSync('role');
 			this.myInfo()
 		},
 		onLoad() {

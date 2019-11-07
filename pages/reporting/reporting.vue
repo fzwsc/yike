@@ -60,7 +60,13 @@ export default {
 				    if(res.code==200){
 						uni.showToast({
 						title: res.msg,
-						icon: 'none'})
+						icon: 'none',
+						})
+						setTimeout(()=>{
+							uni.navigateBack({ changed: true })
+						},1000)
+						
+						
 					}else{
 						
 					}

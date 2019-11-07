@@ -100,7 +100,8 @@ export default {
 			getMessage: '',
 			Answer: [{ name: '', id: 1 }, { name: '', id: 2 }, { name: '', id: 3 }, { name: '', id: 4 }],
 			optionList: [],
-			themeColor: '#007AFF',
+			
+			themeColor: '#F74C44',
 			pickerText: '请选择',
 			pickerText2: '',
 			deepLength: 1,
@@ -170,7 +171,6 @@ export default {
 	methods: {
 		// 获取编辑的内容
 		getEditData(id) {
-		
 			let par = {};
 			par['token'] = this.token;
 			par['radio_id'] = id;

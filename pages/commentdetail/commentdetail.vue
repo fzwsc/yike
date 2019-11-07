@@ -55,6 +55,7 @@
 						    </navigator>
 	   						<view class="icon" @click="like(item.comment_id,index,item)">
 	   						<image :src="item.like_status == 2 ? '../../static/zan.png' : '../../static/dianzanle.png'" mode="" class="pic"></image>{{item.like_num}}</view>
+							<view class="jubao" @click="jubao(item.comment_id)"><image src="../../static/jubao.png" mode=""></image>举报</view>
 	   					</view>
 	   				</view>
 	   			</view>
@@ -70,18 +71,25 @@
 	   	<!-- 底部 -->
 	   	<view class="button-cont" v-show="!hidden">
 	   		<view class="control-box">
-	   			<view class="box-ico box-ico1">
+	   			<!-- <view class="box-ico box-ico1">
 	   				<image src="../../static/tiwen.png" mode=""></image>
 	   				提问
-	   			</view>
-	   			<view class="box-ico" @click="pop">
+	   			</view> -->
+	   			<view class="box-ico  box-ico1" @click="pop">
 	   				<image src="../../static/pinglun.png" mode="" />
 	   				评论
 	   			</view>
-	   			<view class="box-ico box-ico2">
+	   		<!-- 	<view class="box-ico box-ico2">
 	   				<image src="../../static/zan.png" mode="" />
 	   				点赞
-	   			</view>
+	   			</view> -->
+					<view class="box-ico box-ico2" @click="likeMessage(detail)" v-if="detail.like_status==2">
+					<image src="../../static/zan.png" mode="" />点赞
+				</view>
+				
+				<view class="box-ico box-ico2" @click="isLike(index)" v-if="detail.like_status==1" >
+					<image src="../../static/dianzan.png" mode="" />点赞
+				</view>
 	   		</view>
 	   	</view>
 	   	<!-- 阴影层 -->
@@ -138,6 +146,11 @@
 			}
 		},
 		methods: {
+			jubao(id){
+				uni.navigateTo({
+					url: '../reporting/reporting?commentId='+id
+				});
+			},
 		  send() {
 			 let data = {}
 			 data['token'] = this.token
@@ -184,6 +197,31 @@
 			  	
 			  })
 		  },
+		isLike(){
+			if (this.detail.like_status == 1) {
+				uni.showToast({
+				   title: '已赞',
+				   icon: 'none'
+				})
+				return 
+			}
+		},
+		// 点赞
+		likeMessage(item){
+			let par  = {}
+			par.token= uni.getStorageSync('token');
+			par.radio_id = item.id
+			this.yapi.addLike(par).then(res=>{
+				if(res.code==200){
+					this.detail.like_status=1
+					// this.getHoneList[index].like_num= this.getHoneList[index].like_num+1
+				
+				}
+				
+			}).catch(err=>{
+				
+			})
+		},
 		 like(id,index,item) {
 			 if (item.like_status == 1) {
 			 	uni.showToast({
@@ -256,6 +294,25 @@
 	 button[disabled] {
 		color:#c1c1c1;
 	}
+	.jubao{
+	         margin-left: 15upx;
+			display: flex;
+			justify-content: space-between;
+		}
+	.jubao image{
+		   width: 31upx;
+		   height: 31upx;
+		   margin-left: 10upx;
+	}
+	.jubao{
+		   vertical-align: center;
+		  color: #999999;
+		  font-size: 24upx;
+		  display:flex;
+		 align-items:center;
+	
+	}
+	
 	.comment-detail .comments-header {
 		padding: 31upx 31upx 30upx 30upx;
 		margin-bottom: 20upx;

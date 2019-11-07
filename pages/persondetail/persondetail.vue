@@ -91,15 +91,15 @@
 						<view class="scholl-item">
 							组织(学院)：{{student.collegename}}
 						</view>
-						<view class="scholl-item">
+						<!-- <view class="scholl-item">
 							专业：{{student.profession}}
-						</view>
+						</view> -->
 						<view class="scholl-item">
 							年级：{{student.enteryear}}
 						</view>
-						<view class="scholl-item">
+						<!-- <view class="scholl-item">
 							班级：{{student.classname}}
-						</view>
+						</view> -->
 					</view>
 				</template>
 			</view>

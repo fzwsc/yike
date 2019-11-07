@@ -1,6 +1,6 @@
 <template>
 	<view class="search" :style="{ backgroundColor: backgroundColor }">
-		<view class="content" :style="{ 'border-radius': radius + 'px', border: border }">
+		<view class="content" :style="{ 'border-radius': radius + 'px', border: border }"  @click="getFocus()">
 			<view class="content-box" :class="{ center: mode === 2 }">
 				<text class="icon icon-search">&#xe61c;</text>
 				<input class="input" :class="{ center: !active && mode === 2 }" :focus="isFocus" :placeholder="placeholder" v-model="inputVal" @focus="focus" @blur="blur" />
@@ -122,6 +122,7 @@ export default {
 			}
 			.icon {
 				padding: 0 15upx;
+				text-align: center;
 				&.icon-del {
 					font-size: 38upx;
 				}
@@ -133,7 +134,8 @@ export default {
 				height: 60upx;
 				transition: all 0.2s linear;
 				&.center {
-					width: 200upx;
+					width: 300upx;
+					
 				}
 				&.sub {
 					// position: absolute;

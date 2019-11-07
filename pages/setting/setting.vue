@@ -1,7 +1,7 @@
 <template>
 	<view class="setting">
 		<view class="setting-list">
-			<view class="setting-item">
+	<!-- 		<view class="setting-item">
 				<view class="text">
 					推送设置
 				</view>
@@ -9,7 +9,7 @@
 				<view class="arrow">
 					
 				</view>
-			</view>
+			</view> -->
 			<view class="setting-item" @tap="unBind()">
 				<view class="text">
 					微信解绑
@@ -36,12 +36,19 @@
 				 uni.removeStorage({
 					 key:'usn'
 				 })
+				   uni.removeStorage({
+				   key:'role'
+				 })
 				  uni.removeStorage({
 					 key:'token'
+				 })
+				   uni.removeStorage({
+				      key:'flag'
 				 })
 				 uni.reLaunch({
 					url:'../login/login'
 				}) 
+				
 			},
 			unBind(){
 				let _this = this
@@ -57,7 +64,16 @@
 								 uni.removeStorage({
 									 key:'usn'
 								 })
-								 uni.navigateTo({
+								  uni.removeStorage({
+								      key:'flag'
+								 })
+								  uni.removeStorage({
+								 	   key:'token'
+								 })
+								   uni.removeStorage({
+								 	   key:'role'
+								 })
+								 uni.reLaunch({
 									url:'../login/login'
 								}) 
 							 }

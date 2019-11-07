@@ -124,7 +124,7 @@ import minModal from '@/components/min-modal/min-modal.vue';
 export default {
 	data() {
 		return {
-			listTab: ['待审核', '已发布', '审核是失败'],
+			listTab: ['待审核', '已发布', '审核失败'],
 			fistIndex: 0,
 			token: uni.getStorageSync('token'),
 			tabList: [0, 1, 3],

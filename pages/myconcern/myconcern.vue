@@ -13,7 +13,7 @@
 							<view class="user-name">{{item.realname}}</view>
 						</view>
 						<view class="faculty">
-							院系： {{item.collegename}}
+							院系： {{!item.collegename?'':'item.collegename'}}
 						</view>
 					</navigator>
 					<view class="concern-r">
