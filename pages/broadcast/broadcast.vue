@@ -111,14 +111,12 @@ export default {
 	   
 	},
 	onLoad(option) {
-		console.log("aaaaaa");
 		if(option.tip){
 			this.activeIndex = option.tip;
 				this.getTab()
 		}else{
 			this.getTab()
 		}
-	   console.log('onshow')
 	},
 	methods: {
 		// 评论
@@ -162,7 +160,6 @@ export default {
 		},
 		// 跳转详情
 		detiles(item) {
-			console.log(item.radio_id)
 			uni.navigateTo({
 				url:'../yundetails/yundetails?id='+item.radio_id,
 				// url: '../soundRecording/soundRecording'
@@ -187,7 +184,6 @@ export default {
 			data.token = this.token;
 			this.yapi.getHoneTab(data).then((res)=>{
 				this.tabList = res.datas
-				console.log(res.datas)
 				this.choseTab(this.activeIndex,res.datas[this.activeIndex]);//第一次进入
 			}).catch(()=>{
 			})
@@ -206,7 +202,6 @@ export default {
 			
 		},
 		getNetData(index,item){
-			console.log(item)
 			let pram = {}
 			pram.type = item.id;
 			pram.curpage = this.curpage;
@@ -272,6 +267,7 @@ export default {
 							url:'../startAudio/startAudio?userid='+_this.userid
 						});
 					}else if(res.platform == "android"){
+						console.log(_this.userid)
 						// console.log('https://kjw.wx.fzwsc.com/kjwwap/h5/#/?token='+_this.token+'&userid='+_this.userid );
 			            uni.navigateTo({
 					

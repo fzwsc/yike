@@ -97,6 +97,10 @@ export default{
 	// 获取学期
 	getSemester(data){
 		return network.post('/ygb/user/term_list',data)
+	},
+	// 修改密码
+	changePwdMet(data){
+		return network.post('/ygb/user/modify_password',data)
 	}
 	
 

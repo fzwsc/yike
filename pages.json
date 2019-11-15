@@ -173,12 +173,19 @@
 		}
 
 
-	    ,{
-            "path" : "pages/scorerule/scorerule",
-            "style" : {
+		, {
+			"path": "pages/scorerule/scorerule",
+			"style": {
 				"navigationBarTitleText": "积分规则说明"
 			}
-        }
+		},
+		{
+			"path": "pages/changepwd/changepwd",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		}
+	    
     ],
 	"globalStyle": {
 		"navigationBarTitleText": "云广播",

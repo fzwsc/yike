@@ -33,7 +33,7 @@
 			</view>
 			<view class="">上传手持的照片</view>
 		</view>
-		<view class="bt-login" @click="loginM">修改密码并解除微信绑定</view>
+		<view class="bt-login" @click="loginM">提交</view>
 		
 	</view>
 </template>
@@ -77,7 +77,7 @@ export default {
 			if (this.schoolList.length == 0 || this.schoolList.length == 1) return
 			this.showPicker = !this.showPicker
 		},
-				getSchoolList() {
+		getSchoolList() {
 			let data = {}
 			this.api.schoolList(data).then(res => {
 				if (res.datas.length == 0) {

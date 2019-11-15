@@ -33,18 +33,19 @@
 		},
 		methods:{
 			checkOut(){
-				 uni.removeStorage({
-					 key:'usn'
-				 })
-				   uni.removeStorage({
-				   key:'role'
-				 })
-				  uni.removeStorage({
-					 key:'token'
-				 })
-				   uni.removeStorage({
-				      key:'flag'
-				 })
+				 // uni.removeStorage({
+					//  key:'usn'
+				 // })
+				 //   uni.removeStorage({
+				 //   key:'role'
+				 // })
+				 //  uni.removeStorage({
+					//  key:'token'
+				 // })
+				 //   uni.removeStorage({
+				 //      key:'flag'
+				 // })
+				 uni.clearStorage()
 				 uni.reLaunch({
 					url:'../login/login'
 				}) 
@@ -61,18 +62,19 @@
 							par["token"] = _this.token
 						 _this.yapi.changePwdUnBind(par).then(res=>{
 							 if(res.code==200){
-								 uni.removeStorage({
-									 key:'usn'
-								 })
-								  uni.removeStorage({
-								      key:'flag'
-								 })
-								  uni.removeStorage({
-								 	   key:'token'
-								 })
-								   uni.removeStorage({
-								 	   key:'role'
-								 })
+								 // uni.removeStorage({
+									//  key:'usn'
+								 // })
+								 //  uni.removeStorage({
+								 //      key:'flag'
+								 // })
+								 //  uni.removeStorage({
+								 // 	   key:'token'
+								 // })
+								 //   uni.removeStorage({
+								 // 	   key:'role'
+								 // })
+								 uni.clearStorage()
 								 uni.reLaunch({
 									url:'../login/login'
 								}) 

@@ -16,12 +16,20 @@ function requestGet(url,data,onlyOne = false) {
       success: function(res){
 				 	if(!onlyOne) uni.hideLoading()
          if (res.data.code == 200) {
+			 
           resolve(res.data);
         }else if(res.data.code == -1){
         	uni.showToast({
         			title: res.data.msg,
         			icon: 'none'
         	});
+			uni.removeStorageSync("token")
+				
+			uni.reLaunch({
+				url:'/pages/login/login'
+			})
+			
+			
         }else {
         	reject(res)
         }
